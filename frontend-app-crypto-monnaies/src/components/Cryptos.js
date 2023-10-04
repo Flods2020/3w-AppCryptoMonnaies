@@ -44,12 +44,14 @@ const Cryptos = ({ coinsData }) => {
             </li>
           ))}
         </ul>
-        {coinsData &&
-          coinsData
-            .filter((coin) => acmCryptos.includes(coin.symbol))
-            .map((coin, index) => (
-              <CryptoLine key={index} coin={coin} index={index} />
-            ))}
+        <div className="cryptoLine-container">
+          {coinsData &&
+            coinsData
+              .filter((coin) => acmCryptos.includes(coin.symbol))
+              .map((coin, index) => (
+                <CryptoLine key={index} coin={coin} index={index} />
+              ))}
+        </div>
       </div>
     </>
   );

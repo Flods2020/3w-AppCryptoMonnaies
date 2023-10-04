@@ -1,6 +1,7 @@
 .acm-nav-container {
   background: $color-3;
-  position: fixed;
+  // position: fixed;
+  position: sticky;
   top: 0;
   padding: 22px;
   width: 100%;
@@ -36,7 +37,7 @@
 @media screen and (max-width: 400px) {
   .acm-nav-container {
     .acm-nav-title-burger {
-      // display: flex;
+      display: flex;
       justify-content: space-around;
       top: 7px;
 
