@@ -1,0 +1,22 @@
+.burger-ul {
+  z-index: 50;
+  display: flex;
+  margin-top: 10px;
+  flex-direction: column;
+  border-top: 1px solid $color-4;
+  list-style: none;
+  transition: 0.3s ease;
+
+  li {
+    width: 100%;
+    color: $color-1;
+    margin: 3px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.3s ease;
+
+    &:hover {
+      background: $color-2;
+    }
+  }
+}

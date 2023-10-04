@@ -1,0 +1,32 @@
+$color-1: #239125;
+// $color-1: #e0ab2f;
+$color-2: #e4e4ff;
+// $color-2: #333333;
+$color-3: #c6c6da;
+// $color-3: #242424;
+$color-4: #cb9850;
+// $color-4: #660303;
+
+$percent1: #b82020;
+$percent2: #20b820;
+$percent3: #a6a820;
+
+:export {
+  percent1: $percent1;
+  percent2: $percent2;
+  percent3: $percent3;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+body {
+  background: $color-2;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  color: $color-1;
+}

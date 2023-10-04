@@ -1,0 +1,146 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+body {
+  background: #e4e4ff;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+  color: #239125;
+}
+
+@media screen and (max-width: 400px) {
+  .acm-home-container {
+    margin: auto;
+    margin-top: 60px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+  }
+}
+@media screen and (max-width: 400px) {
+  .acm-crypto-container {
+    border-top: 2px solid #cb9850;
+    border-bottom: 2px solid #cb9850;
+    border-left: 1px solid #cb9850;
+    border-right: 1px solid #cb9850;
+    padding: 5px;
+    margin-top: 15px;
+  }
+  .acm-crypto-container .crypto {
+    background: #ed254a;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    flex-direction: column;
+  }
+}
+@media screen and (max-width: 400px) {
+  .acm-wallet-container {
+    border-top: 2px solid #cb9850;
+    border-bottom: 2px solid #cb9850;
+    border-left: 1px solid #cb9850;
+    border-right: 1px solid #cb9850;
+    padding: 5px;
+  }
+  .acm-wallet-container h2 {
+    text-align: center;
+    border-bottom: 1px dashed #cb9850;
+    border-top: 1px dashed #cb9850;
+    background: #d4d4ef;
+  }
+  .acm-wallet-container .wallet-display {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 10px;
+  }
+  .acm-wallet-container .wallet-display span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .acm-wallet-container .wallet-display .wallet-currencies-container {
+    display: flex;
+    flex-direction: column;
+  }
+  .acm-wallet-container .wallet-btn {
+    width: 75%;
+    text-align: center;
+    margin: 10px auto;
+    padding: 2px;
+    background: #d4d4ef;
+    border: 1px solid #239125;
+  }
+  .acm-wallet-container .wallet-btn:hover {
+    background-color: #e4e4ff;
+  }
+  .acm-wallet-container .wallet-total {
+    background: #cb9850;
+  }
+  .acm-wallet-container .wallet-transac,
+  .acm-wallet-container .wallet-total {
+    border: 1px solid #239125;
+    display: flex;
+    justify-content: space-evenly;
+    margin: 10px;
+    padding: 3px;
+  }
+}
+.acm-nav-container {
+  background: #d4d4ef;
+}
+
+@media screen and (max-width: 400px) {
+  .acm-nav-container {
+    position: fixed;
+    top: 0;
+    padding: 10px;
+    width: 100%;
+    border-bottom: 2px solid #cb9850;
+  }
+  .acm-nav-container .acm-nav-title-burger {
+    display: flex;
+    justify-content: space-around;
+    top: 7px;
+  }
+  .acm-nav-container .acm-nav-title-burger .burger-container {
+    display: block;
+    justify-content: center;
+    align-items: center;
+    background: #e4e4ff;
+    height: -moz-fit-content;
+    height: fit-content;
+    border-radius: 5px;
+  }
+  .acm-nav-container .acm-nav-title-burger .burger-container span {
+    display: block;
+    width: 30px;
+    height: 4px;
+    border: 1.5px solid #cb9850;
+    background: #239125;
+    margin: 5px auto;
+    border-radius: 5px;
+    transition: 0.4s ease;
+  }
+}
+ul {
+  z-index: 50;
+  display: flex;
+  border-top: 2px solid #cb9850;
+  margin-top: 10px;
+  flex-direction: column;
+  list-style: none;
+  transition: 0.3s ease;
+}
+ul li {
+  width: 100%;
+  color: #239125;
+  margin: 3px;
+  text-align: center;
+  transition: 0.3s ease;
+}
+ul li:hover {
+  background: #e4e4ff;
+}/*# sourceMappingURL=index.css.map */
