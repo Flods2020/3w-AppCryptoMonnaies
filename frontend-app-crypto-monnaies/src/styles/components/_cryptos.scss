@@ -19,7 +19,7 @@
     .acm-crypto-header {
       width: 70%;
       display: grid;
-      grid-template-columns: 40% repeat(3, 1fr);
+      grid-template-columns: 35% repeat(3, 1fr);
       height: 40px;
       align-items: center;
       margin: 15px 5px 15px auto;
@@ -28,12 +28,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        // border-radius: 2px;
         height: 100%;
         border: 2px solid $color-2;
         border-bottom: none;
         background: $color-4;
-        // color: $color-3;
         color: $color-1;
       }
 
@@ -50,14 +48,6 @@
         width: 30px;
         display: none;
       }
-
-      // .crypto {
-      //   // background: #ed254a;
-      //   display: flex;
-      //   justify-content: space-around;
-      //   flex-wrap: wrap;
-      //   flex-direction: column;
-      // }
     }
   }
 }

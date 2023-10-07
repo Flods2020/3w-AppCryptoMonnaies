@@ -1,31 +1,33 @@
 @media screen and (max-width: 400px) {
   .crypto-line {
     font-size: 0.7em;
-    background: $color-3;
+    // background: $color-3;
     display: grid;
-    grid-template-columns: 35% 1fr;
+    grid-template-columns: 30% 1fr;
 
     .crypto-infos {
       display: flex;
       justify-content: space-evenly;
       align-items: center;
+
+      span {
+        display: none;
+      }
     }
 
     .crypto-values {
-      width: 70%;
+      width: 75%;
       display: grid;
-      grid-template-columns: 50% repeat(3, 1fr);
+      grid-template-columns: 45% repeat(3, 1fr);
       height: 40px;
       align-items: center;
-      transition: 0;
 
       p {
         display: flex;
-        // justify-content: space-around;
         justify-content: center;
         align-items: center;
-        margin: 5px;
-        border: 1px solid $color-4;
+        margin: 6px;
+        padding: 2px;
       }
 
       p:nth-child(2),
