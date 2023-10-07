@@ -19,14 +19,15 @@
       width: 75%;
       display: grid;
       grid-template-columns: 45% repeat(3, 1fr);
+      gap: 3%;
       height: 40px;
       align-items: center;
 
       p {
         display: flex;
-        justify-content: center;
+        // justify-content: center;
         align-items: center;
-        margin: 6px;
+        // margin: 6px;
         padding: 2px;
       }
 

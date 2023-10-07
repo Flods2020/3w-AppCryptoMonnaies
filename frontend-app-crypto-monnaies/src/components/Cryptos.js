@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../styles/index.scss";
 import CryptoLine from "./CryptoLine";
 
@@ -18,9 +18,9 @@ const Cryptos = ({ coinsData }) => {
   ];
   const [orderBy, setOrderBy] = useState("");
 
-  useEffect(() => {
-    coinsData && console.log(coinsData);
-  });
+  // useEffect(() => {
+  //   coinsData && console.log(coinsData);
+  // });
 
   return (
     <>
