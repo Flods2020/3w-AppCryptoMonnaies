@@ -1,10 +1,56 @@
+.crypto-line {
+  display: grid;
+  // grid-template-columns: 15% 20% repeat(8, 1fr);
+  grid-template-columns: 30% 70%;
+
+  .crypto-infos {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .crypto-values {
+    display: grid;
+    // grid-template-columns: 45% repeat(3, 1fr);
+    grid-template-columns: 15% 15% 15% repeat(7, 1fr);
+    height: 40px;
+    align-items: center;
+
+    /*A tester*/
+    @media screen and (max-width: 850px) {
+      grid-template-columns: 25% repeat(5, 1fr);
+    }
+
+    /*A garder*/
+    @media screen and (max-width: 400px) {
+      grid-template-columns: 30% repeat(3, 1fr);
+      gap: 3%;
+
+      span {
+        display: none;
+      }
+    }
+
+    @media screen and (max-width: 850px) {
+      p:nth-child(3),
+      p:nth-child(7),
+      p:nth-child(8),
+      p:nth-child(9) {
+        display: none;
+      }
+    }
+
+    p {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.8em;
+    }
+  }
+}
+
 @media screen and (max-width: 400px) {
   .crypto-line {
-    font-size: 0.7em;
-    // background: $color-3;
-    display: grid;
-    grid-template-columns: 30% 1fr;
-
     .crypto-infos {
       display: flex;
       justify-content: space-evenly;
@@ -16,20 +62,7 @@
     }
 
     .crypto-values {
-      width: 75%;
-      display: grid;
-      grid-template-columns: 45% repeat(3, 1fr);
-      gap: 3%;
-      height: 40px;
-      align-items: center;
-
-      p {
-        display: flex;
-        // justify-content: center;
-        align-items: center;
-        // margin: 6px;
-        padding: 2px;
-      }
+      // width: 75%;
 
       p:nth-child(2),
       p:nth-child(3),
