@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import Form from "../components/Form";
+import InputForm from "../components/InputForm";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -6,39 +8,26 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.warn("WOLOLO");
-    console.error(email);
-    console.error(password);
+    console.warn("LOGIN FORM");
+    console.log(email);
+    console.log(password);
+    // console.log(new FormData(e.target));
   };
 
   return (
     <>
-      <div className="acm-auth-container">
-        <div className="acm-auth">
-          <h2>Login</h2>
-          <form className="acm-login-form" onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="email">Email ::: </label>
-              <input
-                type="email"
-                name="email"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="mdp">Mot de passe ::: </label>
-              <input
-                type="password"
-                name="mdp"
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div className="btn-form">
-              <input type="submit" value={"Connexion"} />
-            </div>
-          </form>
-        </div>
-      </div>
+      <Form formType={"login"} handleSubmit={handleSubmit} btnSub={"Connexion"}>
+        <InputForm
+          handleChange={(e) => setEmail(e.target.value)}
+          label={"Email"}
+          type={"email"}
+        />
+        <InputForm
+          handleChange={(e) => setPassword(e.target.value)}
+          label={"Mot de passe"}
+          type={"password"}
+        />
+      </Form>
     </>
   );
 };
