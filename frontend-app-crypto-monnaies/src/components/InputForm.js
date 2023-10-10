@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const InputForm = (props) => {
+  useEffect(() => {
+    console.log(props);
+  });
+
   return (
     <div>
       <label>{props.label} ::: </label>
