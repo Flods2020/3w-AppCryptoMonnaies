@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../styles/index.scss";
 import BurgerMenu from "./BurgerMenu";
+import { NavLink } from "react-router-dom";
 
 const Nav = () => {
   const [isActive, setIsActive] = useState(false);
@@ -12,7 +13,12 @@ const Nav = () => {
     <>
       <div className="acm-nav-container">
         <div className="acm-nav-title-burger">
-          <h2>APP CRYPTO MONNAIES</h2>
+          <NavLink
+            to={"/home"}
+            style={{ color: "inherit", textDecoration: "none" }}
+          >
+            <h2>APP CRYPTO MONNAIES</h2>
+          </NavLink>
           <div className="burger-container" onClick={ToggleClass}>
             <span></span>
             <span></span>

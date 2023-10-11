@@ -1,10 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 const Form = (props) => {
-  useEffect(() => {
-    console.log("props.formType ::: ", props.formType);
-  });
-
   return (
     <div className="acm-auth-container">
       <div className="acm-auth">
