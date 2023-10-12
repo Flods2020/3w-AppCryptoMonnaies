@@ -8,6 +8,7 @@ const InputForm = (props) => {
         onChange={props.handleChange}
         type={props.type}
         name={props.type}
+        autoComplete="off"
       />
     </div>
   );

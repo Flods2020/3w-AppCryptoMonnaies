@@ -34,3 +34,17 @@ body {
     "Lucida Sans", Arial, sans-serif;
   color: $color-1;
 }
+
+.errmsg {
+  font-size: 1.2em;
+  width: 90%;
+  text-align: center;
+  padding: 10px;
+  color: $color-1;
+  background: #b82020;
+}
+
+.offscreen {
+  position: absolute;
+  left: -500px;
+}
