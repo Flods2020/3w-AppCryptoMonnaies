@@ -5,10 +5,11 @@ const InputForm = (props) => {
     <div>
       <label>{props.label} ::: </label>
       <input
-        onChange={props.handleChange}
         type={props.type}
-        name={props.type}
+        onChange={props.handleChange}
+        name={props.id}
         autoComplete="off"
+        required
       />
     </div>
   );

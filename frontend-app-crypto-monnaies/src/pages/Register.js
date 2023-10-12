@@ -66,13 +66,18 @@ const Register = () => {
           className={errMsg ? "errmsg" : "offscreen"}
           aria-live="assertive"
         >
-          {/* {errMsg} */}
-          wololo
+          {errMsg}
         </p>
         <InputForm
-          // handleChange={(e) => setName(e.target.value)}
+          handleChange={(e) => setUser(e.target.value)}
+          type={"text"}
+          id={"username"}
+          ref={userRef}
           label={"Nom/Pseudo"}
-          type={"name"}
+          aria-invalid={validName ? "false" : "true"}
+          aria-describedby="uidnote"
+          onFocus={() => setUserFocus(true)}
+          onBlur={() => setUserFocus(false)}
         />
         <InputForm
           // handleChange={(e) => setEmail(e.target.value)}
