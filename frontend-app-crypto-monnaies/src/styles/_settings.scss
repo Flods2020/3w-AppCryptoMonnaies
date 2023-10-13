@@ -1,7 +1,7 @@
 $color-1: #f0f0ff;
 // $color-1: #239125;
 // $color-1: #e0ab2f;
-$color-2: #180245;
+$color-2: #130255;
 // $color-2: #e4e4ff;
 // $color-2: #333333;
 $color-3: #bb7830;
@@ -10,6 +10,10 @@ $color-3: #bb7830;
 $color-4: #da810c;
 // $color-4: #660303;
 $color-5: #f8f8fe;
+
+$inputs-color-1: #b82020;
+$inputs-color-2: #15a010;
+$inputs-color-3: #ededed;
 
 $percent1: #b82020;
 $percent2: #20b820;
@@ -41,10 +45,18 @@ body {
   text-align: center;
   padding: 10px;
   color: $color-1;
-  background: #b82020;
+  background: $inputs-color-1;
+}
+
+.instructions {
+  color: $inputs-color-1;
+  background: #000;
+  border: 2px dashed $inputs-color-1;
+  padding: 15px;
+  border-radius: 20px;
 }
 
 .offscreen {
   position: absolute;
-  left: -500px;
+  left: -5000px;
 }

@@ -36,6 +36,19 @@
           min-width: 100px;
           margin-top: 1em;
           font-size: 1.2em;
+
+          .valid {
+            margin: 10px;
+            color: $inputs-color-2;
+          }
+          .invalid {
+            margin: 10px;
+            color: $inputs-color-1;
+          }
+
+          .hide {
+            display: none;
+          }
         }
 
         input[type="text"],
