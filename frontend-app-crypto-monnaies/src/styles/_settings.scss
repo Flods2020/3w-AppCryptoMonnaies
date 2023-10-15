@@ -56,6 +56,14 @@ body {
   border-radius: 20px;
 }
 
+.confirmPwd {
+  color: $inputs-color-3;
+  background: #000;
+  border: 2px dashed $inputs-color-3;
+  padding: 15px;
+  border-radius: 20px;
+}
+
 .offscreen {
   position: absolute;
   left: -5000px;

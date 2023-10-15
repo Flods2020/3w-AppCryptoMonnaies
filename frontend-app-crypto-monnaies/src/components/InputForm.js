@@ -7,7 +7,7 @@ const InputForm = (props) => {
     <div>
       <label>
         {props.label} :::
-        <span className={props.valid ? "valid" : "hide"}>
+        <span className={props.valid && props.varia ? "valid" : "hide"}>
           <BsCheckCircle />
         </span>
         <span className={props.valid || !props.varia ? "hide" : "invalid"}>
@@ -19,7 +19,7 @@ const InputForm = (props) => {
         id={props.name}
         onChange={props.handleChange}
         required
-        // name={props.id}
+        autoComplete="off"
         onFocus={props.onFocus}
         onBlur={props.onBlur}
       />

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Form from "../components/Form";
 import InputForm from "../components/InputForm";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { AiOutlineInfoCircle } from "react-icons/ai";
 
 const USER_REGEX = /^[a-zA-Z0-9_]{3,23}$/;
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,24}$/;
@@ -99,11 +100,9 @@ const Register = () => {
           handleChange={(e) => setPwd(e.target.value)}
           type={"password"}
           name={"password"}
-          // innerRef={userRef}
           label={"Mot de passe"}
           valid={validPwd}
           varia={pwd}
-          autoComplete="off"
           aria-invalid={validPwd ? "false" : "true"}
           aria-describedby="pwdnote"
           onFocus={() => setPwdFocus(true)}
@@ -121,6 +120,26 @@ const Register = () => {
           <br />
           Sont permis lettres, chiffres et "!@#$%".
           <br />
+        </p>
+
+        <InputForm
+          handleChange={(e) => setMatchPwd(e.target.value)}
+          type={"password"}
+          name={"confirm_pwd"}
+          label={"Confirmation mot de passe"}
+          valid={validMatch}
+          varia={matchPwd}
+          aria-invalid={validMatch ? "false" : "true"}
+          aria-describedby="confirmnote"
+          onFocus={() => setMatchFocus(true)}
+          onBlur={() => setMatchFocus(false)}
+        />
+        <p
+          id="confirmnote"
+          className={matchFocus && !validMatch ? "confirmPwd" : "offscreen"}
+        >
+          <AiOutlineInfoCircle /> <br />
+          Ce champs doit être identique au "Mot de passe".
         </p>
 
         <InputForm
