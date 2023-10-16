@@ -6,6 +6,7 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 
 const USER_REGEX = /^[a-zA-Z0-9_]{3,23}$/;
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,24}$/;
+const MAIL_REGEX = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
 
 const Register = () => {
   const userRef = useRef();
@@ -23,12 +24,12 @@ const Register = () => {
   const [validMatch, setValidMatch] = useState(false);
   const [matchFocus, setMatchFocus] = useState(false);
 
+  const [mail, setMail] = useState("");
+  const [validMail, setValidMail] = useState(false);
+  const [mailFocus, setMailFocus] = useState(false);
+
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
-
-  useEffect(() => {
-    // userRef.current.focus();
-  }, []);
 
   useEffect(() => {
     const result = USER_REGEX.test(user);
@@ -47,11 +48,25 @@ const Register = () => {
   }, [pwd, matchPwd]);
 
   useEffect(() => {
+    const result = MAIL_REGEX.test(mail);
+    console.log(result);
+    console.log(mail);
+    setValidMail(result);
+  }, [mail]);
+
+  useEffect(() => {
     setErrMsg("");
   }, [user, pwd, matchPwd]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const v1 = USER_REGEX.test(user);
+    const v2 = PASSWORD_REGEX.test(pwd);
+    const v3 = MAIL_REGEX.test(mail);
+    if (!v1 || !v2 || !v3) {
+      setErrMsg("Champs invalide");
+      return;
+    }
   };
 
   return (
@@ -60,6 +75,9 @@ const Register = () => {
         formType={"register"}
         handleSubmit={handleSubmit}
         btnSub={"S'inscrire"}
+        disabled={
+          !validPwd || !validName || !validMatch || !validMail ? true : false
+        }
       >
         <p
           ref={errRef}
@@ -143,10 +161,30 @@ const Register = () => {
         </p>
 
         <InputForm
-          // handleChange={(e) => setEmail(e.target.value)}
-          label={"Email"}
+          handleChange={(e) => setMail(e.target.value)}
           type={"email"}
+          name={"email"}
+          label={"E-mail"}
+          valid={validMail}
+          varia={mail}
+          aria-invalid={validMail ? "false" : "true"}
+          aria-describedby="emailnote"
+          onFocus={() => setMailFocus(true)}
+          onBlur={() => setMailFocus(false)}
         />
+        <p
+          id="emailnote"
+          className={mailFocus && !validMail ? "instructions" : "offscreen"}
+        >
+          <AiOutlineInfoCircle /> <br />
+          Ce champs doit contenir au moins un caractère alphanumérique (lettres
+          ou chiffres). <br />
+          Ne peut pas contenir d'espaces ou de caractères spéciaux autres que
+          les tirets, les caractères de soulignement et les points. <br />
+          L'adresse e-mail doit contenir le symbole "@". <br />
+          La partie de domaine doit être suivie par un point et une extension de
+          domaine (par exemple, ".com", ".org", ".fr", etc.). <br />
+        </p>
       </Form>
     </>
   );

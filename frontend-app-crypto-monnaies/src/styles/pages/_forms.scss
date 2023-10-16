@@ -27,60 +27,73 @@
       align-items: center;
       color: $color-2;
 
-      div {
+      .inputForms {
         margin: 1em;
         width: 50%;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
 
         label {
           display: inline-block;
-          min-width: 100px;
           margin-top: 1em;
           font-size: 1.2em;
+        }
 
+        .inputContainer {
+          display: flex;
+          align-items: baseline;
+          justify-content: center;
+
+          input[type="text"],
+          input[type="email"],
+          input[type="password"] {
+            height: 25px;
+            margin: 10px;
+            padding: 7px;
+            text-align: center;
+            display: block;
+            float: right;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            border-radius: 1px;
+          }
           .valid {
             margin: 10px;
             color: $inputs-color-2;
+            transition: 0.3s ease;
           }
           .invalid {
             margin: 10px;
             color: $inputs-color-1;
+            transition: 0.3s ease;
           }
 
           .hide {
             display: none;
           }
         }
-
-        input[type="text"],
-        input[type="email"],
-        input[type="password"] {
-          min-width: 50%;
-          height: 30px;
-          margin-top: 1em;
-          padding: 7px;
-          text-align: center;
-          display: block;
-          float: right;
-          border-top: none;
-          border-left: none;
-          border-right: none;
-          border-radius: 1px;
-        }
       }
       .btn-form {
         display: flex;
         justify-content: center;
         align-items: center;
-        input[type="submit"] {
+        button {
           padding: 7px;
           font-size: 1.1em;
-          background: $color-2;
           color: $color-5;
           cursor: pointer;
+          background: $color-2;
           transition: 0.3s ease;
 
           &:hover {
             background: $color-4;
+          }
+          &:disabled {
+            background: $color-5;
+            color: $inputs-color-3;
+            cursor: not-allowed;
           }
         }
       }
