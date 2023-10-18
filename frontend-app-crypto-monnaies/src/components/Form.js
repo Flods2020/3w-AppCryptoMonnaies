@@ -12,7 +12,7 @@ const Form = (props) => {
         {props.formType === "register" ? (
           <h2>CRÉER UN COMPTE</h2>
         ) : (
-          <h2>{props.formType.toUpperCase()}</h2>
+          <h2>SE CONNECTER</h2>
         )}
         <form className="acm-login-form" onSubmit={props.handleSubmit}>
           {props.children}

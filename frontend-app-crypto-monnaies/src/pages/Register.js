@@ -66,6 +66,8 @@ const Register = () => {
     if (!v1 || !v2 || !v3) {
       setErrMsg("Champs invalide");
       return;
+    } else {
+      console.log("formulaire valide");
     }
   };
 

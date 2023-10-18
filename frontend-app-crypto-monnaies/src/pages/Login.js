@@ -8,10 +8,6 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.warn("LOGIN FORM");
-    // console.log(email);
-    // console.log(password);
-    // console.log(new FormData(e.target));
   };
 
   return (

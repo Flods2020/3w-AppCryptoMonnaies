@@ -39,33 +39,3 @@ body {
     "Lucida Sans", Arial, sans-serif;
   color: $color-1;
 }
-
-.errmsg {
-  font-size: 1.2em;
-  width: 90%;
-  text-align: center;
-  padding: 10px;
-  color: $color-1;
-  background: $inputs-color-1;
-}
-
-.instructions {
-  color: $inputs-color-1;
-  background: #000;
-  border: 2px dashed $inputs-color-1;
-  padding: 15px;
-  border-radius: 20px;
-}
-
-.confirmPwd {
-  color: $inputs-color-3;
-  background: #000;
-  border: 2px dashed $inputs-color-3;
-  padding: 15px;
-  border-radius: 20px;
-}
-
-.offscreen {
-  position: absolute;
-  left: -5000px;
-}
