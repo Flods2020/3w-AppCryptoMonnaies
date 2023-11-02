@@ -26,7 +26,7 @@ const Nav = () => {
           </div>
         </div>
         {isActive ? (
-          <div>
+          <div onClick={ToggleClass}>
             <BurgerMenu />
           </div>
         ) : null}

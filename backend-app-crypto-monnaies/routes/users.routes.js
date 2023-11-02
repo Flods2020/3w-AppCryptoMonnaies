@@ -1,6 +1,23 @@
 const express = require("express");
 const { User } = require("../models/users.models");
-const router = express.Router();
+const router = new express.Router();
+
+router.post("/", async (req, res, next) => {
+  const newUser = new User(req.body);
+  newUser
+    .save()
+    .then((user) => res.status(202).json({ user }))
+    .catch((err) => res.status(400).json({ error: err }));
+});
+
+router.post("/login", async (req, res) => {
+  try {
+    const user = await User.findUser(req.body.email, req.body.password);
+    res.send(user);
+  } catch (e) {
+    res.status(400).send();
+  }
+});
 
 router.get("/", async (req, res) => {
   try {
@@ -23,12 +40,14 @@ router.get("/:id", async (req, res, next) => {
 });
 
 router.patch("/:id", async (req, res, next) => {
+  const updatedInfo = Object.keys(req.body);
   const userId = req.params.id;
+
   try {
-    const user = await User.findByIdAndUpdate(userId, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const user = await User.findById(userId);
+    updatedInfo.forEach((update) => (user[update] = req.body[update]));
+    await user.save();
+
     if (!user) return res.status(404).send("User not found");
     res.json({ user });
     res.send(user);
@@ -47,14 +66,6 @@ router.delete("/:id", async (req, res, next) => {
   } catch (e) {
     res.status(500).send(e);
   }
-});
-
-router.post("/", async (req, res, next) => {
-  const newUser = new User(req.body);
-  newUser
-    .save()
-    .then((user) => res.status(202).json({ user }))
-    .catch((err) => res.status(400).json({ error: err }));
 });
 
 module.exports = router;

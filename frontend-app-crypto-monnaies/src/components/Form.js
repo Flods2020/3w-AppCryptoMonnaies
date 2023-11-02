@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 const Form = (props) => {
   useEffect(() => {
-    console.warn(props.disabled);
+    // console.warn(props.disabled);
   }, [props.disabled]);
 
   return (

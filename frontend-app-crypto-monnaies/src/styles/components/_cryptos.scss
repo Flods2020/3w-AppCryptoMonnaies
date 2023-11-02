@@ -22,7 +22,7 @@
     grid-template-columns: 15% 15% 15% repeat(7, 1fr);
 
     /*A tester*/
-    @media screen and (max-width: 850px) {
+    @media screen and (max-width: 1000px) {
       grid-template-columns: 25% repeat(5, 1fr);
     }
 
@@ -31,7 +31,7 @@
       grid-template-columns: 35% repeat(3, 1fr);
     }
 
-    @media screen and (max-width: 850px) {
+    @media screen and (max-width: 1000px) {
       li:nth-child(3),
       li:nth-child(7),
       li:nth-child(8),
