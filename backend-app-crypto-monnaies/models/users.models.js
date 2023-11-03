@@ -26,12 +26,27 @@ const userSchema = new mongoose.Schema(
     isAdmin: {
       type: Boolean,
     },
+    authTokens: [
+      {
+        authToken: {
+          type: String,
+          required: true,
+        },
+      },
+    ],
   },
   {
     timestamp: true,
     versionKey: false,
   }
 );
+
+userSchema.methods.generateAuthTokenAndSaveUser = async function () {
+  const authToken = jwt.sign({ _id: this._id.toString() }, "secrt");
+  this.authTokens.push({ authToken });
+  await this.save();
+  return authToken;
+};
 
 userSchema.statics.findUser = async (email, password) => {
   const user = await User.findOne({ email });

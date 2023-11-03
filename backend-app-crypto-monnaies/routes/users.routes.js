@@ -4,16 +4,26 @@ const router = new express.Router();
 
 router.post("/", async (req, res, next) => {
   const newUser = new User(req.body);
-  newUser
-    .save()
-    .then((user) => res.status(202).json({ user }))
-    .catch((err) => res.status(400).json({ error: err }));
+
+  // newUser
+  //   .generateAuthTokenAndSaveUser()
+  //   .then((user, authToken) => res.status(201).json({ user, authToken }))
+  //   .then(() => res.status(201).json(authToken))
+  //   .catch((err) => res.status(400).json({ error: err }));
+
+  try {
+    const authToken = await newUser.generateAuthTokenAndSaveUser();
+    res.status(201).send({ newUser, authToken });
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 router.post("/login", async (req, res) => {
   try {
     const user = await User.findUser(req.body.email, req.body.password);
-    res.send(user);
+    const authToken = await user.generateAuthTokenAndSaveUser();
+    res.send({ user, authToken });
   } catch (e) {
     res.status(400).send();
   }
