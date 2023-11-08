@@ -1,6 +1,3 @@
-// import mongoose from "mongoose";
-// import bcrypt from "bcrypt";
-// import jwt from "jsonwebtoken";
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
