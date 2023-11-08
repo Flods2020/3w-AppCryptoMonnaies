@@ -10,12 +10,8 @@ const authentification = async (req, res, next) => {
       "authTokens.authToken": authToken,
     });
     if (!user) throw new Error();
+    req.authToken = authToken;
     req.user = user;
-    // res.json({
-    //   "authTokens.authToken": authToken,
-    //   decodedToken: decodedToken._id,
-    //   message: "Auth validée",
-    // });
     next();
   } catch (e) {
     res.status(401).send("Veuillez vous authentifier.");

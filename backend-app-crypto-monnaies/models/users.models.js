@@ -38,6 +38,16 @@ const userSchema = new mongoose.Schema(
   }
 );
 
+// SUPPRIME L'AFFICHAGE DES PASSWORDS ET TOKENS SUR POSTMAN
+userSchema.methods.toJSON = function () {
+  const user = this.toObject();
+
+  delete user.password;
+  delete user.authTokens;
+
+  return user;
+};
+
 userSchema.methods.generateAuthTokenAndSaveUser = async function () {
   const authToken = jwt.sign({ _id: this._id.toString() }, "secrt");
   this.authTokens.push({ authToken });

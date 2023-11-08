@@ -5,13 +5,13 @@ const router = new express.Router();
 
 router.post("/", async (req, res, next) => {
   const user = new User(req.body);
-
+  /*
   // user
   //   .generateAuthTokenAndSaveUser()
   //   .then((user, authToken) => res.status(201).json({ user, authToken }))
   //   .then(() => res.status(201).json(authToken))
   //   .catch((err) => res.status(400).json({ error: err }));
-
+*/
   try {
     const authToken = await user.generateAuthTokenAndSaveUser();
     res.status(201).send({ user });
@@ -53,6 +53,7 @@ router.post("/logout/all", authentification, async (req, res) => {
   }
 });
 
+// METHODE A NE PAS METTRE DANS LE CODE
 router.get("/", authentification, async (req, res, next) => {
   try {
     const users = await User.find({});
@@ -66,18 +67,19 @@ router.get("/me", authentification, async (req, res, next) => {
   res.send(req.user);
 });
 
-router.get("/:id", async (req, res, next) => {
-  const userId = req.params.id;
-  try {
-    const user = await User.findById(userId);
-    if (!user) return res.status(404).send("User not found");
-    res.send(user);
-  } catch (e) {
-    res.status(500).send(e);
-  }
-});
+// METHODE A NE PAS METTRE DANS LE CODE
+// router.get("/:id", async (req, res, next) => {
+//   const userId = req.params.id;
+//   try {
+//     const user = await User.findById(userId);
+//     if (!user) return res.status(404).send("User not found");
+//     res.send(user);
+//   } catch (e) {
+//     res.status(500).send(e);
+//   }
+// });
 
-router.patch("/:id", async (req, res, next) => {
+router.patch("/me", authentification, async (req, res, next) => {
   const updatedInfo = Object.keys(req.body);
   const userId = req.params.id;
 
@@ -94,13 +96,11 @@ router.patch("/:id", async (req, res, next) => {
   }
 });
 
-router.delete("/:id", async (req, res, next) => {
-  const userId = req.params.id;
+router.delete("/me", authentification, async (req, res, next) => {
   try {
-    const user = await User.findByIdAndDelete(userId);
-    if (!user) return res.status(404).send("User not found");
+    await User.deleteOne(req.user);
     res.status(200).send("User deleted");
-    res.send(user);
+    res.send(req.user);
   } catch (e) {
     res.status(500).send(e);
   }
