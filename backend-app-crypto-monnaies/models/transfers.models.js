@@ -1,7 +1,12 @@
 const mongoose = require("mongoose");
 
-const transactionSchema = new mongoose.Schema({
-  user: {
+const transferSchema = new mongoose.Schema({
+  sender: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  receiver: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
@@ -20,13 +25,8 @@ const transactionSchema = new mongoose.Schema({
     default: Date.now,
     required: true,
   },
-  transactionType: {
-    type: String,
-    enum: ["buy", "sell"],
-    required: true,
-  },
 });
 
-const Transaction = mongoose.model("Transaction", transactionSchema);
+const Transfer = mongoose.model("Transfer", transferSchema);
 
-module.exports = Transaction;
+module.exports = Transfer;
