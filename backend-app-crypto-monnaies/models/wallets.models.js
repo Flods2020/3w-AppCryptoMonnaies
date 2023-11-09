@@ -1,21 +1,18 @@
 const mongoose = require("mongoose");
-const { User } = require("./users.models");
-const { Crypto } = require("./cryptos.models");
-const { Currency } = require("./currencies.models");
 
 const walletSchema = new mongoose.Schema({
   user: {
-    type: User,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
   crypto: {
-    type: Crypto,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Crypto",
     required: true,
   },
   currency: {
-    type: Currency,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Currency",
     required: true,
   },

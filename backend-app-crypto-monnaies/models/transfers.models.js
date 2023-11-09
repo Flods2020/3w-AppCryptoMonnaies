@@ -1,20 +1,18 @@
 const mongoose = require("mongoose");
-const { User } = require("./users.models");
-const { Crypto } = require("./cryptos.models");
 
 const transferSchema = new mongoose.Schema({
   sender: {
-    type: User,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
   receiver: {
-    type: User,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
   crypto: {
-    type: Crypto,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Crypto",
     required: true,
   },

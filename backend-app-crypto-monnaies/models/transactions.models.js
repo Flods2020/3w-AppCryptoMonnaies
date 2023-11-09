@@ -1,7 +1,4 @@
 const mongoose = require("mongoose");
-const { User } = require("./users.models");
-const { Crypto } = require("./cryptos.models");
-const { Currency } = require("./currencies.models");
 
 const transactionSchema = new mongoose.Schema({
   user: {
