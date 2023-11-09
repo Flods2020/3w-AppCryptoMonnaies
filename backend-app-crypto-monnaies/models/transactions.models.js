@@ -1,18 +1,22 @@
 const mongoose = require("mongoose");
+const { User } = require("./users.models");
+const { Crypto } = require("./cryptos.models");
+const { Currency } = require("./currencies.models");
 
 const transactionSchema = new mongoose.Schema({
   user: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: User,
     ref: "User",
     required: true,
   },
   crypto: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Crypto,
     ref: "Crypto",
     required: true,
   },
   amount: {
-    type: Number,
+    type: Currency,
+    amount: null,
     required: true,
   },
   timestamp: {
@@ -29,4 +33,4 @@ const transactionSchema = new mongoose.Schema({
 
 const Transaction = mongoose.model("Transaction", transactionSchema);
 
-module.exports = Transaction;
+module.exports = { Transaction };

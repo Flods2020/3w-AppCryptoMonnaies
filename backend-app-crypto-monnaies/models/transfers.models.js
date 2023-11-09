@@ -1,18 +1,19 @@
 const mongoose = require("mongoose");
+const { User } = require("./users.models");
 
 const transferSchema = new mongoose.Schema({
   sender: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: User,
     ref: "User",
     required: true,
   },
   receiver: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: User,
     ref: "User",
     required: true,
   },
   crypto: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Crypto,
     ref: "Crypto",
     required: true,
   },
@@ -29,4 +30,4 @@ const transferSchema = new mongoose.Schema({
 
 const Transfer = mongoose.model("Transfer", transferSchema);
 
-module.exports = Transfer;
+module.exports = { Transfer };
