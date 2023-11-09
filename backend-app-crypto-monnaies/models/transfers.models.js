@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { User } = require("./users.models");
+const { Crypto } = require("./cryptos.models");
 
 const transferSchema = new mongoose.Schema({
   sender: {

@@ -5,18 +5,21 @@ const { Currency } = require("./currencies.models");
 
 const transactionSchema = new mongoose.Schema({
   user: {
-    type: User,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
   crypto: {
-    type: Crypto,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Crypto",
     required: true,
   },
+  currency: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
   amount: {
-    type: Currency,
-    amount: null,
+    type: Number,
     required: true,
   },
   timestamp: {
