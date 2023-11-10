@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
 import Form from "../components/Form";
 import InputForm from "../components/InputForm";
 import { AiOutlineCloseCircle } from "react-icons/ai";
@@ -7,6 +8,8 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 const USER_REGEX = /^[a-zA-Z0-9_]{3,23}$/;
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,24}$/;
 const MAIL_REGEX = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
+const baseURL = "http://localhost:5000/";
+const registerURL = "users/register";
 
 const Register = () => {
   const userRef = useRef();
@@ -60,14 +63,20 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const v1 = USER_REGEX.test(user);
-    const v2 = PASSWORD_REGEX.test(pwd);
-    const v3 = MAIL_REGEX.test(mail);
-    if (!v1 || !v2 || !v3) {
-      setErrMsg("Champs invalide");
-      return;
-    } else {
+    try {
+      const v1 = USER_REGEX.test(user);
+      const v2 = PASSWORD_REGEX.test(pwd);
+      const v3 = MAIL_REGEX.test(mail);
+      await axios
+        .post(`${baseURL}${registerURL}`, {
+          user,
+          pwd,
+          mail,
+        })
+        .then((response) => console.log(response.data.user));
       console.log("formulaire valide");
+    } catch (error) {
+      console.error(error);
     }
   };
 

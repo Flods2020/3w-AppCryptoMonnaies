@@ -1,27 +1,12 @@
 const express = require("express");
 const { User } = require("../models/users.models");
 const authentification = require("../middlewares/authentification");
+const { register, login } = require("../controllers/userAuthController");
 const router = new express.Router();
 
-router.post("/", async (req, res, next) => {
-  const user = new User(req.body);
-  try {
-    const authToken = await user.generateAuthTokenAndSaveUser();
-    res.status(201).send({ user });
-  } catch (e) {
-    res.status(400).send(e);
-  }
-});
+router.post("/register", register);
 
-router.post("/login", async (req, res) => {
-  try {
-    const user = await User.findUser(req.body.email, req.body.password);
-    const authToken = await user.generateAuthTokenAndSaveUser();
-    res.send({ user, authToken });
-  } catch (e) {
-    res.status(400).send("Email or password incorrect.");
-  }
-});
+router.post("/login", login);
 
 router.post("/logout", authentification, async (req, res) => {
   try {

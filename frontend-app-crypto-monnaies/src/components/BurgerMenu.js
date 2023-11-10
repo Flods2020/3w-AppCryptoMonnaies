@@ -23,13 +23,14 @@ const BurgerMenu = () => {
     <>
       {isOpen && (
         <ul className="burger-ul">
-          {navLinksEntries.map(([nav, lien, index]) => (
+          {navLinksEntries.map(([nav, lien, i]) => (
             <NavLink
               to={lien}
-              key={index}
+              key={i}
               style={{ color: "inherit", textDecoration: "none" }}
+              onClick={ToggleLinks}
             >
-              <li key={index} onClick={ToggleLinks}>
+              <li key={i} onClick={ToggleLinks}>
                 {nav}
               </li>
             </NavLink>
