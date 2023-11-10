@@ -4,12 +4,11 @@ import Form from "../components/Form";
 import InputForm from "../components/InputForm";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { AiOutlineInfoCircle } from "react-icons/ai";
+import { baseURL, registerURL } from "../helper/url_helper";
 
 const USER_REGEX = /^[a-zA-Z0-9_]{3,23}$/;
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,24}$/;
 const MAIL_REGEX = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
-const baseURL = "http://localhost:5000/";
-const registerURL = "users/register";
 
 const Register = () => {
   const userRef = useRef();
@@ -76,7 +75,7 @@ const Register = () => {
         .then((response) => console.log(response.data.user));
       console.log("formulaire valide");
     } catch (error) {
-      console.error(error);
+      console.error(error.response.data);
     }
   };
 

@@ -2,23 +2,34 @@ import React, { useState } from "react";
 import Form from "../components/Form";
 import InputForm from "../components/InputForm";
 import axios from "axios";
-
-const baseURL = "http://localhost:5000/";
-const loginURL = "users/login";
+import { useNavigate } from "react-router-dom";
+import { baseURL, loginURL } from "../helper/url_helper";
 
 const Login = () => {
   const [mail, setMail] = useState("");
   const [pwd, setPwd] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await axios
         .post(`${baseURL}${loginURL}`, { mail, pwd })
-        .then((response) => console.log(response.data));
+        .then(
+          (response) =>
+            (axios.defaults.headers.common = {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${response.data.authToken}`,
+            })
+        )
+        .then((response) => {
+          console.log(response);
+          navigate("/home");
+        });
       console.log("User connecté");
     } catch (error) {
-      console.error(error);
+      console.error(error.response.data);
     }
   };
 
