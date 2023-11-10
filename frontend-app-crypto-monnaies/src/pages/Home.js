@@ -5,9 +5,13 @@ import Cryptos from "../components/Cryptos";
 import axios from "axios";
 import BuyCryptos from "../components/BuyCryptos";
 import { baseURL, userDataURL } from "../helper/url_helper";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [coinsData, setCoinsData] = useState([]);
+  const [currentUser, setCurrentUser] = useState({});
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -17,11 +21,17 @@ const Home = () => {
       .then((res) => setCoinsData(res.data));
   }, []);
 
-  useEffect(() => {
-    axios
-      .get(`${baseURL}${userDataURL}`)
-      .then((userData) => console.log(userData.data));
-  }, []);
+  // useEffect(() => {
+  //   try {
+  //     axios.get(`${baseURL}${userDataURL}`).then((userData) => {
+  //       setCurrentUser(userData.data);
+  //       console.log(userData.data);
+  //     });
+  //   } catch (error) {
+  //     console.error(error.response.data);
+  //     navigate("/login");
+  //   }
+  // }, []);
 
   return (
     <div className="acm-home-container">
