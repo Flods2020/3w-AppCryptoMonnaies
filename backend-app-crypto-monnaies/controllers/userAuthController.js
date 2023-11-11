@@ -27,4 +27,17 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const logout = async (req, res) => {
+  try {
+    req.user.authTokens = req.user.authTokens.filter((authToken) => {
+      return authToken.authToken !== req.authToken;
+    });
+
+    await req.user.save();
+    res.send();
+  } catch (e) {
+    res.status(500).send();
+  }
+};
+
+module.exports = { register, login, logout };

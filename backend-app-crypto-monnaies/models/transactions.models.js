@@ -13,6 +13,7 @@ const transactionSchema = new mongoose.Schema({
   },
   currency: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: "Currency",
     required: true,
   },
   amount: {

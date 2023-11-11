@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "../styles/index.scss";
 import { NavLink } from "react-router-dom";
+import axios from "axios";
+import { baseURL, logoutURL } from "../helper/url_helper";
 
 const BurgerMenu = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -19,6 +21,19 @@ const BurgerMenu = () => {
     setIsOpen(!isOpen);
   };
 
+  const Logout = async () => {
+    try {
+      await axios
+        .post(`${baseURL}${logoutURL}`)
+        .then((response) => console.log(response));
+
+      console.log("User Déconnecté");
+      setIsOpen(!isOpen);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       {isOpen && (
@@ -28,7 +43,7 @@ const BurgerMenu = () => {
               to={lien}
               key={i}
               style={{ color: "inherit", textDecoration: "none" }}
-              onClick={ToggleLinks}
+              onClick={nav === "Déconnexion" ? Logout : ToggleLinks}
             >
               <li key={i} onClick={ToggleLinks}>
                 {nav}
