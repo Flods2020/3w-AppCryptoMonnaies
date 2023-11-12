@@ -3,6 +3,8 @@
   border-bottom: 2px solid $color-4;
   border-left: 1px solid $color-4;
   border-right: 1px solid $color-4;
+  margin-top: 15px;
+  margin-bottom: 50px;
   padding: 10px;
   background: $color-5;
 
@@ -73,11 +75,23 @@
   .wallet-transac {
     border: 1px solid $color-1;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
+    // align-items: center;
+    flex-direction: column;
     width: 50%;
     text-align: center;
     margin: 10px auto;
     padding: 3px;
+
+    .transac-container {
+      display: flex;
+      justify-content: space-between;
+      border: 2px solid $color-2;
+
+      span {
+        margin: 10px auto;
+      }
+    }
   }
 }
 

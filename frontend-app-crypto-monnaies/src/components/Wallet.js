@@ -1,7 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/index.scss";
+import { useSelector } from "react-redux";
+import { isEmpty } from "../helper/Utils";
 
 const Wallet = () => {
+  const transactionsDatas = useSelector((state) => state.transactionReducer);
+  // console.log(transactionsDatas);
+  const [transactions, setTransactions] = useState();
+
+  // useEffect(() => {
+  //   if (transactionsDatas) {
+  //     try {
+  //       for (const tr in transactionsDatas) {
+  //         transactions.push(transactionsDatas[tr]);
+  //       }
+  //     } catch (err) {
+  //       console.error(err.name);
+  //     }
+  //     console.log(transactions);
+  //   }
+  // }, []);
+
   return (
     <>
       <div className="acm-wallet-container">
@@ -15,8 +34,17 @@ const Wallet = () => {
           </div>
         </div>
         <div className="wallet-transac">
-          <span>+ 0.0023 BTC</span>
-          <span>de Yannick NOAH</span>
+          {!isEmpty(transactionsDatas) &&
+            transactionsDatas.map((tr, i) => {
+              return (
+                <div className="transac-container" key={i}>
+                  <span tr={tr}>
+                    {tr.transactionType === "buy" ? "Achat" : "Vente"} de{" "}
+                    {tr.amount} € de {tr.crypto}
+                  </span>
+                </div>
+              );
+            })}
         </div>
         <div className="wallet-total">
           <span>Total :</span>

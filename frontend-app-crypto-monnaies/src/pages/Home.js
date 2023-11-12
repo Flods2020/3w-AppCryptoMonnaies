@@ -6,8 +6,11 @@ import axios from "axios";
 import BuyCryptos from "../components/BuyCryptos";
 import { baseURL, userDataURL } from "../helper/url_helper";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Home = () => {
+  const userProfileData = useSelector((state) => state.userReducer);
+
   const [coinsData, setCoinsData] = useState([]);
   const [currentUser, setCurrentUser] = useState({});
 
@@ -35,6 +38,7 @@ const Home = () => {
 
   return (
     <div className="acm-home-container">
+      <Wallet />
       <BuyCryptos />
       <Cryptos coinsData={coinsData} />
     </div>
