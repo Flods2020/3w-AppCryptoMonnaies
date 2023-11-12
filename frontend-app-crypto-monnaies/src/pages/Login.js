@@ -24,7 +24,8 @@ const Login = () => {
             })
         )
         .then((response) => {
-          console.log(response);
+          // console.log(response);
+          console.log("authToken :::: ", response.Authorization);
           navigate("/home");
         });
       console.log("User connecté");
