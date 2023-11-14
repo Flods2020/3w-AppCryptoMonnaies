@@ -55,7 +55,7 @@ const Login = () => {
 
         localStorage.setItem("jwt", response.data.authToken);
         console.log("User response login ::: ", response);
-        // dispatch(addUserProfile(response.data.user));
+        // await dispatch(addUserProfile(response.data.user));
         dispatch(getUserProfile());
         console.log("shouldFetchUserProfile :::", shouldFetchUserProfile);
 

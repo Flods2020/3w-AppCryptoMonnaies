@@ -64,7 +64,8 @@ function App() {
     <>
       <Routes>
         {routes.map((route, i) =>
-          (route.path === "/login" || route.path === "/register") && !token ? (
+          (route.path === "/login" || route.path === "/register") &&
+          (!token || !user) ? (
             <Route
               path={route.path}
               element={

@@ -10,7 +10,7 @@ import { getUserProfile } from "./store/actions/user.action";
 const store = configureAppStore();
 
 store.dispatch(getTransactions());
-// store.dispatch(getUserProfile());
+store.dispatch(getUserProfile());
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
