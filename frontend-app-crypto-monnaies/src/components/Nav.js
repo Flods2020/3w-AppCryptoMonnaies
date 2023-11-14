@@ -28,7 +28,7 @@ const Nav = () => {
             style={{ color: "inherit", textDecoration: "none" }}
           >
             <h2>APP CRYPTO MONNAIES</h2>
-            <h3>{userProfileData.user.pseudo}</h3>
+            <h3>{userProfileData && userProfileData.user.pseudo}</h3>
           </NavLink>
           <div className="burger-container" onClick={ToggleClass}>
             <span></span>

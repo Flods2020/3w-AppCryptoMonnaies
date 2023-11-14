@@ -16,7 +16,7 @@ export default function userReducer(state = initialState, action) {
       }
     case ADD_USER:
       // console.log(action.payload);
-      return action.payload;
+      return [action.payload, ...state];
     default:
       return state;
   }

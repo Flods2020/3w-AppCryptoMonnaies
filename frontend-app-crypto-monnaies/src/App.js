@@ -30,26 +30,26 @@ function App() {
 
   const token = findToken();
 
-  useEffect(() => {
-    console.log("user ::: ", user);
-    console.log("token ::: ", token);
-    if (token && user) {
-      // dispatch(addUserProfile(user));
-      // navigate("/home");
-      dispatch(getUserProfile());
-    } else if (!token && user) {
-      console.log("Pas de Store Token");
-    } else if (token && !user) {
-      console.log("Pas de User");
-      // dispatch(getUserProfile());
-      localStorage.removeItem("jwt");
-      navigate("/login");
-    } else {
-      localStorage.removeItem("jwt");
-      console.log("Pas de User connecté");
-      navigate("/login");
-    }
-  }, [token]);
+  // useEffect(() => {
+  //   console.log("user ::: ", user);
+  //   console.log("token ::: ", token);
+  //   if (token && user) {
+  //     // dispatch(addUserProfile(user));
+  //     // navigate("/home");
+  //     dispatch(getUserProfile());
+  //   } else if (!token && user) {
+  //     console.log("Pas de Store Token");
+  //   } else if (token && !user) {
+  //     console.log("Pas de User");
+  //     // dispatch(getUserProfile());
+  //     // localStorage.removeItem("jwt");
+  //     navigate("/login");
+  //   } else {
+  //     localStorage.removeItem("jwt");
+  //     console.log("Pas de User connecté");
+  //     navigate("/login");
+  //   }
+  // }, [token]);
 
   // useEffect(() => {
   //   if (localStorage.getItem("jwt")) {
