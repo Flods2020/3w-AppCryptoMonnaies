@@ -26,7 +26,7 @@ const BurgerMenu = () => {
       await axios
         .post(`${baseURL}${logoutURL}`)
         .then((response) => console.log(response));
-
+      localStorage.removeItem("jwt");
       console.log("User Déconnecté");
       setIsOpen(!isOpen);
     } catch (error) {

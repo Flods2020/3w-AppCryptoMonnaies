@@ -12,8 +12,9 @@ router.post("/add", async (req, res) => {
   }
 });
 
-router.get("/", (req, res) => {
-  res.json({ message: "Les cryptos" });
+router.get("/", async (req, res) => {
+  const cryptos = await Crypto.find({});
+  res.status(201).send({ cryptos });
 });
 
 router.put("/crypto/:id", (req, res) => {

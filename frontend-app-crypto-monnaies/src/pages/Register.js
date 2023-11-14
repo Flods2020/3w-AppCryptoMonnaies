@@ -5,6 +5,10 @@ import InputForm from "../components/InputForm";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { baseURL, registerURL } from "../helper/url_helper";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import configureAppStore from "../store/store";
+import { getUserProfile } from "../store/actions/user.action";
 
 const USER_REGEX = /^[a-zA-Z0-9_]{3,23}$/;
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,24}$/;
@@ -13,6 +17,10 @@ const MAIL_REGEX = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
 const Register = () => {
   const userRef = useRef();
   const errRef = useRef();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // const store = configureAppStore();
 
   const [user, setUser] = useState("");
   const [validName, setValidName] = useState(false);
@@ -32,6 +40,8 @@ const Register = () => {
 
   const [errMsg, setErrMsg] = useState("");
   const [success, setSuccess] = useState(false);
+
+  const [shouldFetchUserProfile, setShouldFetchUserProfile] = useState(false);
 
   useEffect(() => {
     const result = USER_REGEX.test(user);
@@ -60,6 +70,16 @@ const Register = () => {
     setErrMsg("");
   }, [user, pwd, matchPwd]);
 
+  useEffect(() => {
+    if (shouldFetchUserProfile) {
+      dispatch(getUserProfile());
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   store.dispatch({ type: "GET_USER", cancel: true });
+  // }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -73,7 +93,9 @@ const Register = () => {
           mail,
         })
         .then((response) => console.log(response.data.user));
+
       console.log("formulaire valide");
+      navigate("/login");
     } catch (error) {
       console.error(error.response.data);
     }

@@ -1,13 +1,31 @@
 const express = require("express");
+const { Wallet } = require("../models/wallets.models");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.json({ message: "Wallets" });
+router.get("/", async (req, res, next) => {
+  try {
+    const wallets = await Wallet.find({});
+    res.send(wallets);
+  } catch (error) {
+    res.status(401).send(e);
+  }
 });
 
-router.post("/create", (req, res) => {
-  console.log(req.body.solde);
-  res.json({ message: req.body.crypto });
+router.post("/create", async (req, res) => {
+  const { user, cryptoTotal, currencyTotal } = req.body;
+
+  const wallet = new Wallet({
+    user,
+    cryptoTotal,
+    currencyTotal,
+  });
+
+  try {
+    const savedWallet = await wallet.save();
+    res.status(201).send({ wallet: savedWallet });
+  } catch (e) {
+    res.status(401).send(e);
+  }
 });
 
 module.exports = router;

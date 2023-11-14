@@ -5,6 +5,7 @@ const { mongooseConnect } = require("./config/mongooseDatabase.js");
 const cryptoRoutes = require("./routes/cryptos.routes");
 const userRoutes = require("./routes/users.routes.js");
 const transactionRoutes = require("./routes/transactions.routes");
+const walletRoutes = require("./routes/wallets.routes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -33,7 +34,7 @@ app.use("/users", userRoutes);
 app.use("/transactions", transactionRoutes);
 
 /* Wallets */
-app.use("/wallets", require("./routes/wallets.routes.js"));
+app.use("/wallets", walletRoutes);
 
 mongooseConnect().catch((err) => console.log(err));
 

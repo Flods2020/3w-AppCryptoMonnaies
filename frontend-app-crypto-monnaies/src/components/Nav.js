@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../styles/index.scss";
 import BurgerMenu from "./BurgerMenu";
 import { NavLink } from "react-router-dom";
-import axios from "axios";
-import { baseURL, userDataURL } from "../helper/url_helper";
+import { useSelector } from "react-redux";
 
 const Nav = () => {
   const [isActive, setIsActive] = useState(false);
-  // const [currentUser, setCurrentUser] = useState({});
+  const userProfileData = useSelector((state) => state.userReducer);
 
   const ToggleClass = () => {
     setIsActive(!isActive);
@@ -29,7 +28,7 @@ const Nav = () => {
             style={{ color: "inherit", textDecoration: "none" }}
           >
             <h2>APP CRYPTO MONNAIES</h2>
-            {/* <h3>{currentUser.pseudo}</h3> */}
+            <h3>{userProfileData.user.pseudo}</h3>
           </NavLink>
           <div className="burger-container" onClick={ToggleClass}>
             <span></span>

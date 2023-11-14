@@ -1,5 +1,4 @@
 const { User } = require("../models/users.models");
-const authentification = require("../middlewares/authentification");
 
 const register = async (req, res, next) => {
   try {
@@ -34,7 +33,7 @@ const logout = async (req, res) => {
     });
 
     await req.user.save();
-    res.send();
+    res.send("Logged out");
   } catch (e) {
     res.status(500).send();
   }
