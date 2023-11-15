@@ -1,9 +1,11 @@
-import React from "react";
+// import React from "react";
 
-export const cancelActionMiddleware = (store) => (next) => (action) => {
-  if (action.cancel) {
-    return;
-  }
+// export const CANCELLED_ACTION = "CANCELLED_ACTION";
 
-  next(action);
-};
+// export default cancelActionMiddleware = (store) => (next) => (action) => {
+//   if (action.type) {
+//     return next({ type: "CANCELLED_ACTION", originalAction: action });
+//   }
+
+//   return next(action);
+// };

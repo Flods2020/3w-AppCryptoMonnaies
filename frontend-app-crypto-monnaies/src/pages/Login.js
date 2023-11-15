@@ -11,7 +11,7 @@ import configureAppStore from "../store/store";
 const Login = () => {
   const [mail, setMail] = useState("");
   const [pwd, setPwd] = useState("");
-  const [shouldFetchUserProfile, setShouldFetchUserProfile] = useState(false);
+  const shouldFetchUserProfile = false;
 
   const user = useSelector((state) => state.userReducer);
 
@@ -50,7 +50,7 @@ const Login = () => {
       if (response.data.authToken && response.data.user) {
         axios.defaults.headers.common = {
           "Content-Type": "application/json",
-          Authorization: response.data.authToken,
+          Authorization: `${response.data.authToken}`,
         };
 
         localStorage.setItem("jwt", response.data.authToken);

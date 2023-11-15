@@ -3,21 +3,17 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { routes } from "./router/routes.js";
 import { Layout } from "./common/layout/layout";
 import { useDispatch, useSelector } from "react-redux";
-import { addUserProfile, getUserProfile } from "./store/actions/user.action.js";
-import { useEffect } from "react";
-import Login from "./pages/Login.js";
+import { useEffect, useState } from "react";
 import HeaderLogin from "./components/HeaderLogin.js";
-import Register from "./pages/Register.js";
-import configureAppStore from "./store/store.js";
+import axios from "axios";
+import { getTransactions } from "./store/actions/transaction.action.js";
+import { getUserProfile } from "./store/actions/user.action.js";
 
 function App() {
+  const [loading, setLoading] = useState(true);
   const user = useSelector((state) => state.userReducer);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // const store = configureAppStore();
-
-  // store.dispatch(getUserProfile());
 
   const findToken = () => {
     const localStorageToken = localStorage.getItem("jwt");
@@ -30,35 +26,14 @@ function App() {
 
   const token = findToken();
 
-  // useEffect(() => {
-  //   console.log("user ::: ", user);
-  //   console.log("token ::: ", token);
-  //   if (token && user) {
-  //     // dispatch(addUserProfile(user));
-  //     // navigate("/home");
-  //     dispatch(getUserProfile());
-  //   } else if (!token && user) {
-  //     console.log("Pas de Store Token");
-  //   } else if (token && !user) {
-  //     console.log("Pas de User");
-  //     // dispatch(getUserProfile());
-  //     // localStorage.removeItem("jwt");
-  //     navigate("/login");
-  //   } else {
-  //     localStorage.removeItem("jwt");
-  //     console.log("Pas de User connecté");
-  //     navigate("/login");
-  //   }
-  // }, [token]);
+  useEffect(() => {
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = token;
+    }
 
-  // useEffect(() => {
-  //   if (localStorage.getItem("jwt")) {
-  //     dispatch(addUserProfile(user));
-  //   } else {
-  //     // localStorage.removeItem("jwt");
-  //     navigate("/login");
-  //   }
-  // }, []);
+    dispatch(getTransactions());
+    dispatch(getUserProfile());
+  }, [dispatch, token]);
 
   return (
     <>
