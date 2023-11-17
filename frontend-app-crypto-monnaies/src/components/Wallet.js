@@ -1,25 +1,28 @@
 import React, { useEffect, useState } from "react";
 import "../styles/index.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { isEmpty } from "../helper/Utils";
+import { baseURL, transactionsURL } from "../helper/url_helper";
+import axios from "axios";
+import { setTransactionsData } from "../store/slices/transactionsSlice";
 
 const Wallet = () => {
-  const transactionsDatas = useSelector((state) => state.transactionReducer);
-  // console.log(transactionsDatas);
-  const [transactions, setTransactions] = useState();
+  const transactionsData = useSelector((state) => state.transactions);
 
-  // useEffect(() => {
-  //   if (transactionsDatas) {
-  //     try {
-  //       for (const tr in transactionsDatas) {
-  //         transactions.push(transactionsDatas[tr]);
-  //       }
-  //     } catch (err) {
-  //       console.error(err.name);
-  //     }
-  //     console.log(transactions);
-  //   }
-  // }, []);
+  const [transacs, setTransacs] = useState();
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!transactionsData) {
+      axios.get(`${baseURL}${transactionsURL}`).then((res) => {
+        dispatch(setTransactionsData(res.data));
+        setTransacs(transactionsData);
+      });
+    } else {
+      setTransacs(transactionsData.transactions);
+    }
+  }, [dispatch, transactionsData, transacs]);
 
   return (
     <>
@@ -34,17 +37,15 @@ const Wallet = () => {
           </div>
         </div>
         <div className="wallet-transac">
-          {!isEmpty(transactionsDatas) &&
-            transactionsDatas.map((tr, i) => {
-              return (
-                <div className="transac-container" key={i}>
-                  <span tr={tr}>
-                    {tr.transactionType === "buy" ? "Achat" : "Vente"} de{" "}
-                    {tr.amount} € de {tr.crypto}
-                  </span>
-                </div>
-              );
-            })}
+          {!isEmpty(transacs) &&
+            transacs.map((tr, i) => (
+              <div className="transac-container" key={i}>
+                <span tr={tr}>
+                  {tr.transactionType === "buy" ? "Achat" : "Vente"} de{" "}
+                  {tr.amount} € de {tr.crypto}
+                </span>
+              </div>
+            ))}
         </div>
         <div className="wallet-total">
           <span>Total :</span>

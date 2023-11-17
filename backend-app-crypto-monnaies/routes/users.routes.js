@@ -25,7 +25,7 @@ router.post("/logout/all", authentification, async (req, res) => {
 });
 
 router.get("/me", authentification, async (req, res, next) => {
-  res.send(req.user);
+  res.send({ user: req.user, authToken: req.authTokens });
 });
 
 router.patch("/me", authentification, async (req, res, next) => {

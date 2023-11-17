@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import "../styles/index.scss";
 import { NavLink } from "react-router-dom";
-import axios from "axios";
-import { baseURL, logoutURL } from "../helper/url_helper";
 import { useDispatch } from "react-redux";
-import { logoutUserProfile } from "../store/actions/user.action";
+import { deleteUserData } from "../store/slices/usersSlice";
 
 const BurgerMenu = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -27,10 +25,7 @@ const BurgerMenu = () => {
 
   const Logout = async () => {
     try {
-      // await axios
-      //   .post(`${baseURL}${logoutURL}`)
-      //   .then((response) => console.log(response));
-      dispatch(logoutUserProfile());
+      dispatch(deleteUserData());
       localStorage.removeItem("jwt");
       console.log("User Déconnecté");
       setIsOpen(!isOpen);

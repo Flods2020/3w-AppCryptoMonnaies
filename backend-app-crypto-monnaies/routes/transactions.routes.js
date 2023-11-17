@@ -19,7 +19,7 @@ router.post("/", async (req, res, next) => {
 router.get("/", async (req, res, next) => {
   try {
     const transactions = await Transaction.find({});
-    res.send({ transactions });
+    res.send(transactions);
   } catch (error) {
     res.status(500).send(e);
   }

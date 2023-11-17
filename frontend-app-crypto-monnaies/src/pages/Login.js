@@ -4,16 +4,14 @@ import InputForm from "../components/InputForm";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { baseURL, loginURL } from "../helper/url_helper";
-import { addUserProfile, getUserProfile } from "../store/actions/user.action";
 import { useDispatch, useSelector } from "react-redux";
-import configureAppStore from "../store/store";
+import { setUserData } from "../store/slices/usersSlice";
 
 const Login = () => {
   const [mail, setMail] = useState("");
   const [pwd, setPwd] = useState("");
-  const shouldFetchUserProfile = false;
 
-  const user = useSelector((state) => state.userReducer);
+  const userProfile = useSelector((state) => state.users);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,18 +28,10 @@ const Login = () => {
   const token = findToken();
 
   useEffect(() => {
-    console.log("LOGIN uEff User Store:::", user);
-    console.log("LOGIN uEff TOKEN :::", token);
-    {
-      !user && localStorage.removeItem("jwt");
+    if (userProfile.pseudo === "" && token) {
+      localStorage.removeItem("jwt");
     }
-  }, []);
-
-  useEffect(() => {
-    if (shouldFetchUserProfile) {
-      dispatch(getUserProfile());
-    }
-  }, [shouldFetchUserProfile]);
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,14 +40,11 @@ const Login = () => {
       if (response.data.authToken && response.data.user) {
         axios.defaults.headers.common = {
           "Content-Type": "application/json",
-          Authorization: `${response.data.authToken}`,
+          Authorization: response.data.authToken,
         };
 
         localStorage.setItem("jwt", response.data.authToken);
-        console.log("User response login ::: ", response);
-        // await dispatch(addUserProfile(response.data.user));
-        dispatch(getUserProfile());
-        console.log("shouldFetchUserProfile :::", shouldFetchUserProfile);
+        dispatch(setUserData(response.data.user));
 
         navigate("/home");
       } else {

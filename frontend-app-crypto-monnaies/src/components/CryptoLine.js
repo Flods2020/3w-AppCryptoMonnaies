@@ -29,6 +29,7 @@ const CryptoLine = ({ coin, index }) => {
         <span>- {coin.symbol.toUpperCase()}</span>
         <a
           target="_blank"
+          rel="noreferrer"
           href={
             `https://www.coingecko.com/fr/pi%C3%A8ces/` + coin.id.toLowerCase()
           }

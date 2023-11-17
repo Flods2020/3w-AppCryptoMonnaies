@@ -10,7 +10,7 @@ const authentification = async (req, res, next) => {
       "authTokens.authToken": authToken,
     });
     if (!user) throw new Error();
-    req.authToken = authToken;
+    req.authTokens = authToken;
     req.user = user;
     next();
   } catch (e) {
