@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { baseURL, loginURL } from "../helper/url_helper";
 import { useDispatch, useSelector } from "react-redux";
-import { setUserData } from "../store/slices/usersSlice";
+import { deleteUserData, setUserData } from "../store/slices/usersSlice";
 
 const Login = () => {
   const [mail, setMail] = useState("");
@@ -30,8 +30,14 @@ const Login = () => {
   useEffect(() => {
     if (userProfile.pseudo === "" && token) {
       localStorage.removeItem("jwt");
+      navigate("/login");
+    } else if (userProfile.pseudo === "" && !token) {
+      navigate("/login");
+    } else if (userProfile && !token) {
+      dispatch(deleteUserData());
+      navigate("/login");
     }
-  });
+  }, [userProfile, token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

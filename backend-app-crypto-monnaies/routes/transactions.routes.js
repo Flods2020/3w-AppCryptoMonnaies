@@ -8,7 +8,7 @@ const router = new express.Router();
 router.post("/", async (req, res, next) => {
   const transaction = new Transaction(req.body);
   try {
-    res.status(201).send({ transaction });
+    res.status(201).send(transaction);
     await transaction.save();
   } catch (e) {
     res.status(400).send(e);

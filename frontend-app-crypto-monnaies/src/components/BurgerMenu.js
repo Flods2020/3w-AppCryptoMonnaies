@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../styles/index.scss";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deleteUserData } from "../store/slices/usersSlice";
 
@@ -8,6 +8,7 @@ const BurgerMenu = () => {
   const [isOpen, setIsOpen] = useState(true);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const navLinks = {
     Portefeuille: "/register",
@@ -29,6 +30,7 @@ const BurgerMenu = () => {
       localStorage.removeItem("jwt");
       console.log("User Déconnecté");
       setIsOpen(!isOpen);
+      navigate("/login");
     } catch (error) {
       console.error(error);
     }

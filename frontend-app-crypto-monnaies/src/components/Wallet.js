@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { isEmpty } from "../helper/Utils";
 import { baseURL, transactionsURL } from "../helper/url_helper";
 import axios from "axios";
-import { setTransactionsData } from "../store/slices/transactionsSlice";
+import {
+  addTransactionsData,
+  setTransactionsData,
+} from "../store/slices/transactionsSlice";
 
 const Wallet = () => {
   const transactionsData = useSelector((state) => state.transactions);
@@ -13,12 +16,28 @@ const Wallet = () => {
 
   const dispatch = useDispatch();
 
+  const traData = {
+    user: "Le Roi Henok",
+    crypto: "Ethereum",
+    currency: "617eb6465a51c65c",
+    amount: 25,
+    timestamp: Date.now(),
+    transactionType: "sell",
+  };
+
+  const addTransaction = async () => {
+    await axios
+      .post(`${baseURL}${transactionsURL}`, traData)
+      // .then((res) => console.log(res.data));
+      .then(() => dispatch(addTransactionsData(traData)));
+  };
+
   useEffect(() => {
     if (!transactionsData) {
-      axios.get(`${baseURL}${transactionsURL}`).then((res) => {
-        dispatch(setTransactionsData(res.data));
-        setTransacs(transactionsData);
-      });
+      axios
+        .get(`${baseURL}${transactionsURL}`)
+        .then((res) => dispatch(setTransactionsData(res.data)))
+        .then(() => setTransacs(transactionsData));
     } else {
       setTransacs(transactionsData.transactions);
     }
@@ -51,7 +70,9 @@ const Wallet = () => {
           <span>Total :</span>
           <span>114,988.34 €</span>
         </div>
-        <div className="wallet-btn">Consulter Portefeuille</div>
+        <div className="wallet-btn" onClick={addTransaction}>
+          Consulter Portefeuille
+        </div>
       </div>
     </>
   );

@@ -5,6 +5,7 @@ import InputForm from "../components/InputForm";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { baseURL, registerURL } from "../helper/url_helper";
+import { useNavigate } from "react-router-dom";
 
 const USER_REGEX = /^[a-zA-Z0-9_]{3,23}$/;
 const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,24}$/;
@@ -14,7 +15,7 @@ const Register = () => {
   const userRef = useRef();
   const errRef = useRef();
 
-  // const userProfile = useSelector((state) => state.users);
+  const navigate = useNavigate();
 
   const [user, setUser] = useState("");
   const [validName, setValidName] = useState(false);
@@ -76,6 +77,7 @@ const Register = () => {
         .then((response) => console.log(response.data.user));
 
       console.log("formulaire valide");
+      navigate("/login");
     } catch (error) {
       console.error(error.response.data);
     }
