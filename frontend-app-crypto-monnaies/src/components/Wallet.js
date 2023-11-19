@@ -11,16 +11,17 @@ import {
 
 const Wallet = () => {
   const transactionsData = useSelector((state) => state.transactions);
+  const userProfile = useSelector((state) => state.users);
 
   const [transacs, setTransacs] = useState();
 
   const dispatch = useDispatch();
 
   const traData = {
-    user: "Le Roi Henok",
-    crypto: "Ethereum",
-    currency: "617eb6465a51c65c",
-    amount: 25,
+    user: "614c9e2b891e187e4e52f880",
+    crypto: "61541f2ef5a038001cb7f0e0",
+    currency: "617eb6465a51c65c6c24f96a",
+    amount: parseInt(Math.random() * 100),
     timestamp: Date.now(),
     transactionType: "sell",
   };
@@ -28,7 +29,6 @@ const Wallet = () => {
   const addTransaction = async () => {
     await axios
       .post(`${baseURL}${transactionsURL}`, traData)
-      // .then((res) => console.log(res.data));
       .then(() => dispatch(addTransactionsData(traData)));
   };
 
@@ -61,7 +61,7 @@ const Wallet = () => {
               <div className="transac-container" key={i}>
                 <span tr={tr}>
                   {tr.transactionType === "buy" ? "Achat" : "Vente"} de{" "}
-                  {tr.amount} € de {tr.crypto}
+                  {tr.amount} € de {tr.crypto} /// {tr.user}
                 </span>
               </div>
             ))}

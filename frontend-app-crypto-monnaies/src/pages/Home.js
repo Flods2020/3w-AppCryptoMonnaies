@@ -4,6 +4,7 @@ import Wallet from "../components/Wallet";
 import Cryptos from "../components/Cryptos";
 import axios from "axios";
 import BuyCryptos from "../components/BuyCryptos";
+import MonCompte from "./MonCompte";
 
 const Home = () => {
   const [coinsData, setCoinsData] = useState([]);
@@ -18,6 +19,7 @@ const Home = () => {
 
   return (
     <div className="acm-home-container">
+      {/* <MonCompte /> */}
       <Wallet />
       <BuyCryptos />
       <Cryptos coinsData={coinsData} />

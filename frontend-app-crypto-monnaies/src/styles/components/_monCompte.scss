@@ -1,0 +1,54 @@
+@media screen and (max-width: 400px) {
+  .acm-monCompte-container {
+    border-top: 2px solid $color-4;
+    border-bottom: 2px solid $color-4;
+    border-left: 1px solid $color-4;
+    border-right: 1px solid $color-4;
+    margin-top: 15px;
+    margin-bottom: 50px;
+    padding: 10px;
+    background: $color-5;
+
+    h2 {
+      text-align: center;
+      border-bottom: 1px dashed $color-4;
+      border-top: 1px dashed $color-4;
+      background: $color-3;
+    }
+
+    .id-container {
+      margin: 10px;
+
+      h3 {
+        margin: 10px 5px;
+        padding: 7px 0;
+        border-bottom: 1px solid $color-3;
+      }
+
+      .modif-id {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        //   width: 70%;
+        margin: 10px 0;
+
+        span {
+          width: 50%;
+          margin-right: 5px;
+        }
+
+        .id-modif-btn {
+          border: 1px solid $color-1;
+          padding: 5px;
+          cursor: pointer;
+          background: $color-3;
+          transition: 0.3s ease;
+
+          &:hover {
+            background: $color-2;
+          }
+        }
+      }
+    }
+  }
+}

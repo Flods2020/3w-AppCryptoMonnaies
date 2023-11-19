@@ -13,8 +13,8 @@ const BurgerMenu = () => {
   const navLinks = {
     Portefeuille: "/register",
     Ressources: "/",
-    Paramètres: "/login",
-    SupportClient: "/login",
+    Mon_Compte: "/monCompte",
+    Support_Client: "/login",
     Déconnexion: "/login",
   };
 
@@ -48,7 +48,7 @@ const BurgerMenu = () => {
               onClick={nav === "Déconnexion" ? Logout : ToggleLinks}
             >
               <li key={i} onClick={ToggleLinks}>
-                {nav}
+                {nav.replace("_", " ")}
               </li>
             </NavLink>
           ))}
