@@ -55,6 +55,10 @@ const Wallet = () => {
             <span>75 830.23 €</span>
           </div>
         </div>
+        <div className="wallet-total">
+          <span>Total :</span>
+          <span>114,988.34 €</span>
+        </div>
         <div className="wallet-transac">
           {!isEmpty(transacs) &&
             transacs.map((tr, i) => (
@@ -66,10 +70,7 @@ const Wallet = () => {
               </div>
             ))}
         </div>
-        <div className="wallet-total">
-          <span>Total :</span>
-          <span>114,988.34 €</span>
-        </div>
+
         <div className="wallet-btn" onClick={addTransaction}>
           Consulter Portefeuille
         </div>

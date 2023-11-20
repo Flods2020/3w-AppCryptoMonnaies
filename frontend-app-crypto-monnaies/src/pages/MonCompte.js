@@ -30,9 +30,20 @@ const MonCompte = () => {
             </div>
           </div>
           <div className="modif-id">
-            <span>{userProfileData.email}</span>
+            <span>{userProfileData.email.replace("@", " @")}</span>
             <div className="id-modif-btn" id="email-btn">
               Modifier Email
+            </div>
+          </div>
+        </div>
+        <div className="delete-container">
+          <h3>Suppressions</h3>
+          <div className="delete-account">
+            <div className="delete-btn" id="delete-wallet-btn">
+              Supprimer mon portefeuille
+            </div>
+            <div className="delete-btn" id="delete-account-btn">
+              SUPPRIMER MON COMPTE
             </div>
           </div>
         </div>
