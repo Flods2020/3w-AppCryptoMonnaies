@@ -1,4 +1,4 @@
-@media screen and (max-width: 400px) {
+@media screen and (min-width: 0) {
   .acm-monCompte-container {
     border-top: 2px solid $color-4;
     border-bottom: 2px solid $color-4;
@@ -24,28 +24,29 @@
         padding: 7px 0;
         border-bottom: 1px solid $color-3;
       }
+      .modif-id-container {
+        .modif-id {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          //   width: 70%;
+          margin: 10px 0;
 
-      .modif-id {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        //   width: 70%;
-        margin: 10px 0;
+          span {
+            width: 50%;
+            margin-right: 5px;
+          }
 
-        span {
-          width: 50%;
-          margin-right: 5px;
-        }
+          .id-modif-btn {
+            border: 1px solid $color-1;
+            padding: 5px;
+            cursor: pointer;
+            background: $color-3;
+            transition: 0.3s ease;
 
-        .id-modif-btn {
-          border: 1px solid $color-1;
-          padding: 5px;
-          cursor: pointer;
-          background: $color-3;
-          transition: 0.3s ease;
-
-          &:hover {
-            background: $color-2;
+            &:hover {
+              background: $color-2;
+            }
           }
         }
       }
@@ -80,5 +81,18 @@
         }
       }
     }
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .modif-id-container {
+    margin: 20px auto;
+    width: 70%;
+  }
+}
+
+@media screen and (min-width: 1100px) {
+  .modif-id-container {
+    width: 50%;
   }
 }
