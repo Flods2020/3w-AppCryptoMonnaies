@@ -28,13 +28,12 @@ router.get("/me", authentification, async (req, res, next) => {
   res.send({ user: req.user, authToken: req.authTokens });
 });
 
-router.patch("/me", authentification, async (req, res, next) => {
+router.put("/me", authentification, async (req, res, next) => {
   const updatedInfo = Object.keys(req.body);
   try {
     updatedInfo.forEach((update) => (req.user[update] = req.body[update]));
     await req.user.save();
     res.json({ user: req.user });
-    res.send(req.user);
   } catch (e) {
     res.status(500).send(e);
   }

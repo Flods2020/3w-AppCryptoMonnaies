@@ -1,33 +1,51 @@
 import React, { useEffect, useState } from "react";
 import "../styles/index.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { TbPassword } from "react-icons/tb";
+import axios from "axios";
+import { baseURL, userDataURL } from "../helper/url_helper";
+import { editUserData } from "../store/slices/usersSlice";
 
 const MonCompte = () => {
   const userProfileData = useSelector((state) => state.users);
 
-  const [newPseudo, setNewPseudo] = useState("");
+  const dispatch = useDispatch();
+
+  const [pseudo, setPseudo] = useState("");
+  const [email, setEmail] = useState("");
 
   const [displayPseudoInput, setDisplayPseudoInput] = useState(false);
   const [displayPasswordInput, setDisplayPasswordInput] = useState(false);
   const [displayEmailInput, setDisplayEmailInput] = useState(false);
 
   const pseudoInput = document.getElementById("pseudo-input");
+  const emailInput = document.getElementById("email-input");
 
-  const saveInputValue = (constName, setFunc, displ) => {
-    // appeler axios patch
-    console.log(constName);
+  const setPropName = (inputName) => {
+    const inputN = inputName["id"].split("-")[0];
+    return inputN;
+  };
+
+  const saveInputValue = async (constName, inputName, setFunc, displ) => {
+    const propName = setPropName(inputName);
+    console.log("propName ::: ", propName);
+    let updatedUserProfile = { ...userProfileData };
+    for (const key in updatedUserProfile) {
+      if (key === propName) {
+        updatedUserProfile[propName] = constName;
+      }
+    }
+    await axios
+      .put(`${baseURL}${userDataURL}`, updatedUserProfile)
+      // .then((res) => console.log(res.data.user));
+      .then((res) => dispatch(editUserData(res.data.user)));
+    console.log("updatedUserProfile ::: ", updatedUserProfile);
     setFunc(!displ);
   };
 
-  useEffect(() => {
-    // if (newPseudo !== "") {
-    //   newPseudo;
-    // } else {
-    //   setNewPseudo(userProfileData.pseudo);
-    // }
-    console.log("newPseudo ::: ", newPseudo);
-  }, [newPseudo]);
+  // useEffect(() => {
+  //   console.log("pseudo ::: ", pseudo);
+  // }, [pseudo]);
 
   return (
     <div className="acm-home-container">
@@ -38,16 +56,16 @@ const MonCompte = () => {
           <div className="modif-id-container">
             <div className="modif-id">
               {!displayPseudoInput ? (
-                // <span>{userProfileData.pseudo}</span>
-                <span>{newPseudo ? newPseudo : userProfileData.pseudo}</span>
+                <span>{userProfileData.pseudo}</span>
               ) : (
+                // <span>{pseudo ? pseudo : userProfileData.pseudo}</span>
                 <input
                   className="id-modif-inputs"
                   id="pseudo-input"
                   type="text"
                   autoComplete="off"
                   autoFocus={true}
-                  onChange={(e) => setNewPseudo(e.target.value)}
+                  onChange={(e) => setPseudo(e.target.value)}
                 />
               )}
               <div
@@ -57,14 +75,47 @@ const MonCompte = () => {
                   !displayPseudoInput
                     ? setDisplayPseudoInput(!displayPseudoInput)
                     : (saveInputValue(
-                        newPseudo,
+                        pseudo,
+                        pseudoInput,
                         setDisplayPseudoInput,
                         displayPseudoInput
                       ),
-                      setNewPseudo(pseudoInput.value))
+                      setPseudo(pseudoInput.value))
                 }
               >
                 Modifier Pseudo
+              </div>
+            </div>
+
+            <div className="modif-id">
+              {!displayEmailInput ? (
+                <span>{userProfileData.email}</span>
+              ) : (
+                <input
+                  className="id-modif-inputs"
+                  id="email-input"
+                  type="text"
+                  autoComplete="off"
+                  autoFocus={true}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              )}
+              <div
+                className="id-modif-btn"
+                id="email-btn"
+                onClick={() =>
+                  !displayEmailInput
+                    ? setDisplayEmailInput(!displayEmailInput)
+                    : (saveInputValue(
+                        email,
+                        emailInput,
+                        setDisplayEmailInput,
+                        displayEmailInput
+                      ),
+                      setEmail(emailInput.value))
+                }
+              >
+                Modifier Email
               </div>
             </div>
             <div className="modif-id">
@@ -89,25 +140,6 @@ const MonCompte = () => {
                 onClick={() => setDisplayPasswordInput(!displayPasswordInput)}
               >
                 Modifier Mot de passe
-              </div>
-            </div>
-            <div className="modif-id">
-              {!displayEmailInput ? (
-                <span>{userProfileData.email}</span>
-              ) : (
-                <input
-                  className="id-modif-inputs"
-                  id="email-input"
-                  type="text"
-                  onChange={(e) => console.log(e.target.value)}
-                />
-              )}
-              <div
-                className="id-modif-btn"
-                id="email-btn"
-                onClick={() => setDisplayEmailInput(!displayEmailInput)}
-              >
-                Modifier Email
               </div>
             </div>
           </div>

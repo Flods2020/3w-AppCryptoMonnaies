@@ -36,7 +36,9 @@ app.use("/transactions", transactionRoutes);
 /* Wallets */
 app.use("/wallets", walletRoutes);
 
-mongooseConnect().catch((err) => console.log(err));
+mongooseConnect().catch((err) => {
+  console.log(err);
+});
 
 app.listen(PORT, () => {
   console.log(`****** SERVEUR CONNECTÉ sur le Port ${PORT}******"`.blue);

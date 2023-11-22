@@ -18,6 +18,11 @@ export const usersSlice = createSlice({
         isAdmin: payload.isAdmin,
       };
     },
+    editUserData: (state, { payload }) => {
+      return {
+        payload,
+      };
+    },
     deleteUserData: (state, action) => {
       return {
         ...initialState,
@@ -26,5 +31,5 @@ export const usersSlice = createSlice({
   },
 });
 
-export const { setUserData, deleteUserData } = usersSlice.actions;
+export const { setUserData, deleteUserData, editUserData } = usersSlice.actions;
 export default usersSlice.reducer;
