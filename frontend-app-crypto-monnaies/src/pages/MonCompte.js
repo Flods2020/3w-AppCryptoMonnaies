@@ -5,6 +5,7 @@ import { TbPassword } from "react-icons/tb";
 import axios from "axios";
 import { baseURL, userDataURL } from "../helper/url_helper";
 import { editUserData } from "../store/slices/usersSlice";
+import DeleteAccountButton from "../components/DeleteAccountButton";
 
 const MonCompte = () => {
   const userProfileData = useSelector((state) => state.users);
@@ -27,20 +28,25 @@ const MonCompte = () => {
   };
 
   const saveInputValue = async (constName, inputName, setFunc, displ) => {
-    const propName = setPropName(inputName);
-    console.log("propName ::: ", propName);
-    let updatedUserProfile = { ...userProfileData };
-    for (const key in updatedUserProfile) {
-      if (key === propName) {
-        updatedUserProfile[propName] = constName;
+    if (constName) {
+      const propName = setPropName(inputName);
+      console.log("propName ::: ", propName);
+      let updatedUserProfile = { ...userProfileData };
+      for (const key in updatedUserProfile) {
+        if (key === propName) {
+          updatedUserProfile[propName] = constName;
+        }
       }
+      await axios
+        .put(`${baseURL}${userDataURL}`, updatedUserProfile)
+        // .then((res) => console.log(res.data.user));
+        .then((res) => dispatch(editUserData(res.data.user)));
+      console.log("updatedUserProfile ::: ", updatedUserProfile);
+      setFunc(!displ);
+    } else {
+      alert("WTF ??");
+      setFunc(!displ);
     }
-    await axios
-      .put(`${baseURL}${userDataURL}`, updatedUserProfile)
-      // .then((res) => console.log(res.data.user));
-      .then((res) => dispatch(editUserData(res.data.user)));
-    console.log("updatedUserProfile ::: ", updatedUserProfile);
-    setFunc(!displ);
   };
 
   // useEffect(() => {
@@ -152,6 +158,9 @@ const MonCompte = () => {
             </div>
             <div className="delete-btn" id="delete-account-btn">
               SUPPRIMER MON COMPTE
+            </div>
+            <div className="delete-btn" id="delete-account-btn">
+              <DeleteAccountButton />
             </div>
           </div>
         </div>
