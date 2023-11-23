@@ -16,7 +16,8 @@
     transition: 0.3s ease;
 
     &:hover {
-      background: $color-2;
+      background: $color-5;
+      color: $color-2;
     }
   }
 }

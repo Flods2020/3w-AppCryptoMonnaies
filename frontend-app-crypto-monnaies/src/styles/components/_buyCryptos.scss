@@ -22,7 +22,7 @@
     padding: 15px;
 
     .bcrypto-option {
-      background: $color-2;
+      background: $color-4;
       border: 2px solid $color-2;
       font-size: 1.3em;
       text-align: center;
@@ -32,7 +32,7 @@
       transition: 0.3s ease;
 
       &:hover {
-        background: $color-4;
+        background: $color-5;
       }
     }
   }

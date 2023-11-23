@@ -1,5 +1,5 @@
 import "./styles/index.scss";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { routes } from "./router/routes.js";
 import { Layout } from "./common/layout/layout";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,7 @@ import { baseURL, userDataURL } from "./helper/url_helper.js";
 
 function App() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userProfile = useSelector(({ users }) => users);
 
   const findToken = () => {
@@ -36,6 +37,8 @@ function App() {
             error
           );
         });
+    } else if (!token && userProfile.pseudo === "") {
+      navigate("/login");
     }
   }, [token, userProfile, dispatch]);
 

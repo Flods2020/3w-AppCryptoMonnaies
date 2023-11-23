@@ -49,10 +49,6 @@ const MonCompte = () => {
     }
   };
 
-  // useEffect(() => {
-  //   console.log("pseudo ::: ", pseudo);
-  // }, [pseudo]);
-
   return (
     <div className="acm-home-container">
       <div className="acm-monCompte-container">
@@ -71,7 +67,11 @@ const MonCompte = () => {
                   type="text"
                   autoComplete="off"
                   autoFocus={true}
-                  onChange={(e) => setPseudo(e.target.value)}
+                  onChange={(e) =>
+                    setPseudo(
+                      e.target.value ? e.target.value : userProfileData.pseudo
+                    )
+                  }
                 />
               )}
               <div
@@ -80,13 +80,12 @@ const MonCompte = () => {
                 onClick={() =>
                   !displayPseudoInput
                     ? setDisplayPseudoInput(!displayPseudoInput)
-                    : (saveInputValue(
+                    : saveInputValue(
                         pseudo,
                         pseudoInput,
                         setDisplayPseudoInput,
                         displayPseudoInput
-                      ),
-                      setPseudo(pseudoInput.value))
+                      )
                 }
               >
                 Modifier Pseudo
@@ -103,7 +102,13 @@ const MonCompte = () => {
                   type="text"
                   autoComplete="off"
                   autoFocus={true}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(
+                    e // mettre une regex
+                  ) =>
+                    setEmail(
+                      e.target.value ? e.target.value : userProfileData.email
+                    )
+                  }
                 />
               )}
               <div
@@ -112,13 +117,12 @@ const MonCompte = () => {
                 onClick={() =>
                   !displayEmailInput
                     ? setDisplayEmailInput(!displayEmailInput)
-                    : (saveInputValue(
+                    : saveInputValue(
                         email,
                         emailInput,
                         setDisplayEmailInput,
                         displayEmailInput
-                      ),
-                      setEmail(emailInput.value))
+                      )
                 }
               >
                 Modifier Email
@@ -151,16 +155,13 @@ const MonCompte = () => {
           </div>
         </div>
         <div className="delete-container">
-          <h3>Suppressions</h3>
+          <h3>Supprimer</h3>
           <div className="delete-account">
             <div className="delete-btn" id="delete-wallet-btn">
               Supprimer mon portefeuille
             </div>
             <div className="delete-btn" id="delete-account-btn">
-              SUPPRIMER MON COMPTE
-            </div>
-            <div className="delete-btn" id="delete-account-btn">
-              <DeleteAccountButton />
+              <DeleteAccountButton userEmail={userProfileData.email} />
             </div>
           </div>
         </div>

@@ -41,7 +41,7 @@
             border: 1px solid $color-1;
             padding: 5px;
             cursor: pointer;
-            background: $color-3;
+            // background: $color-3;
             transition: 0.3s ease;
 
             &:hover {
@@ -71,7 +71,7 @@
         .delete-btn {
           padding: 5px;
           margin: 10px auto;
-          background: $color-3;
+          // background: $color-3;
           border: 1px solid $color-1;
           cursor: pointer;
           transition: 0.3s ease;
@@ -79,6 +79,14 @@
           &:hover {
             background: $color-2;
             color: $color-5;
+          }
+        }
+
+        #delete-account-btn {
+          background: $color-3;
+
+          &:hover {
+            background: #b51000;
           }
         }
       }
