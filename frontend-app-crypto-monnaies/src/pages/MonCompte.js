@@ -19,6 +19,10 @@ const MonCompte = () => {
   const [displayPasswordInput, setDisplayPasswordInput] = useState(false);
   const [displayEmailInput, setDisplayEmailInput] = useState(false);
 
+  const USER_REGEX = /^[a-zA-Z0-9_]{3,23}$/;
+  const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,24}$/;
+  const MAIL_REGEX = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
+
   const pseudoInput = document.getElementById("pseudo-input");
   const emailInput = document.getElementById("email-input");
 
@@ -47,6 +51,11 @@ const MonCompte = () => {
       alert("WTF ??");
       setFunc(!displ);
     }
+  };
+
+  const checkRegex = (setFunc, displ) => {
+    alert("Champs incorrect");
+    setFunc(!displ);
   };
 
   return (
@@ -117,12 +126,14 @@ const MonCompte = () => {
                 onClick={() =>
                   !displayEmailInput
                     ? setDisplayEmailInput(!displayEmailInput)
-                    : saveInputValue(
+                    : MAIL_REGEX.test(email)
+                    ? saveInputValue(
                         email,
                         emailInput,
                         setDisplayEmailInput,
                         displayEmailInput
                       )
+                    : checkRegex(setDisplayEmailInput, displayEmailInput)
                 }
               >
                 Modifier Email
