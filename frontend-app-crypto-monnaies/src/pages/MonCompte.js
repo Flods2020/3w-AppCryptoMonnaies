@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../styles/index.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { TbPassword } from "react-icons/tb";
@@ -6,6 +6,7 @@ import axios from "axios";
 import { baseURL, userDataURL } from "../helper/url_helper";
 import { editUserData } from "../store/slices/usersSlice";
 import DeleteAccountButton from "../components/DeleteAccountButton";
+import { MAIL_REGEX, USER_REGEX } from "../helper/regex";
 
 const MonCompte = () => {
   const userProfileData = useSelector((state) => state.users);
@@ -19,42 +20,23 @@ const MonCompte = () => {
   const [displayPasswordInput, setDisplayPasswordInput] = useState(false);
   const [displayEmailInput, setDisplayEmailInput] = useState(false);
 
-  const USER_REGEX = /^[a-zA-Z0-9_]{3,23}$/;
-  const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,24}$/;
-  const MAIL_REGEX = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
-
-  const pseudoInput = document.getElementById("pseudo-input");
-  const emailInput = document.getElementById("email-input");
-
-  const setPropName = (inputName) => {
-    const inputN = inputName["id"].split("-")[0];
-    return inputN;
-  };
-
   const saveInputValue = async (constName, inputName, setFunc, displ) => {
-    if (constName) {
-      const propName = setPropName(inputName);
-      console.log("propName ::: ", propName);
-      let updatedUserProfile = { ...userProfileData };
-      for (const key in updatedUserProfile) {
-        if (key === propName) {
-          updatedUserProfile[propName] = constName;
-        }
+    let updatedUserProfile = { ...userProfileData };
+    for (const key in updatedUserProfile) {
+      if (key === inputName) {
+        updatedUserProfile[inputName] = constName;
       }
-      await axios
-        .put(`${baseURL}${userDataURL}`, updatedUserProfile)
-        // .then((res) => console.log(res.data.user));
-        .then((res) => dispatch(editUserData(res.data.user)));
-      console.log("updatedUserProfile ::: ", updatedUserProfile);
-      setFunc(!displ);
-    } else {
-      alert("WTF ??");
-      setFunc(!displ);
     }
+    await axios
+      .put(`${baseURL}${userDataURL}`, updatedUserProfile)
+      .then((res) => dispatch(editUserData(res.data.user)));
+    setFunc(!displ);
   };
 
-  const checkRegex = (setFunc, displ) => {
-    alert("Champs incorrect");
+  const checkRegex = (inputName, setFunc, displ) => {
+    alert(
+      `${inputName.charAt(0).toUpperCase() + inputName.slice(1)} incorrect`
+    );
     setFunc(!displ);
   };
 
@@ -69,7 +51,6 @@ const MonCompte = () => {
               {!displayPseudoInput ? (
                 <span>{userProfileData.pseudo}</span>
               ) : (
-                // <span>{pseudo ? pseudo : userProfileData.pseudo}</span>
                 <input
                   className="id-modif-inputs"
                   id="pseudo-input"
@@ -89,9 +70,15 @@ const MonCompte = () => {
                 onClick={() =>
                   !displayPseudoInput
                     ? setDisplayPseudoInput(!displayPseudoInput)
-                    : saveInputValue(
+                    : USER_REGEX.test(pseudo)
+                    ? saveInputValue(
                         pseudo,
-                        pseudoInput,
+                        "pseudo",
+                        setDisplayPseudoInput,
+                        displayPseudoInput
+                      )
+                    : checkRegex(
+                        "pseudo",
                         setDisplayPseudoInput,
                         displayPseudoInput
                       )
@@ -129,11 +116,15 @@ const MonCompte = () => {
                     : MAIL_REGEX.test(email)
                     ? saveInputValue(
                         email,
-                        emailInput,
+                        "email",
                         setDisplayEmailInput,
                         displayEmailInput
                       )
-                    : checkRegex(setDisplayEmailInput, displayEmailInput)
+                    : checkRegex(
+                        "email",
+                        setDisplayEmailInput,
+                        displayEmailInput
+                      )
                 }
               >
                 Modifier Email

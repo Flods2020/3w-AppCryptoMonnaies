@@ -6,10 +6,7 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { baseURL, registerURL } from "../helper/url_helper";
 import { useNavigate } from "react-router-dom";
-
-const USER_REGEX = /^[a-zA-Z0-9_]{3,23}$/;
-const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,24}$/;
-const MAIL_REGEX = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
+import { MAIL_REGEX, PASSWORD_REGEX, USER_REGEX } from "../helper/regex";
 
 const Register = () => {
   const userRef = useRef();
@@ -37,15 +34,11 @@ const Register = () => {
 
   useEffect(() => {
     const result = USER_REGEX.test(user);
-    // console.log(result);
-    // console.log(user);
     setValidName(result);
   }, [user]);
 
   useEffect(() => {
     const result = PASSWORD_REGEX.test(pwd);
-    // console.log(result);
-    // console.log(pwd);
     setValidPwd(result);
     const match = pwd === matchPwd;
     setValidMatch(match);
@@ -53,8 +46,6 @@ const Register = () => {
 
   useEffect(() => {
     const result = MAIL_REGEX.test(mail);
-    // console.log(result);
-    // console.log(mail);
     setValidMail(result);
   }, [mail]);
 
@@ -65,9 +56,6 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const v1 = USER_REGEX.test(user);
-      const v2 = PASSWORD_REGEX.test(pwd);
-      const v3 = MAIL_REGEX.test(mail);
       await axios
         .post(`${baseURL}${registerURL}`, {
           user,
