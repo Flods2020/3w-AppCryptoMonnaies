@@ -23,7 +23,7 @@ router.post("/logout", authentification, logout);
 router.post("/logout/all", authentification, logoutAll);
 
 router.get("/me", authentification, getUser);
-router.get("/pwd/me", authentification, checkPwd);
+router.post("/pwd/me", authentification, checkPwd);
 
 router.put("/me", authentification, editUser);
 

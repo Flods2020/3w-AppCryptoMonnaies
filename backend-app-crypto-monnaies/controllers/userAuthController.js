@@ -65,8 +65,8 @@ const editUser = async (req, res, next) => {
 };
 
 const checkPwd = async (req, res, next) => {
-  console.log("User password ::: ", req.user.password);
   console.log("Body password ::: ", req.body.pwd);
+  console.log("User password ::: ", req.user.password);
   try {
     const updatedPwd = await User.checkHashedPassword(
       req.body.pwd,
@@ -75,7 +75,7 @@ const checkPwd = async (req, res, next) => {
     console.log(updatedPwd);
     if (updatedPwd) {
       // res.json({ user: req.user });
-      res.json(updatedPwd);
+      res.send(updatedPwd);
     }
   } catch (e) {
     res.status(500).send(e);

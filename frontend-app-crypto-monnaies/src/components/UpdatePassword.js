@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
 import Portal from "@mui/material/Portal";
+import axios from "axios";
+import { baseURL, pwdURL } from "../helper/url_helper";
 
 const UpdatePassword = () => {
   const [pwd, setPwd] = useState("");
@@ -9,9 +11,18 @@ const UpdatePassword = () => {
   const [show, setShow] = useState(false);
   const container = useRef(null);
 
-  const submitPwd = () => {
+  const submitPwd = async () => {
     console.log("pwd ::: ", pwd);
-    setShow(!show);
+    try {
+      console.log({ pwd });
+      await axios
+        .post(`${baseURL}${pwdURL}`, { pwd })
+        // .then((res) => console.log(res.data))
+        .then((res) => (res.data ? setShow(true) : setShow(false)));
+    } catch (error) {
+      console.log("error");
+    }
+    // setShow(!show);
   };
 
   const handleClick = () => {
