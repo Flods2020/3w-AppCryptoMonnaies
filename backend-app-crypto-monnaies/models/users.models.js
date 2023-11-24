@@ -50,7 +50,6 @@ userSchema.methods.toJSON = function () {
 
 userSchema.methods.generateAuthTokenAndSaveUser = async function () {
   const authToken = jwt.sign({ _id: this._id.toString() }, "secrt");
-  // console.log({ authToken });
   this.authTokens.push({ authToken });
   await this.save();
   return authToken;
@@ -68,6 +67,14 @@ userSchema.statics.findUser = async (email, password) => {
     throw new Error("Erreur, mauvais Mot de Passe.");
   }
   return user;
+};
+
+userSchema.statics.checkHashedPassword = async (reqPassword, userPassword) => {
+  const isPasswordValid = await bcrypt.compare(reqPassword, userPassword);
+  if (!isPasswordValid) {
+    throw new Error("Erreur, mauvais Mot de Passe.");
+  }
+  return isPasswordValid;
 };
 
 userSchema.pre("save", async function () {

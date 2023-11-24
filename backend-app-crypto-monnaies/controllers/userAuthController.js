@@ -39,4 +39,79 @@ const logout = async (req, res) => {
   }
 };
 
-module.exports = { register, login, logout };
+const logoutAll = async (req, res) => {
+  try {
+    req.user.authTokens = [];
+    await req.user.save();
+    res.send();
+  } catch (e) {
+    res.status(500).send();
+  }
+};
+
+const getUser = async (req, res, next) => {
+  res.send({ user: req.user, authToken: req.authTokens });
+};
+
+const editUser = async (req, res, next) => {
+  const updatedInfo = Object.keys(req.body);
+  try {
+    updatedInfo.forEach((update) => (req.user[update] = req.body[update]));
+    await req.user.save();
+    res.json({ user: req.user });
+  } catch (e) {
+    res.status(500).send(e);
+  }
+};
+
+const checkPwd = async (req, res, next) => {
+  console.log("User password ::: ", req.user.password);
+  console.log("Body password ::: ", req.body.pwd);
+  try {
+    const updatedPwd = await User.checkHashedPassword(
+      req.body.pwd,
+      req.user.password
+    );
+    console.log(updatedPwd);
+    if (updatedPwd) {
+      // res.json({ user: req.user });
+      res.json(updatedPwd);
+    }
+  } catch (e) {
+    res.status(500).send(e);
+  }
+};
+
+const editPwd = async (req, res, next) => {
+  console.log("User password ::: ", req.user.password);
+  console.log("Body password ::: ", req.body.pwd);
+  try {
+    req.user.password = req.body.pwd;
+    await req.user.save();
+    res.json({ user: req.user });
+  } catch (e) {
+    res.status(500).send(e);
+  }
+};
+
+const deleteUser = async (req, res, next) => {
+  try {
+    await User.deleteOne(req.user);
+    res.status(200).send("User deleted");
+    res.send(req.user);
+  } catch (e) {
+    res.status(500).send(e);
+  }
+};
+
+module.exports = {
+  register,
+  login,
+  logout,
+  logoutAll,
+  getUser,
+  checkPwd,
+  editUser,
+  editPwd,
+  deleteUser,
+};

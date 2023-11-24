@@ -5,6 +5,12 @@ const {
   register,
   login,
   logout,
+  logoutAll,
+  getUser,
+  editUser,
+  deleteUser,
+  editPwd,
+  checkPwd,
 } = require("../controllers/userAuthController");
 const router = new express.Router();
 
@@ -14,39 +20,15 @@ router.post("/login", login);
 
 router.post("/logout", authentification, logout);
 
-router.post("/logout/all", authentification, async (req, res) => {
-  try {
-    req.user.authTokens = [];
-    await req.user.save();
-    res.send();
-  } catch (e) {
-    res.status(500).send();
-  }
-});
+router.post("/logout/all", authentification, logoutAll);
 
-router.get("/me", authentification, async (req, res, next) => {
-  res.send({ user: req.user, authToken: req.authTokens });
-});
+router.get("/me", authentification, getUser);
+router.get("/pwd/me", authentification, checkPwd);
 
-router.put("/me", authentification, async (req, res, next) => {
-  const updatedInfo = Object.keys(req.body);
-  try {
-    updatedInfo.forEach((update) => (req.user[update] = req.body[update]));
-    await req.user.save();
-    res.json({ user: req.user });
-  } catch (e) {
-    res.status(500).send(e);
-  }
-});
+router.put("/me", authentification, editUser);
 
-router.delete("/me", authentification, async (req, res, next) => {
-  try {
-    await User.deleteOne(req.user);
-    res.status(200).send("User deleted");
-    res.send(req.user);
-  } catch (e) {
-    res.status(500).send(e);
-  }
-});
+router.put("/pwd/me", authentification, editPwd);
+
+router.delete("/me", authentification, deleteUser);
 
 module.exports = router;

@@ -7,6 +7,7 @@ import { baseURL, userDataURL } from "../helper/url_helper";
 import { editUserData } from "../store/slices/usersSlice";
 import DeleteAccountButton from "../components/DeleteAccountButton";
 import { MAIL_REGEX, USER_REGEX } from "../helper/regex";
+import SimplePortal from "../components/UpdatePassword";
 
 const MonCompte = () => {
   const userProfileData = useSelector((state) => state.users);
@@ -139,12 +140,13 @@ const MonCompte = () => {
                   <TbPassword />
                 </span>
               ) : (
-                <input
-                  className="id-modif-inputs"
-                  id="password-input"
-                  type="text"
-                  onChange={(e) => console.log(e.target.value)}
-                />
+                // <input
+                //   className="id-modif-inputs"
+                //   id="password-input"
+                //   type="password"
+                //   onChange={(e) => console.log(e.target.value)}
+                // />
+                <SimplePortal />
               )}
               <div
                 className="id-modif-btn"
