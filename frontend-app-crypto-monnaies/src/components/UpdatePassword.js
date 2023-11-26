@@ -2,31 +2,50 @@ import React, { useRef, useState } from "react";
 import Portal from "@mui/material/Portal";
 import axios from "axios";
 import { baseURL, pwdURL } from "../helper/url_helper";
+import { PASSWORD_REGEX } from "../helper/regex";
+import { isEmpty } from "lodash";
 
 const UpdatePassword = () => {
-  const [pwd, setPwd] = useState("");
+  const [currentPwd, setCurrentPwd] = useState("");
   const [newPwd, setNewPwd] = useState("");
   const [confirmNewPwd, setConfirmNewPwd] = useState("");
 
   const [show, setShow] = useState(false);
   const container = useRef(null);
 
-  const submitPwd = async () => {
-    console.log("pwd ::: ", pwd);
-    try {
-      console.log({ pwd });
-      await axios
-        .post(`${baseURL}${pwdURL}`, { pwd })
-        // .then((res) => console.log(res.data))
-        .then((res) => (res.data ? setShow(true) : setShow(false)));
-    } catch (error) {
-      console.log("error");
+  const checkPwd = async () => {
+    if (!isEmpty(currentPwd)) {
+      console.log("currentPwd ::: ", currentPwd);
+      try {
+        console.log({ currentPwd });
+        await axios
+          .post(`${baseURL}${pwdURL}`, { currentPwd })
+          // .then((res) => console.log(res.data))
+          .then((res) => (res.data ? setShow(true) : setShow(false)));
+      } catch (error) {
+        console.log("error");
+      }
+    } else {
+      alert("Veuillez indiquer votre mdp actuel.");
     }
     // setShow(!show);
   };
 
-  const handleClick = () => {
-    setShow(!show);
+  const changePwd = () => {
+    if (
+      !isEmpty(newPwd) &&
+      !isEmpty(confirmNewPwd) &&
+      newPwd === confirmNewPwd
+    ) {
+      console.log("newPwd ::: ", newPwd);
+      console.log("confirmNewPwd ::: ", confirmNewPwd);
+    } else {
+      console.error("ERROR");
+      alert(
+        'Les champs "nouveau mdp" et/ou "confimation mdp" sont vides ou ne correspondent pas.'
+      );
+    }
+    // setShow(!show);
   };
 
   return (
@@ -35,12 +54,12 @@ const UpdatePassword = () => {
       <input
         type="password"
         className="id-modif-inputs"
-        id="pwd-input"
+        id="currentPwd-input"
         autoComplete="off"
         autoFocus={true}
-        onChange={(e) => setPwd(e.target.value ? e.target.value : "")}
+        onChange={(e) => setCurrentPwd(e.target.value ? e.target.value : "")}
       />
-      <button type="button" onClick={submitPwd}>
+      <button type="button" onClick={checkPwd}>
         Envoyer
       </button>
       <div className="portal-container">
@@ -48,10 +67,38 @@ const UpdatePassword = () => {
           <>
             <Portal container={container.current}>
               <div>Entrez votre nouveau mdp</div>
-              <input type="password" />
+              <input
+                type="password"
+                className="id-modif-inputs"
+                id="newPwd-input"
+                autoComplete="off"
+                autoFocus={true}
+                onChange={(e) =>
+                  setNewPwd(
+                    e.target.value && PASSWORD_REGEX.test(e.target.value)
+                      ? e.target.value
+                      : ""
+                  )
+                }
+              />
               <div>Confirmez votre nouveau mdp</div>
-              <input type="text" />
-              <button type="button">wololo</button>
+              <input
+                type="password"
+                className="id-modif-inputs"
+                id="confirmNewPwd-input"
+                autoComplete="off"
+                autoFocus={true}
+                onChange={(e) =>
+                  setConfirmNewPwd(
+                    e.target.value && PASSWORD_REGEX.test(e.target.value)
+                      ? e.target.value
+                      : ""
+                  )
+                }
+              />
+              <button type="button" onClick={changePwd}>
+                wololo
+              </button>
             </Portal>
           </>
         ) : null}
