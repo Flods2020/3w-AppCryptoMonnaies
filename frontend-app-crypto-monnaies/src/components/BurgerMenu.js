@@ -3,6 +3,7 @@ import "../styles/index.scss";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { deleteUserData } from "../store/slices/usersSlice";
+import { navLinksEntries } from "../helper/Links";
 
 const BurgerMenu = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -10,21 +11,11 @@ const BurgerMenu = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const navLinks = {
-    Portefeuille: "/register",
-    Ressources: "/",
-    Mon_Compte: "/monCompte",
-    Support_Client: "/login",
-    Déconnexion: "/login",
-  };
-
-  const navLinksEntries = Object.entries(navLinks);
-
   const ToggleLinks = () => {
     setIsOpen(!isOpen);
   };
 
-  const Logout = async () => {
+  const logout = async () => {
     try {
       dispatch(deleteUserData());
       localStorage.removeItem("jwt");
@@ -45,7 +36,7 @@ const BurgerMenu = () => {
               to={lien}
               key={i}
               style={{ color: "inherit", textDecoration: "none" }}
-              onClick={nav === "Déconnexion" ? Logout : ToggleLinks}
+              onClick={nav === "Déconnexion" ? logout : ToggleLinks}
             >
               <li key={i} onClick={ToggleLinks}>
                 {nav.replace("_", " ")}

@@ -30,7 +30,6 @@ const DeleteAccountButton = () => {
   };
 
   const deleteAccount = async () => {
-    console.log(currentPwd);
     try {
       await axios
         .post(`${baseURL}${pwdURL}`, { currentPwd })

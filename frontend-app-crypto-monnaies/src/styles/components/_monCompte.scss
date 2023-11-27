@@ -29,7 +29,6 @@
           display: flex;
           justify-content: space-between;
           align-items: baseline;
-          //   width: 70%;
           margin: 10px 0;
 
           span {
@@ -37,11 +36,40 @@
             margin-right: 5px;
           }
 
+          .id-modif-inputs {
+            border: none;
+            border-bottom: 1px solid $color-1;
+            border-radius: 1px;
+            height: 25px;
+            margin: 10px;
+            padding: 7px;
+            text-align: center;
+            transition: box-shadow 0.4s;
+
+            &:focus-within {
+              box-shadow: 0 0 2px rgba($color-4, 0.75);
+            }
+          }
+
           .id-modif-btn {
             border: 1px solid $color-1;
             padding: 5px;
             cursor: pointer;
-            // background: $color-3;
+            transition: 0.3s ease;
+
+            &:hover {
+              background: $color-2;
+              color: $color-5;
+            }
+          }
+
+          .update-password-btn {
+            font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+              "Lucida Sans", Arial, sans-serif;
+            background: $color-5;
+            border: 1px solid $color-1;
+            padding: 5px;
+            cursor: pointer;
             transition: 0.3s ease;
 
             &:hover {
@@ -71,7 +99,6 @@
         .delete-btn {
           padding: 5px;
           margin: 10px auto;
-          // background: $color-3;
           border: 1px solid $color-1;
           cursor: pointer;
           transition: 0.3s ease;

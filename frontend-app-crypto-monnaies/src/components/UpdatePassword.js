@@ -16,7 +16,6 @@ const UpdatePassword = () => {
   const checkPwd = async () => {
     if (!isEmpty(currentPwd)) {
       try {
-        console.log({ currentPwd });
         await axios
           .post(`${baseURL}${pwdURL}`, { currentPwd })
           .then((res) => (res.data ? setShow(true) : setShow(false)));
@@ -24,7 +23,7 @@ const UpdatePassword = () => {
         alert("Champs mot de passe est actuellement vide.");
       }
     } else {
-      alert("Veuillez indiquer votre mdp actuel.");
+      alert("Veuillez indiquer votre mot de passe actuel.");
     }
   };
 
@@ -41,14 +40,14 @@ const UpdatePassword = () => {
     } else {
       console.error("ERROR");
       alert(
-        'Les champs "nouveau mdp" et/ou "confimation mdp" sont vides ou ne correspondent pas.'
+        'Les champs "nouveau mot de passe" et/ou "confimation mot de passe" sont vides ou ne correspondent pas.'
       );
     }
   };
 
   return (
     <div>
-      <div>Entrez votre mdp actuel</div>
+      <div>Entrez votre mot de passe actuel</div>
       <input
         type="password"
         className="id-modif-inputs"
@@ -57,14 +56,14 @@ const UpdatePassword = () => {
         autoFocus={true}
         onChange={(e) => setCurrentPwd(e.target.value ? e.target.value : "")}
       />
-      <button type="button" onClick={checkPwd}>
+      <button className="update-password-btn" type="button" onClick={checkPwd}>
         Continuer
       </button>
       <div className="portal-container">
         {show ? (
           <>
             <Portal container={container.current}>
-              <div>Entrez votre nouveau mdp</div>
+              <div>Entrez votre nouveau mot de passe</div>
               <input
                 type="password"
                 className="id-modif-inputs"
@@ -79,7 +78,7 @@ const UpdatePassword = () => {
                   )
                 }
               />
-              <div>Confirmez votre nouveau mdp</div>
+              <div>Confirmez votre nouveau mot de passe</div>
               <input
                 type="password"
                 className="id-modif-inputs"
@@ -94,7 +93,11 @@ const UpdatePassword = () => {
                   )
                 }
               />
-              <button type="button" onClick={changePwd}>
+              <button
+                className="update-password-btn"
+                type="button"
+                onClick={changePwd}
+              >
                 Modifier
               </button>
             </Portal>
