@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -10,13 +10,13 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
 import axios from "axios";
-import { baseURL, userDataURL } from "../helper/url_helper";
+import { baseURL, pwdURL, userDataURL } from "../helper/url_helper";
 import { useDispatch } from "react-redux";
 import { deleteUserData } from "../store/slices/usersSlice";
 
-const DeleteAccountButton = ({ userEmail }) => {
+const DeleteAccountButton = () => {
   const [open, setOpen] = useState(false);
-  const [email, setEmail] = useState("");
+  const [currentPwd, setCurrentPwd] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -30,21 +30,16 @@ const DeleteAccountButton = ({ userEmail }) => {
   };
 
   const deleteAccount = async () => {
-    console.log(email);
-    const userEmailProps = userEmail;
-    if (email === userEmailProps) {
-      try {
-        await axios
-          .delete(`${baseURL}${userDataURL}`)
-          .then(() => dispatch(deleteUserData()));
-        alert("Compte supprimé");
-        setOpen(false);
-        navigate("/register");
-      } catch (error) {
-        console.log("Il ya eu une erreur dans la requête ::: ", error);
-      }
-    } else {
-      alert("Veuillez entrer votre adresse mail svp");
+    console.log(currentPwd);
+    try {
+      await axios
+        .post(`${baseURL}${pwdURL}`, { currentPwd })
+        .then((res) => res.data && axios.delete(`${baseURL}${userDataURL}`))
+        .then(() => dispatch(deleteUserData()));
+      alert("Compte supprimé");
+      navigate("/register");
+    } catch {
+      alert("Mot de passe incorrect.");
     }
   };
 
@@ -58,10 +53,6 @@ const DeleteAccountButton = ({ userEmail }) => {
       },
     },
   });
-
-  useEffect(() => {
-    userEmail && console.log({ userEmail });
-  }, [userEmail]);
 
   return (
     <div>
@@ -82,7 +73,7 @@ const DeleteAccountButton = ({ userEmail }) => {
             <DialogContentText>
               Êtes-vous sûr(e) de vouloir supprimer DÉFINITIVEMENT votre compte
               ? <br />
-              Si OUI, veuillez entrer votre adresse mail pour confirmer.
+              Si OUI, veuillez entrer votre mot de passe pour confirmer.
               <br />
             </DialogContentText>
             <TextField
@@ -90,10 +81,10 @@ const DeleteAccountButton = ({ userEmail }) => {
               autoComplete="off"
               margin="normal"
               id="name"
-              label="Email Address"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              label="Mot de passe"
+              type="password"
+              value={currentPwd}
+              onChange={(e) => setCurrentPwd(e.target.value)}
               fullWidth
             />
           </DialogContent>

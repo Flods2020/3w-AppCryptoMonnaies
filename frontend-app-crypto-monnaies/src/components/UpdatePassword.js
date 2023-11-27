@@ -15,37 +15,35 @@ const UpdatePassword = () => {
 
   const checkPwd = async () => {
     if (!isEmpty(currentPwd)) {
-      console.log("currentPwd ::: ", currentPwd);
       try {
         console.log({ currentPwd });
         await axios
           .post(`${baseURL}${pwdURL}`, { currentPwd })
-          // .then((res) => console.log(res.data))
           .then((res) => (res.data ? setShow(true) : setShow(false)));
-      } catch (error) {
-        console.log("error");
+      } catch {
+        alert("Champs mot de passe est actuellement vide.");
       }
     } else {
       alert("Veuillez indiquer votre mdp actuel.");
     }
-    // setShow(!show);
   };
 
-  const changePwd = () => {
+  const changePwd = async () => {
     if (
       !isEmpty(newPwd) &&
       !isEmpty(confirmNewPwd) &&
       newPwd === confirmNewPwd
     ) {
-      console.log("newPwd ::: ", newPwd);
-      console.log("confirmNewPwd ::: ", confirmNewPwd);
+      await axios
+        .put(`${baseURL}${pwdURL}`, { pwd: confirmNewPwd })
+        .then(() => alert("Votre mot de passe a bien été modifié"))
+        .then(() => window.location.reload());
     } else {
       console.error("ERROR");
       alert(
         'Les champs "nouveau mdp" et/ou "confimation mdp" sont vides ou ne correspondent pas.'
       );
     }
-    // setShow(!show);
   };
 
   return (
@@ -60,7 +58,7 @@ const UpdatePassword = () => {
         onChange={(e) => setCurrentPwd(e.target.value ? e.target.value : "")}
       />
       <button type="button" onClick={checkPwd}>
-        Envoyer
+        Continuer
       </button>
       <div className="portal-container">
         {show ? (
@@ -97,7 +95,7 @@ const UpdatePassword = () => {
                 }
               />
               <button type="button" onClick={changePwd}>
-                wololo
+                Modifier
               </button>
             </Portal>
           </>

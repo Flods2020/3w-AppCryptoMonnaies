@@ -98,7 +98,6 @@ const deleteUser = async (req, res, next) => {
   try {
     await User.deleteOne(req.user);
     res.status(200).send("User deleted");
-    res.send(req.user);
   } catch (e) {
     res.status(500).send(e);
   }

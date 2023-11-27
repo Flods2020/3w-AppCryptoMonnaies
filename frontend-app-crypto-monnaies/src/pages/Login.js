@@ -37,7 +37,7 @@ const Login = () => {
       dispatch(deleteUserData());
       navigate("/login");
     }
-  }, [userProfile, token]);
+  }, [userProfile, token, dispatch, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,10 +54,10 @@ const Login = () => {
 
         navigate("/home");
       } else {
-        console.error("Réponse invalide");
+        alert("Identifiants invalides");
       }
     } catch (error) {
-      console.error("Erreur lors de la soumission du formulaire :", error);
+      alert("Identifiants invalides");
     }
   };
 

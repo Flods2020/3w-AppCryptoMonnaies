@@ -30,7 +30,8 @@ const MonCompte = () => {
     }
     await axios
       .put(`${baseURL}${userDataURL}`, updatedUserProfile)
-      .then((res) => dispatch(editUserData(res.data.user)));
+      .then((res) => dispatch(editUserData(res.data.user)))
+      .then(() => alert(`Votre ${inputName} a bien été modifié.`));
     setFunc(!displ);
   };
 
@@ -99,9 +100,7 @@ const MonCompte = () => {
                   type="text"
                   autoComplete="off"
                   autoFocus={true}
-                  onChange={(
-                    e // mettre une regex
-                  ) =>
+                  onChange={(e) =>
                     setEmail(
                       e.target.value ? e.target.value : userProfileData.email
                     )
