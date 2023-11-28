@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "../styles/index.scss";
 import BurgerMenu from "./BurgerMenu";
 import { NavLink } from "react-router-dom";
@@ -8,27 +8,12 @@ import DesktopMenu from "./DesktopMenu";
 
 const Nav = () => {
   const [isActive, setIsActive] = useState(false);
-  const [scrollTop, setScrollTop] = useState("0rem");
-  const [newScroll, setNewScroll] = useState(0);
 
   const userProfile = useSelector((state) => state.users);
 
   const ToggleClass = () => {
     setIsActive(!isActive);
   };
-
-  useEffect(() => {
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > 30) {
-        if (window.scrollY > newScroll) {
-          setScrollTop("-15rem");
-        } else {
-          setScrollTop("0rem");
-        }
-      }
-      setNewScroll(window.scrollY);
-    });
-  }, [newScroll, scrollTop]);
 
   return (
     <>
@@ -53,12 +38,7 @@ const Nav = () => {
           </div>
         ) : null}
       </div>
-      <div
-        className="desktop-menu-container"
-        style={{
-          transform: `translateY(${scrollTop})`,
-        }}
-      >
+      <div className="desktop-menu-container">
         <DesktopMenu />
       </div>
     </>

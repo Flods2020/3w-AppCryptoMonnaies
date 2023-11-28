@@ -35,7 +35,10 @@ const BurgerMenu = () => {
             <NavLink
               to={lien}
               key={i}
-              style={{ color: "inherit", textDecoration: "none" }}
+              style={{
+                color: nav === "Déconnexion" ? "#111" : "#fff",
+                textDecoration: "none",
+              }}
               onClick={nav === "Déconnexion" ? logout : ToggleLinks}
             >
               <li key={i} onClick={ToggleLinks}>
