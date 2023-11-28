@@ -43,17 +43,17 @@ const DesktopMenu = () => {
         transition: "transform 0.5s ease",
       }}
     >
-      {navLinksEntries.map(([nav, lien, i]) => (
+      {navLinksEntries.map(([nav, lien], index) => (
         <NavLink
           to={lien}
-          key={i}
+          key={index}
           style={{
             color: nav === "Déconnexion" ? "#e97911" : "inherit",
             textDecoration: "none",
           }}
           onClick={nav === "Déconnexion" && logout}
         >
-          <li key={i} className="desktop-links">
+          <li key={index} className="desktop-links">
             {nav.replace("_", " ")}
           </li>
         </NavLink>

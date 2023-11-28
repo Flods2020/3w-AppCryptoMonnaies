@@ -1,6 +1,6 @@
 export const navLinks = {
   Portefeuille: "/register",
-  Ressources: "/",
+  Ressources: "/ressources",
   Mon_Compte: "/monCompte",
   Support_Client: "/login",
   Déconnexion: "/login",

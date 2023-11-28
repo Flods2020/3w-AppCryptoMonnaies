@@ -56,11 +56,13 @@
     .desktop-links-container {
       position: fixed;
       background: $color-5;
+      width: 100%;
       list-style: none;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      border-top: 4px solid $color-1;
+      border-top: 3px solid $color-1;
+      border-bottom: 1px solid $color-1;
 
       .desktop-links {
         display: flex;
@@ -68,7 +70,7 @@
         padding: 0 100px;
         font-size: 1.1em;
         height: 35px;
-        border-radius: 8px;
+        border-radius: 2px;
         transition: 0.4s ease;
 
         &:hover {

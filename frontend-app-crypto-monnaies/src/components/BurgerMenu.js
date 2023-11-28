@@ -31,7 +31,7 @@ const BurgerMenu = () => {
     <>
       {isOpen && (
         <ul className="burger-ul">
-          {navLinksEntries.map(([nav, lien, i]) => (
+          {navLinksEntries.map(([nav, lien], i) => (
             <NavLink
               to={lien}
               key={i}
