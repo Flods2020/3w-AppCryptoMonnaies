@@ -11,7 +11,11 @@ const currencySchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  exchangeRate: {
+  usdExchangeRate: {
+    type: Number,
+    required: true,
+  },
+  eurExchangeRate: {
     type: Number,
     required: true,
   },

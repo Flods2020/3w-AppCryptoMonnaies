@@ -5,3 +5,4 @@ export const logoutURL = "users/logout";
 export const userDataURL = "users/me";
 export const pwdURL = "users/pwd/me";
 export const transactionsURL = "transactions";
+export const currenciesURL = "currencies";

@@ -3,6 +3,7 @@ const colors = require("colors");
 const cors = require("cors");
 const { mongooseConnect } = require("./config/mongooseDatabase.js");
 const cryptoRoutes = require("./routes/cryptos.routes");
+const currencyRoutes = require("./routes/currencies.routes");
 const userRoutes = require("./routes/users.routes.js");
 const transactionRoutes = require("./routes/transactions.routes");
 const walletRoutes = require("./routes/wallets.routes");
@@ -26,6 +27,9 @@ app.use(express.urlencoded({ extended: false }));
 
 /* Cryptos */
 app.use("/crypto-monnaies", cryptoRoutes);
+
+/* Currencies */
+app.use("/currencies/", currencyRoutes);
 
 /* Users */
 app.use("/users", userRoutes);

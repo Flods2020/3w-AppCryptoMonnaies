@@ -1,27 +1,21 @@
 import React, { useEffect, useState } from "react";
-import {
-  EURcurrenciesChanges,
-  USDcurrenciesChanges,
-} from "../helper/data-currencies";
+import axios from "axios";
+import { baseURL, currenciesURL } from "../helper/url_helper";
+import { isEmpty } from "lodash";
 
 const Devises = () => {
   const [currencies, setCurrencies] = useState();
 
-  const eurChanges = Object.entries(EURcurrenciesChanges);
-  const usdChanges = Object.entries(USDcurrenciesChanges);
-
   const [today, setToday] = useState("");
 
-  const myHeaders = new Headers();
-  myHeaders.append("apikey", "IQNmZMOUKXRy6ymeiIXAZareCeZUNSEV");
-
-  const requestOptions = {
-    method: "GET",
-    redirect: "follow",
-    headers: myHeaders,
-  };
-
-  // API
+  // API apilayer
+  //   const myHeaders = new Headers();
+  //   myHeaders.append("apikey", "IQNmZMOUKXRy6ymeiIXAZareCeZUNSEV");
+  //   const requestOptions = {
+  //     method: "GET",
+  //     redirect: "follow",
+  //     headers: myHeaders,
+  //   };
   //   useEffect(() => {
   //     fetch(
   //       "https://api.apilayer.com/currency_data/live?source=USD&currencies=USD,EUR,GBP,JPY,RUB,CNY,CAD,CHF",
@@ -33,10 +27,21 @@ const Devises = () => {
   //   }, [currencies]);
 
   useEffect(() => {
-    // console.log(eurChanges[0][1]);
-    // console.log(usdChanges[0][1]);
-    USDcurrenciesChanges.forEach((usdCurr) => console.log(usdCurr));
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${baseURL}${currenciesURL}`);
+        setCurrencies(response.data);
+        console.log(Object.entries(response.data));
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchData();
   }, []);
+
+  //   useEffect(() => {
+  //     currencies && console.log("currencies ::: ", currencies);
+  //   }, []);
 
   useEffect(() => {
     const currentDate = new Date(Date.now());
@@ -54,9 +59,12 @@ const Devises = () => {
       <h1>Devises</h1>
       <h2>{today}</h2>
       <div>
-        {eurChanges.map(([eurCurr], i) => (
-          <li key={i}>{eurCurr}</li>
-        ))}
+        {!isEmpty(currencies) &&
+          Object.entries(currencies).map((curr, i) => (
+            <span key={i}>
+              {curr[1].name} {curr[1].code}: {curr[1].usdExchangeRate} $<br />
+            </span>
+          ))}
       </div>
     </div>
   );
