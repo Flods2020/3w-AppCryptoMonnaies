@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { baseURL, currenciesURL } from "../helper/url_helper";
 import { isEmpty } from "lodash";
+import CurrencyCard from "./CurrencyCard";
 
 const Devises = () => {
   const [currencies, setCurrencies] = useState();
@@ -60,11 +61,12 @@ const Devises = () => {
       <h2>{today}</h2>
       <div>
         {!isEmpty(currencies) &&
-          Object.entries(currencies).map((curr, i) => (
-            <span key={i}>
-              {curr[1].name} {curr[1].code}: {curr[1].usdExchangeRate} $<br />
-            </span>
-          ))}
+          Object.entries(currencies).map(
+            (curr, i) => <CurrencyCard curr={curr[1]} key={i} />
+            // <span key={i}>
+            //   {curr[1].name} {curr[1].code}: {curr[1].usdExchangeRate} $<br />
+            // </span>
+          )}
       </div>
     </div>
   );
