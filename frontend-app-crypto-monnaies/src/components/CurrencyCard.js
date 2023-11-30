@@ -4,23 +4,22 @@ const CurrencyCard = ({ curr, cryptos }) => {
   return (
     <div className="acm-currencyCard">
       <div className="currency-infos">
-        <h4>{curr.name}</h4>
-        <p>- {curr.code}</p>
-        <p>- {curr.originCountry}</p>
+        <h4>{curr.code}</h4>
+        <p>{curr.name}</p>
       </div>
       <div className="currency-changes">
-        <p>{curr.usdExchangeRate} $</p>
-        <p>---- {curr.eurExchangeRate} €</p>
+        <p>{curr.usdExchangeRate.toFixed(2)} $</p>
+        <p>-- {curr.eurExchangeRate.toFixed(2)} €</p>
       </div>
       {cryptos &&
-        cryptos.map((crp, i) => (
+        cryptos.cryptos.map((crp, i) => (
           <div className="crypto-changes">
             <span key={i}>
-              {crp.name} :
+              {crp.name} <br />
               {parseFloat(
                 (crp.current_price * curr.usdExchangeRate).toFixed(2)
-              )}{" "}
-              {crp.symbol.toUpperCase()}
+              ).toLocaleString()}{" "}
+              {curr.symbol === "CHF" ? <p>&#x20A3;</p> : <p>{curr.symbol}</p>}
             </span>{" "}
           </div>
         ))}

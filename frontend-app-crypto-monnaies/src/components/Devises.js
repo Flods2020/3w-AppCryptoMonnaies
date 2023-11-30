@@ -35,7 +35,7 @@ const Devises = () => {
       try {
         const response = await axios.get(`${baseURL}${currenciesURL}`);
         setCurrencies(response.data);
-        // console.log(Object.entries(response.data));
+        console.log(Object.entries(response.data));
       } catch (err) {
         console.error(err);
       }
@@ -60,18 +60,13 @@ const Devises = () => {
       <h2>{today}</h2>
       <div>
         {!isEmpty(currencies) &&
-          Object.entries(currencies).map(
-            (curr, i) => (
-              <CurrencyCard
-                curr={curr[1]}
-                cryptos={cryptosInfos.cryptos}
-                key={i}
-              />
-            )
-            // <span key={i}>
-            //   {curr[1].name} {curr[1].code}: {curr[1].usdExchangeRate} $<br />
-            // </span>
-          )}
+          Object.entries(currencies)
+            .sort((a, b) => a[1].usdExchangeRate - b[1].usdExchangeRate)
+            .map((curr, i) => (
+              <>
+                <CurrencyCard curr={curr[1]} cryptos={cryptosInfos} key={i} />
+              </>
+            ))}
       </div>
     </div>
   );

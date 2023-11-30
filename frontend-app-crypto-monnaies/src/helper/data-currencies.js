@@ -1,23 +1,50 @@
-export const EURcurrenciesChanges = [
+export const dataCurrencies = [
   {
-    EURCAD: 1.490796,
-    EURCHF: 0.964473,
-    EURCNY: 7.779235,
-    EURGBP: 0.86567,
-    EURJPY: 162.056384,
-    EURRUB: 97.876015,
-    EURUSD: 1.098188,
+    name: "Dollar américain",
+    code: "USD",
+    usdExchangeRate: 1,
+    eurExchangeRate: 0.9165,
+    originCountry: "États-Unis",
+    symbol: "$",
   },
-];
-
-export const USDcurrenciesChanges = [
   {
-    USDEUR: 0.910595,
-    USDGBP: 0.78805,
-    USDJPY: 147.581504,
-    USDRUB: 89.124998,
-    USDCNY: 7.084405,
-    USDCAD: 1.357755,
-    USDCHF: 0.87833,
+    name: "Dollar canadien",
+    code: "CAD",
+    usdExchangeRate: 1.3579,
+    eurExchangeRate: 0.9202,
+    originCountry: "Canada",
+    symbol: "CA$",
+  },
+  {
+    name: "Yen japonais",
+    code: "JPY",
+    usdExchangeRate: 112.02,
+    eurExchangeRate: 121.98,
+    originCountry: "Japon",
+    symbol: "¥",
+  },
+  {
+    name: "Yuan chinois",
+    code: "CNY",
+    usdExchangeRate: 6.3931,
+    eurExchangeRate: 7.1194,
+    originCountry: "Chine",
+    symbol: "Ұ",
+  },
+  {
+    name: "Franc suisse",
+    code: "CHF",
+    usdExchangeRate: 0.9155,
+    eurExchangeRate: 1.0929,
+    originCountry: "Suisse",
+    symbol: "CHF",
+  },
+  {
+    name: "Rouble russe",
+    code: "RUB",
+    usdExchangeRate: 73.58,
+    eurExchangeRate: 80.48,
+    originCountry: "Russie",
+    symbol: "₽",
   },
 ];
