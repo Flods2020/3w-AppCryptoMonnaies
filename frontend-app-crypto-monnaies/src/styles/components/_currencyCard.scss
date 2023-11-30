@@ -1,5 +1,5 @@
 .acm-currencyCard {
-  width: 70%;
+  // width: 70%;
   margin: 10px auto;
   display: flex;
   justify-content: space-between;
@@ -8,7 +8,7 @@
   .currency-infos,
   .currency-changes {
     display: flex;
-    gap: 10px;
+    gap: 2px;
     align-items: center;
     border-left: 3px solid rgba($color-3, 0.8);
     border-right: 3px solid rgba($color-3, 0.8);
@@ -16,6 +16,14 @@
     background: rgba($color-4, 0.3);
   }
 
-  .currency-changes {
+  .crypto-changes {
+    display: flex;
+    gap: 2px;
+    align-items: center;
+    border-left: 3px solid rgba($color-3, 0.8);
+    border-right: 3px solid rgba($color-3, 0.8);
+    padding: 2px 10px;
+    background: rgba($color-1, 0.9);
+    color: $color-5;
   }
 }

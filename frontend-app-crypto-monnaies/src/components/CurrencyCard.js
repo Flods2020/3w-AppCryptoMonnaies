@@ -1,10 +1,6 @@
-import React, { useEffect } from "react";
+import React from "react";
 
-const CurrencyCard = ({ curr }) => {
-  //   useEffect(() => {
-  //     console.log(curr);
-  //   }, []);
-
+const CurrencyCard = ({ curr, cryptos }) => {
   return (
     <div className="acm-currencyCard">
       <div className="currency-infos">
@@ -16,6 +12,18 @@ const CurrencyCard = ({ curr }) => {
         <p>{curr.usdExchangeRate} $</p>
         <p>---- {curr.eurExchangeRate} €</p>
       </div>
+      {cryptos &&
+        cryptos.map((crp, i) => (
+          <div className="crypto-changes">
+            <span key={i}>
+              {crp.name} :
+              {parseFloat(
+                (crp.current_price * curr.usdExchangeRate).toFixed(2)
+              )}{" "}
+              {crp.symbol.toUpperCase()}
+            </span>{" "}
+          </div>
+        ))}
     </div>
   );
 };

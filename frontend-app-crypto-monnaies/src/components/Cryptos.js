@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import "../styles/index.scss";
 import CryptoLine from "./CryptoLine";
+import { useSelector } from "react-redux";
 
-const Cryptos = ({ coinsData }) => {
-  const acmCryptos = ["btc", "eth", "usdt", "usdc", "busd"];
+const Cryptos = () => {
+  const cryptoInfos = useSelector((state) => state.cryptos);
+
   const tableHeader = [
     "Prix",
     "Market Cap",
@@ -16,11 +18,6 @@ const Cryptos = ({ coinsData }) => {
     "1y",
     "ATH",
   ];
-  const [orderBy, setOrderBy] = useState("");
-
-  // useEffect(() => {
-  //   coinsData && console.log(coinsData);
-  // });
 
   return (
     <>
@@ -29,28 +26,16 @@ const Cryptos = ({ coinsData }) => {
         <ul className="acm-crypto-header">
           {tableHeader.map((el) => (
             <li key={el}>
-              <input
-                type="radio"
-                name="header-el"
-                id={el}
-                defaultChecked={
-                  el === orderBy || el === orderBy + "reverse" ? true : false
-                }
-                onClick={() => {
-                  orderBy === el ? setOrderBy(el + "reverse") : setOrderBy(el);
-                }}
-              />
+              <input type="radio" name="header-el" id={el} />
               <label htmlFor={el}>{el}</label>
             </li>
           ))}
         </ul>
         <div className="cryptoLine-container">
-          {coinsData &&
-            coinsData
-              .filter((coin) => acmCryptos.includes(coin.symbol))
-              .map((coin, index) => (
-                <CryptoLine key={index} coin={coin} index={index} />
-              ))}
+          {cryptoInfos &&
+            cryptoInfos.cryptos.map((coin, index) => (
+              <CryptoLine key={index} coin={coin} index={index} />
+            ))}
         </div>
       </div>
     </>

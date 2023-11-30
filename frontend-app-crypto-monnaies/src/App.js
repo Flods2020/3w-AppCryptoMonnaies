@@ -8,11 +8,14 @@ import HeaderLogin from "./components/HeaderLogin.js";
 import axios from "axios";
 import { setUserData } from "./store/slices/usersSlice.js";
 import { baseURL, userDataURL } from "./helper/url_helper.js";
+import { setCryptosData } from "./store/slices/cryptosSlice.js";
 
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userProfile = useSelector(({ users }) => users);
+
+  const acmCryptos = ["btc", "eth", "usdt", "usdc", "busd"];
 
   const findToken = () => {
     const localStorageToken = localStorage.getItem("jwt");
@@ -40,7 +43,23 @@ function App() {
     } else if (!token && userProfile.pseudo === "") {
       navigate("/login");
     }
-  }, [token, userProfile, dispatch]);
+  }, [token, userProfile, dispatch, navigate]);
+
+  useEffect(() => {
+    axios
+      .get(
+        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d%2C14d%2C30d%2C200d%2C1y"
+      )
+      .then(
+        (res) =>
+          res.data &&
+          dispatch(
+            setCryptosData(
+              res.data.filter((coin) => acmCryptos.includes(coin.symbol))
+            )
+          )
+      );
+  }, [acmCryptos, dispatch]);
 
   return (
     <>

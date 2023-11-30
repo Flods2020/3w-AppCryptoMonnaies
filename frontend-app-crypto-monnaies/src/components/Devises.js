@@ -3,8 +3,11 @@ import axios from "axios";
 import { baseURL, currenciesURL } from "../helper/url_helper";
 import { isEmpty } from "lodash";
 import CurrencyCard from "./CurrencyCard";
+import { useSelector } from "react-redux";
 
 const Devises = () => {
+  const cryptosInfos = useSelector((state) => state.cryptos);
+
   const [currencies, setCurrencies] = useState();
 
   const [today, setToday] = useState("");
@@ -32,17 +35,13 @@ const Devises = () => {
       try {
         const response = await axios.get(`${baseURL}${currenciesURL}`);
         setCurrencies(response.data);
-        console.log(Object.entries(response.data));
+        // console.log(Object.entries(response.data));
       } catch (err) {
         console.error(err);
       }
     };
     fetchData();
   }, []);
-
-  //   useEffect(() => {
-  //     currencies && console.log("currencies ::: ", currencies);
-  //   }, []);
 
   useEffect(() => {
     const currentDate = new Date(Date.now());
@@ -62,7 +61,13 @@ const Devises = () => {
       <div>
         {!isEmpty(currencies) &&
           Object.entries(currencies).map(
-            (curr, i) => <CurrencyCard curr={curr[1]} key={i} />
+            (curr, i) => (
+              <CurrencyCard
+                curr={curr[1]}
+                cryptos={cryptosInfos.cryptos}
+                key={i}
+              />
+            )
             // <span key={i}>
             //   {curr[1].name} {curr[1].code}: {curr[1].usdExchangeRate} $<br />
             // </span>
