@@ -9,30 +9,28 @@ import {
   addTransactionsData,
   setTransactionsData,
 } from "../store/slices/transactionsSlice";
+import WalletForm from "./WalletForm";
 
 const Wallet = () => {
-  const transactionsData = useSelector((state) => state.transactions);
-  const userProfile = useSelector((state) => state.users);
+  // const transactionsData = useSelector((state) => state.transactions);
+  // const userProfile = useSelector((state) => state.users);
+  const cryptosData = useSelector((state) => state.cryptos);
 
   const [transacs, setTransacs] = useState();
 
+  const [balance, setBalance] = useState(0);
+  const [cryptoBalance, setCryptoBalance] = useState(0);
+  const [convertedCrypto, setConvertedCrypto] = useState(0);
+  const [currencyBalance, setCurrencyBalance] = useState(0);
+
+  const [convertedbtc, setConvertedbtc] = useState(0);
+  const [convertedeth, setConvertedeth] = useState(0);
+  const [convertedusdt, setConvertedusdt] = useState(0);
+  const [convertedusdc, setConvertedusdc] = useState(0);
+  const [convertedbusd, setConvertedbusd] = useState(0);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // const traData = {
-  //   user: "614c9e2b891e187e4e52f880",
-  //   crypto: "61541f2ef5a038001cb7f0e0",
-  //   currency: "617eb6465a51c65c6c24f96a",
-  //   amount: parseInt(Math.random() * 100),
-  //   timestamp: Date.now(),
-  //   transactionType: "sell",
-  // };
-
-  // const addTransaction = async () => {
-  //   await axios
-  //     .post(`${baseURL}${transactionsURL}`, traData)
-  //     .then(() => dispatch(addTransactionsData(traData)));
-  // };
 
   // useEffect(() => {
   //   if (!transactionsData) {
@@ -49,6 +47,30 @@ const Wallet = () => {
     navigate("/wallet-page");
   };
 
+  const createWallet = () => {
+    console.log("Create Wallet");
+  };
+
+  const convertCrypto = (crypto, amount) => {
+    const convertedSpan = document.querySelector("#span-" + crypto);
+    if (crypto === "btc") {
+      convertedSpan.innerHTML = parseFloat(38786.6 * amount).toFixed(2);
+      return convertedSpan;
+    } else if (crypto === "eth") {
+      convertedSpan.innerHTML = parseFloat(2093.92 * amount).toFixed(2);
+      return convertedSpan;
+    } else if (crypto === "usdt") {
+      convertedSpan.innerHTML = parseFloat(1 * amount).toFixed(2);
+      return convertedSpan;
+    } else if (crypto === "usdc") {
+      convertedSpan.innerHTML = parseFloat(0.92 * amount).toFixed(2);
+      return convertedSpan;
+    } else if (crypto === "busd") {
+      convertedSpan.innerHTML = parseFloat(1 * amount).toFixed(2);
+      return convertedSpan;
+    }
+  };
+
   return (
     <>
       <div className="acm-wallet-container">
@@ -56,19 +78,33 @@ const Wallet = () => {
         <div className="wallet-btn" onClick={addTransaction}>
           Créer Portefeuille
         </div>
-        {/* <div className="wallet-display">
-          <span id="soldes">Soldes :</span>
-          <div className="wallet-currencies-container">
-            <span>1.20335 BTC</span>
-            <span>5.74 ETH</span>
-            <span>75 830.23 €</span>
-          </div>
-        </div>
-        <div className="wallet-total">
-          <span>Total :</span>
-          <span>114,988.34 €</span>
-        </div>
-        <div className="wallet-transac">
+
+        <WalletForm
+          formType={"create-wallet"}
+          handleSubmit={createWallet}
+          btnSub={"Créer"}
+          disabled={!balance}
+        >
+          <h4>Cryptos</h4>
+          {cryptosData &&
+            cryptosData.cryptos.map((crypt, i) => (
+              <div className="acm-wallet-crypto-container" key={i}>
+                <label htmlFor={`balance-${crypt.name}`}>{crypt.name}</label>
+                <input
+                  id={`balance-${crypt.name}`}
+                  onChange={(e) => {
+                    setCryptoBalance(e.target.value);
+                    convertCrypto(crypt.symbol, cryptoBalance);
+                  }}
+                  type={"number"}
+                  step={"0.001"}
+                />{" "}
+                <span id={`span-${crypt.symbol}`}>0</span> $
+              </div>
+            ))}
+        </WalletForm>
+
+        {/* <div className="wallet-transac">
           {!isEmpty(transacs) &&
             transacs.map((tr, i) => (
               <div className="transac-container" key={i}>
