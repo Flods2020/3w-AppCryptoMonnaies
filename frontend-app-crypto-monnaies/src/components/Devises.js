@@ -63,9 +63,7 @@ const Devises = () => {
           Object.entries(currencies)
             .sort((a, b) => a[1].usdExchangeRate - b[1].usdExchangeRate)
             .map((curr, i) => (
-              <>
-                <CurrencyCard curr={curr[1]} cryptos={cryptosInfos} key={i} />
-              </>
+              <CurrencyCard curr={curr[1]} cryptos={cryptosInfos} key={i} />
             ))}
       </div>
     </div>

@@ -65,8 +65,6 @@ const editUser = async (req, res, next) => {
 };
 
 const checkPwd = async (req, res, next) => {
-  console.log("Body password ::: ", req.body.currentPwd);
-  console.log("User password ::: ", req.user.password);
   try {
     const updatedPwd = await User.checkHashedPassword(
       req.body.currentPwd,
@@ -83,8 +81,6 @@ const checkPwd = async (req, res, next) => {
 };
 
 const editPwd = async (req, res, next) => {
-  console.log("User password ::: ", req.user.password);
-  console.log("Body password ::: ", req.body.pwd);
   try {
     req.user.password = req.body.pwd;
     await req.user.save();

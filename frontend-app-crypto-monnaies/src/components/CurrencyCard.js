@@ -13,8 +13,8 @@ const CurrencyCard = ({ curr, cryptos }) => {
       </div>
       {cryptos &&
         cryptos.cryptos.map((crp, i) => (
-          <div className="crypto-changes">
-            <span key={i}>
+          <div className="crypto-changes" key={i}>
+            <span>
               {crp.name} <br />
               {parseFloat(
                 (crp.current_price * curr.usdExchangeRate).toFixed(2)

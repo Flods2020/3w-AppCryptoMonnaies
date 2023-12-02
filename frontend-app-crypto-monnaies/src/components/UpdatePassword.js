@@ -20,10 +20,10 @@ const UpdatePassword = () => {
           .post(`${baseURL}${pwdURL}`, { currentPwd })
           .then((res) => (res.data ? setShow(true) : setShow(false)));
       } catch {
-        alert("Champs mot de passe est actuellement vide.");
+        alert("Veuillez indiquer votre mot de passe actuel.");
       }
     } else {
-      alert("Veuillez indiquer votre mot de passe actuel.");
+      alert("Champs mot de passe est actuellement vide.");
     }
   };
 
