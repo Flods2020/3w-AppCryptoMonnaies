@@ -47,4 +47,22 @@ export const dataCurrencies = [
     originCountry: "Russie",
     symbol: "₽",
   },
+  {
+    name: "Euro",
+    code: "EUR",
+    usdExchangeRate: 1.0908,
+    eurExchangeRate: 1,
+    originCountry: "Union européenne",
+    symbol: "€",
+  },
+  {
+    name: "Livre sterling",
+    code: "GBP",
+    usdExchangeRate: 1.27,
+    eurExchangeRate: 1.17,
+    originCountry: "Royaume-Uni",
+    symbol: "£",
+  },
 ];
+
+export const currenciesData = Object.entries(dataCurrencies);

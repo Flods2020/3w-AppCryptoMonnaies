@@ -26,22 +26,8 @@ const walletSchema = new mongoose.Schema({
         required: true,
       },
     },
-    {
-      crypto: mongoose.Schema.Types.ObjectId,
-      balance: {
-        type: Number,
-        required: true,
-      },
-    },
   ],
   currencyWallet: [
-    {
-      currency: mongoose.Schema.Types.ObjectId,
-      balance: {
-        type: Number,
-        required: true,
-      },
-    },
     {
       currency: mongoose.Schema.Types.ObjectId,
       balance: {

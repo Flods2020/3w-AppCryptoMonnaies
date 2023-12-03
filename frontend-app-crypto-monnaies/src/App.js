@@ -62,7 +62,7 @@ function App() {
             )
         );
     }
-  }, [acmCryptos, dispatch]);
+  }, [acmCryptos]);
 
   return (
     <>
