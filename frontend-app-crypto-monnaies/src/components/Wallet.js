@@ -21,7 +21,7 @@ const Wallet = () => {
 
   const [cryptoBalance, setCryptoBalance] = useState(0);
   const [convertedCrypto, setConvertedCrypto] = useState(0);
-  const [currencyBalance, setCurrencyBalance] = useState(0);
+  const [walletCurrency, setWalletCurrency] = useState();
 
   const [convertedbtc, setConvertedbtc] = useState(0);
   const [convertedeth, setConvertedeth] = useState(0);
@@ -102,6 +102,8 @@ const Wallet = () => {
       (curr) => monnaie.split("/")[1] === curr.code
     );
 
+    setWalletCurrency(filteredCurr);
+
     spanDollar.innerHTML =
       "1 $ = " +
       filteredCurr[0].usdExchangeRate +
@@ -114,9 +116,9 @@ const Wallet = () => {
     return spanDollar, spanEuro, spanCurrencyAmount;
   };
 
-  // useEffect(() => {
-  //   dataCurrencies.forEach((curr) => console.log(curr));
-  // }, []);
+  useEffect(() => {
+    walletCurrency && console.log("walletCurrency ::: ", walletCurrency[0]);
+  }, [walletCurrency]);
 
   return (
     <>
@@ -138,8 +140,13 @@ const Wallet = () => {
             <select
               name=""
               id="currency-selector"
+              defaultValue=""
               onChange={(e) => displayExchangeRates(e.target.value)}
             >
+              {" "}
+              <option value="" disabled hidden>
+                Pas de devise selectionnée
+              </option>
               {dataCurrencies.map((curr, i) => (
                 <option key={i}>
                   {curr.name}/{curr.code}
