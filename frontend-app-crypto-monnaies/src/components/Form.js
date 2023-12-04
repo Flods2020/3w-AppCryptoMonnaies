@@ -2,9 +2,7 @@ import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 
 const Form = (props) => {
-  useEffect(() => {
-    // console.warn(props.disabled);
-  }, [props.disabled]);
+  useEffect(() => {}, [props.disabled]);
 
   return (
     <div className="acm-auth-container">
