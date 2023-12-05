@@ -11,21 +11,22 @@ const WalletCreator = () => {
   const cryptosData = useSelector((state) => state.cryptos);
 
   const [cryptos, setCryptos] = useState([]);
-  const [cryptoField, setCryptoField] = useState([]);
-  const [selectedCurrency, setSelectedCurrency] = useState("");
-
+  const [cryptoWallet, setCryptoWallet] = useState([]);
   const [walletCurrency, setWalletCurrency] = useState();
+  const [selectedCurrencyAmount, setSelectedCurrencyAmount] = useState(0);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleCryptoFieldChange = async (index, value, name) => {
+  const handleCryptoWalletChange = async (index, amount, name) => {
     const selectedCrypto = (
       await axios.get(`${baseURL}${cryptosURL}`)
     ).data.cryptos.filter((cr) => cr.symbol === name.toUpperCase());
-    const newCryptoField = [...cryptoField];
-    newCryptoField[index] = { value, selectedCrypto };
-    setCryptoField(newCryptoField);
+    const newCryptoWallet = [...cryptoWallet];
+    if (selectedCrypto) {
+      newCryptoWallet[index] = { amount, selectedCrypto };
+    }
+    setCryptoWallet(newCryptoWallet);
   };
 
   const convertCryptoAndDisplay = async (crypto, amount, index) => {
@@ -40,7 +41,7 @@ const WalletCreator = () => {
     //   console.log("selectedCrypto ::: ", selectedCrypto);
     // }
 
-    handleCryptoFieldChange(index, amount, crypto);
+    handleCryptoWalletChange(index, amount, crypto);
 
     if (crypto === "btc") {
       convertedSpan.innerHTML = parseFloat(
@@ -107,18 +108,32 @@ const WalletCreator = () => {
   const createWallet = async (e) => {
     e.preventDefault();
     // USER
-    // const userData = await axios.get(`${baseURL}${userDataURL}`);
-    // const user = userData.data.user;
-    // console.log("user ::: ", user);
+    const userData = await axios.get(`${baseURL}${userDataURL}`);
+    const user = userData.data.user;
+    console.log("user ::: ", user);
 
-    //CRYPTOS
-    console.log("Cryptos:", cryptoField);
-    console.log("Currency:", selectedCurrency);
+    // BALANCE
+    const cryptoBalance = cryptoWallet.reduce(
+      (accumulator, crypto) => accumulator + parseFloat(crypto?.amount || 0),
+      0
+    );
+
+    console.warn("cryptoBalance ::::", cryptoBalance);
+
+    // CRYPTOS
+    console.log("cryptoWallet ::::", cryptoWallet);
+
+    // DEVISES
+    console.log("Currency:", walletCurrency);
+    console.log("selectedCurrencyAmount:", selectedCurrencyAmount);
+
+    try {
+    } catch (error) {}
   };
 
-  useEffect(() => {
-    walletCurrency && console.log("walletCurrency ::: ", walletCurrency[0]);
-  }, [walletCurrency]);
+  //   useEffect(() => {
+  //     walletCurrency && console.log("walletCurrency ::: ", walletCurrency[0]);
+  //   }, [walletCurrency]);
 
   return (
     <WalletForm
@@ -153,7 +168,11 @@ const WalletCreator = () => {
           Indiquez votre montant en <span id="spanCurrencyAmount">*</span>
         </span>
         <br />
-        <input type="number" step={"10"} min={"0"} />
+        <input
+          type="number"
+          min={"0"}
+          onChange={(e) => setSelectedCurrencyAmount(e.target.value)}
+        />
       </div>
 
       <h4>Cryptos</h4>
@@ -165,7 +184,7 @@ const WalletCreator = () => {
             <input
               id={`balance-${crypt.name}`}
               //   varia={crypt.symbol}
-              varia={cryptoField}
+              varia={cryptoWallet}
               onChange={(e) => {
                 convertCryptoAndDisplay(crypt.symbol, e.target.value, i);
               }}

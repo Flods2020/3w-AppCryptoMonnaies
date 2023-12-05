@@ -16,8 +16,11 @@ router.post("/create", async (req, res) => {
 
   const wallet = new Wallet({
     user,
+    balance,
     cryptoTotal,
     currencyTotal,
+    cryptoWallet,
+    currencyWallet,
   });
 
   try {
