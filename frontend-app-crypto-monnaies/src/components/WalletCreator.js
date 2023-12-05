@@ -1,22 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
 import { dataCurrencies } from "../helper/data-currencies";
 import WalletForm from "./WalletForm";
 import axios from "axios";
 import { baseURL, cryptosURL, userDataURL } from "../helper/url_helper";
 
 const WalletCreator = () => {
-  const userProfile = useSelector((state) => state.users);
   const cryptosData = useSelector((state) => state.cryptos);
 
-  const [cryptos, setCryptos] = useState([]);
   const [cryptoWallet, setCryptoWallet] = useState([]);
+  const [cryptoBalance, setCryptoBalance] = useState();
   const [walletCurrency, setWalletCurrency] = useState();
   const [selectedCurrencyAmount, setSelectedCurrencyAmount] = useState(0);
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleCryptoWalletChange = async (index, amount, name) => {
     const selectedCrypto = (
@@ -33,6 +29,10 @@ const WalletCreator = () => {
     const convertedSpan = document.querySelector("#span-" + crypto);
     const convertedSpanEuro = document.querySelector("#spanEuro-" + crypto);
 
+    const selectedCrypto = cryptosData.cryptos.find(
+      (cr) => cr.symbol === crypto
+    );
+
     //Appel à la BDD
     // if (amount) {
     //   const selectedCrypto = (
@@ -43,43 +43,14 @@ const WalletCreator = () => {
 
     handleCryptoWalletChange(index, amount, crypto);
 
-    if (crypto === "btc") {
-      convertedSpan.innerHTML = parseFloat(
-        (38786.6 * amount).toFixed(2)
-      ).toLocaleString();
-      convertedSpanEuro.innerHTML = parseFloat(
-        (35674.83 * amount).toFixed(2)
-      ).toLocaleString();
-    } else if (crypto === "eth") {
-      convertedSpan.innerHTML = parseFloat(
-        (2093.92 * amount).toFixed(2)
-      ).toLocaleString();
-      convertedSpanEuro.innerHTML = parseFloat(
-        (1951.14 * amount).toFixed(2)
-      ).toLocaleString();
-    } else if (crypto === "usdt") {
-      convertedSpan.innerHTML = parseFloat(
-        (1 * amount).toFixed(2)
-      ).toLocaleString();
-      convertedSpanEuro.innerHTML = parseFloat(
-        (0.92 * amount).toFixed(2)
-      ).toLocaleString();
-    } else if (crypto === "usdc") {
-      convertedSpan.innerHTML = parseFloat(
-        (0.92 * amount).toFixed(2)
-      ).toLocaleString();
-      convertedSpanEuro.innerHTML = parseFloat(
-        (0.92 * amount).toFixed(2)
-      ).toLocaleString();
-    } else if (crypto === "busd") {
-      convertedSpan.innerHTML = parseFloat(
-        (1 * amount).toFixed(2)
-      ).toLocaleString();
-      convertedSpanEuro.innerHTML = parseFloat(
-        (0.92 * amount).toFixed(2)
-      ).toLocaleString();
-    }
-    return convertedSpan, convertedSpanEuro;
+    convertedSpan.innerHTML = parseFloat(
+      (selectedCrypto.current_price * amount).toFixed(2)
+    ).toLocaleString();
+    convertedSpanEuro.innerHTML = parseFloat(
+      (selectedCrypto.current_price * 0.92 * amount).toFixed(2)
+    ).toLocaleString();
+
+    return [convertedSpan, convertedSpanEuro];
   };
 
   const displayExchangeRates = (monnaie) => {
@@ -102,7 +73,7 @@ const WalletCreator = () => {
     spanEuro.innerHTML =
       "1 € = " + filteredCurr[0].eurExchangeRate + " " + filteredCurr[0].symbol;
     spanCurrencyAmount.innerHTML = filteredCurr[0].name;
-    return spanDollar, spanEuro, spanCurrencyAmount;
+    return [spanDollar, spanEuro, spanCurrencyAmount];
   };
 
   const createWallet = async (e) => {
@@ -112,28 +83,43 @@ const WalletCreator = () => {
     const user = userData.data.user;
     console.log("user ::: ", user);
 
-    // BALANCE
-    const cryptoBalance = cryptoWallet.reduce(
-      (accumulator, crypto) => accumulator + parseFloat(crypto?.amount || 0),
-      0
-    );
-
-    console.warn("cryptoBalance ::::", cryptoBalance);
-
-    // CRYPTOS
+    // CRYPTOS;
     console.log("cryptoWallet ::::", cryptoWallet);
+
+    // BALANCE
+    console.warn("cryptoBalance ::::", cryptoBalance);
 
     // DEVISES
     console.log("Currency:", walletCurrency);
     console.log("selectedCurrencyAmount:", selectedCurrencyAmount);
-
-    try {
-    } catch (error) {}
   };
 
+  useEffect(() => {
+    const totalCryptoAmount = cryptoWallet.reduce((accumulator, crpto) => {
+      if (crpto && crpto.amount !== undefined) {
+        const selectedCrypto = cryptosData.cryptos.find(
+          (cr) => cr.symbol === crpto.selectedCrypto[0].symbol.toLowerCase()
+        );
+
+        if (selectedCrypto) {
+          accumulator += parseFloat(
+            crpto.amount * selectedCrypto.current_price
+          );
+        }
+      }
+      return accumulator;
+    }, 0);
+    setCryptoBalance(totalCryptoAmount);
+  }, [cryptoWallet, cryptosData]);
+
   //   useEffect(() => {
-  //     walletCurrency && console.log("walletCurrency ::: ", walletCurrency[0]);
-  //   }, [walletCurrency]);
+  //     cryptosData &&
+  //       cryptosData.cryptos.map((cr) => {
+  //         if (cr.symbol === "eth") {
+  //           console.log(cr.current_price);
+  //         }
+  //       });
+  //   }, [cryptosData]);
 
   return (
     <WalletForm

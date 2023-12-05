@@ -15,7 +15,8 @@ function App() {
   const navigate = useNavigate();
   const userProfile = useSelector(({ users }) => users);
 
-  const acmCryptos = ["btc", "eth", "usdt", "usdc", "busd"];
+  const acmCryptos = ["btc", "eth", "usdt", "usdc", "sol"];
+  // const acmCryptos = ["btc"];
 
   const findToken = () => {
     const localStorageToken = localStorage.getItem("jwt");
