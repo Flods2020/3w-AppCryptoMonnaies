@@ -12,18 +12,18 @@ router.get("/", async (req, res, next) => {
 });
 
 router.post("/create", async (req, res) => {
-  const { user, cryptoTotal, currencyTotal } = req.body;
-
-  const wallet = new Wallet({
-    user,
-    balance,
-    cryptoTotal,
-    currencyTotal,
-    cryptoWallet,
-    currencyWallet,
-  });
+  // const { user, cryptoTotal, currencyTotal } = req.body;
 
   try {
+    const wallet = new Wallet({
+      user: req.body.user,
+      balance: req.body.balance,
+      cryptoTotal: req.body.cryptoTotal,
+      currencyTotal: req.body.currencyTotal,
+      cryptoWallet: req.body.cryptoWallet,
+      currencyWallet: req.body.currencyWallet,
+    });
+
     const savedWallet = await wallet.save();
     res.status(201).send({ wallet: savedWallet });
   } catch (e) {

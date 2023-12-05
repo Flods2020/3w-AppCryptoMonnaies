@@ -7,3 +7,4 @@ export const pwdURL = "users/pwd/me";
 export const transactionsURL = "transactions";
 export const currenciesURL = "currencies";
 export const cryptosURL = "crypto-monnaies";
+export const walletCreateURL = "wallets/create";

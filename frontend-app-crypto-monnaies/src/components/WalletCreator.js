@@ -1,28 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-
-import { dataCurrencies } from "../helper/data-currencies";
 import WalletForm from "./WalletForm";
 import axios from "axios";
-import { baseURL, cryptosURL, userDataURL } from "../helper/url_helper";
+import {
+  baseURL,
+  cryptosURL,
+  currenciesURL,
+  userDataURL,
+  walletCreateURL,
+} from "../helper/url_helper";
 
 const WalletCreator = () => {
   const cryptosData = useSelector((state) => state.cryptos);
 
   const [cryptoWallet, setCryptoWallet] = useState([]);
   const [cryptoBalance, setCryptoBalance] = useState();
+  const [dataCurrencies, setDataCurrencies] = useState();
   const [walletCurrency, setWalletCurrency] = useState();
+  const [convertedSelectedCurrencyAmount, setConvertedSelectedCurrencyAmount] =
+    useState();
   const [selectedCurrencyAmount, setSelectedCurrencyAmount] = useState(0);
 
   const handleCryptoWalletChange = async (index, amount, name) => {
-    const selectedCrypto = (
-      await axios.get(`${baseURL}${cryptosURL}`)
-    ).data.cryptos.filter((cr) => cr.symbol === name.toUpperCase());
-    const newCryptoWallet = [...cryptoWallet];
-    if (selectedCrypto) {
-      newCryptoWallet[index] = { amount, selectedCrypto };
+    if (parseFloat(amount) > 0) {
+      const selectedCrypto = (
+        await axios.get(`${baseURL}${cryptosURL}`)
+      ).data.cryptos.filter((cr) => cr.symbol === name.toUpperCase());
+      const newCryptoWallet = [...cryptoWallet];
+      if (selectedCrypto) {
+        newCryptoWallet[index] = {
+          selectedCrypto,
+          amount: parseFloat(amount),
+        };
+      }
+      setCryptoWallet(newCryptoWallet);
     }
-    setCryptoWallet(newCryptoWallet);
   };
 
   const convertCryptoAndDisplay = async (crypto, amount, index) => {
@@ -58,7 +70,7 @@ const WalletCreator = () => {
     const spanEuro = document.querySelector("#spanCurrencyEuro");
     const spanCurrencyAmount = document.querySelector("#spanCurrencyAmount");
 
-    const filteredCurr = dataCurrencies.filter(
+    const filteredCurr = dataCurrencies.find(
       (curr) => monnaie.split("/")[1] === curr.code
     );
 
@@ -66,14 +78,22 @@ const WalletCreator = () => {
 
     spanDollar.innerHTML =
       "1 $ = " +
-      filteredCurr[0].usdExchangeRate +
+      filteredCurr.usdExchangeRate +
       " " +
-      filteredCurr[0].symbol +
+      filteredCurr.symbol +
       " / ";
     spanEuro.innerHTML =
-      "1 € = " + filteredCurr[0].eurExchangeRate + " " + filteredCurr[0].symbol;
-    spanCurrencyAmount.innerHTML = filteredCurr[0].name;
+      "1 € = " + filteredCurr.eurExchangeRate + " " + filteredCurr.symbol;
+    spanCurrencyAmount.innerHTML = filteredCurr.name;
     return [spanDollar, spanEuro, spanCurrencyAmount];
+  };
+
+  const convertCurrencyAmount = () => {
+    if (selectedCurrencyAmount && walletCurrency) {
+      setConvertedSelectedCurrencyAmount(
+        selectedCurrencyAmount * walletCurrency.usdExchangeRate
+      );
+    }
   };
 
   const createWallet = async (e) => {
@@ -83,15 +103,58 @@ const WalletCreator = () => {
     const user = userData.data.user;
     console.log("user ::: ", user);
 
+    // BALANCE
+    console.warn(
+      "BALANCE ::: ",
+      parseFloat(convertedSelectedCurrencyAmount.toFixed(2)) +
+        parseFloat(cryptoBalance.toFixed(2))
+    );
+    console.log(
+      "converted Selected Currency Amount ::: ",
+      convertedSelectedCurrencyAmount.toFixed(2)
+    );
+    console.log("crypto Total ::::", cryptoBalance.toFixed(2));
+
     // CRYPTOS;
     console.log("cryptoWallet ::::", cryptoWallet);
 
-    // BALANCE
-    console.warn("cryptoBalance ::::", cryptoBalance);
-
     // DEVISES
     console.log("Currency:", walletCurrency);
-    console.log("selectedCurrencyAmount:", selectedCurrencyAmount);
+    console.log("Currency Total:", selectedCurrencyAmount);
+
+    console.log({
+      user: user._id,
+      balance:
+        parseFloat(convertedSelectedCurrencyAmount.toFixed(2)) +
+        parseFloat(cryptoBalance.toFixed(2)),
+      cryptoTotal: parseFloat(cryptoBalance.toFixed(2)),
+      currencyTotal: parseFloat(selectedCurrencyAmount),
+      cryptoWallet,
+      currencyWallet: {
+        currency: walletCurrency._id, // chercher l'id
+        amount: parseFloat(selectedCurrencyAmount),
+      },
+    });
+
+    try {
+      await axios.post(`${baseURL}${walletCreateURL}`, {
+        user: user._id,
+        balance:
+          parseFloat(convertedSelectedCurrencyAmount.toFixed(2)) +
+          parseFloat(cryptoBalance.toFixed(2)),
+        cryptoTotal: parseFloat(cryptoBalance.toFixed(2)),
+        currencyTotal: parseFloat(selectedCurrencyAmount),
+        cryptoWallet,
+        currencyWallet: [
+          {
+            currency: walletCurrency,
+            amount: parseFloat(selectedCurrencyAmount),
+          },
+        ],
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -112,14 +175,24 @@ const WalletCreator = () => {
     setCryptoBalance(totalCryptoAmount);
   }, [cryptoWallet, cryptosData]);
 
-  //   useEffect(() => {
-  //     cryptosData &&
-  //       cryptosData.cryptos.map((cr) => {
-  //         if (cr.symbol === "eth") {
-  //           console.log(cr.current_price);
-  //         }
-  //       });
-  //   }, [cryptosData]);
+  useEffect(() => {
+    convertCurrencyAmount();
+  }, [selectedCurrencyAmount, walletCurrency]);
+
+  useEffect(() => {
+    const fetchDataCurrencies = async () => {
+      try {
+        if (!dataCurrencies) {
+          const response = await axios.get(`${baseURL}${currenciesURL}`);
+          setDataCurrencies(response.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+      console.log(dataCurrencies);
+    };
+    fetchDataCurrencies();
+  }, [dataCurrencies]);
 
   return (
     <WalletForm
@@ -141,11 +214,12 @@ const WalletCreator = () => {
           <option value="" disabled hidden>
             Pas de devise selectionnée
           </option>
-          {dataCurrencies.map((curr, i) => (
-            <option key={i}>
-              {curr.name}/{curr.code}
-            </option>
-          ))}
+          {dataCurrencies &&
+            dataCurrencies.map((curr, i) => (
+              <option key={i}>
+                {curr.name}/{curr.code}
+              </option>
+            ))}
         </select>
         <span id="spanCurrencyDollar"> $ / </span>
         <span id="spanCurrencyEuro"> €</span>
