@@ -15,6 +15,7 @@ const WalletCreator = () => {
 
   const [cryptoWallet, setCryptoWallet] = useState([]);
   const [cryptoBalance, setCryptoBalance] = useState();
+  const [cryptoAmountInput, setCryptoAmountInput] = useState();
   const [dataCurrencies, setDataCurrencies] = useState();
   const [walletCurrency, setWalletCurrency] = useState();
   const [convertedSelectedCurrencyAmount, setConvertedSelectedCurrencyAmount] =
@@ -22,6 +23,7 @@ const WalletCreator = () => {
   const [selectedCurrencyAmount, setSelectedCurrencyAmount] = useState(0);
 
   const handleCryptoWalletChange = async (index, amount, name) => {
+    console.warn(amount);
     if (parseFloat(amount) > 0) {
       const selectedCrypto = (
         await axios.get(`${baseURL}${cryptosURL}`)
@@ -33,6 +35,10 @@ const WalletCreator = () => {
           amount: parseFloat(amount),
         };
       }
+      setCryptoWallet(newCryptoWallet);
+    } else if (Number(amount) === 0) {
+      const newCryptoWallet = [...cryptoWallet];
+      newCryptoWallet.splice(index, 1);
       setCryptoWallet(newCryptoWallet);
     }
   };
@@ -91,8 +97,10 @@ const WalletCreator = () => {
   const convertCurrencyAmount = () => {
     if (selectedCurrencyAmount && walletCurrency) {
       setConvertedSelectedCurrencyAmount(
-        selectedCurrencyAmount * walletCurrency.usdExchangeRate
+        selectedCurrencyAmount / walletCurrency.usdExchangeRate
       );
+    } else {
+      setConvertedSelectedCurrencyAmount(0);
     }
   };
 
@@ -101,19 +109,20 @@ const WalletCreator = () => {
     // USER
     const userData = await axios.get(`${baseURL}${userDataURL}`);
     const user = userData.data.user;
-    console.log("user ::: ", user);
+    // console.log("user ::: ", user);
 
     // BALANCE
     console.warn(
       "BALANCE ::: ",
-      parseFloat(convertedSelectedCurrencyAmount.toFixed(2)) +
-        parseFloat(cryptoBalance.toFixed(2))
+      (
+        parseFloat(convertedSelectedCurrencyAmount) + parseFloat(cryptoBalance)
+      ).toFixed(2)
     );
     console.log(
       "converted Selected Currency Amount ::: ",
-      convertedSelectedCurrencyAmount.toFixed(2)
+      convertedSelectedCurrencyAmount
     );
-    console.log("crypto Total ::::", cryptoBalance.toFixed(2));
+    console.log("crypto Total ::::", cryptoBalance);
 
     // CRYPTOS;
     console.log("cryptoWallet ::::", cryptoWallet);
@@ -158,22 +167,34 @@ const WalletCreator = () => {
   };
 
   useEffect(() => {
-    const totalCryptoAmount = cryptoWallet.reduce((accumulator, crpto) => {
-      if (crpto && crpto.amount !== undefined) {
-        const selectedCrypto = cryptosData.cryptos.find(
-          (cr) => cr.symbol === crpto.selectedCrypto[0].symbol.toLowerCase()
-        );
-
-        if (selectedCrypto) {
-          accumulator += parseFloat(
-            crpto.amount * selectedCrypto.current_price
+    if (cryptoWallet) {
+      const totalCryptoAmount = cryptoWallet.reduce((accumulator, crpto) => {
+        if (crpto) {
+          const selectedCrypto = cryptosData.cryptos.find(
+            (cr) => cr.symbol === crpto.selectedCrypto[0].symbol.toLowerCase()
           );
+
+          if (selectedCrypto) {
+            console.log("accumulator -1 ::::: ", accumulator);
+            accumulator += parseFloat(
+              crpto.amount * selectedCrypto.current_price
+            );
+            console.log("accumulator ::::: ", accumulator);
+          }
         }
+        return accumulator;
+      }, 0);
+
+      if (!totalCryptoAmount) {
+        console.log("All conditions not met, resetting accumulator to 0");
+        setCryptoBalance(0);
+      } else {
+        setCryptoBalance(totalCryptoAmount);
       }
-      return accumulator;
-    }, 0);
-    setCryptoBalance(totalCryptoAmount);
-  }, [cryptoWallet, cryptosData]);
+    } else {
+      setCryptoBalance(0);
+    }
+  }, [cryptoWallet, cryptosData, cryptoBalance, convertCryptoAndDisplay]);
 
   useEffect(() => {
     convertCurrencyAmount();
@@ -243,10 +264,14 @@ const WalletCreator = () => {
             <label htmlFor={`balance-${crypt.name}`}>{crypt.name}</label>
             <input
               id={`balance-${crypt.name}`}
-              //   varia={crypt.symbol}
-              varia={cryptoWallet}
               onChange={(e) => {
-                convertCryptoAndDisplay(crypt.symbol, e.target.value, i);
+                convertCryptoAndDisplay(
+                  crypt.symbol,
+                  e.target.value === "0" || !e.target.value
+                    ? 0
+                    : parseFloat(e.target.value),
+                  i
+                );
               }}
               type={"number"}
               step={
