@@ -194,7 +194,7 @@ const WalletCreator = () => {
       }, 0);
 
       if (!totalCryptoAmount) {
-        console.log("All conditions not met, resetting accumulator to 0");
+        // console.log("All conditions not met, resetting accumulator to 0");
         setCryptoBalance(0);
       } else {
         setCryptoBalance(totalCryptoAmount);
@@ -218,7 +218,7 @@ const WalletCreator = () => {
       } catch (error) {
         console.error(error);
       }
-      console.log(dataCurrencies);
+      //   console.log(dataCurrencies);
     };
     fetchDataCurrencies();
   }, [dataCurrencies]);
@@ -269,6 +269,7 @@ const WalletCreator = () => {
 
           <input
             type="number"
+            autoComplete="off"
             min={0}
             onChange={(e) => setSelectedCurrencyAmount(e.target.value)}
           />
@@ -276,40 +277,45 @@ const WalletCreator = () => {
       </div>
 
       <h4>Cryptos</h4>
-      <p>Selectionnez vos cryptos et leurs montants</p>
-      {cryptosData &&
-        cryptosData.cryptos.map((crypt, i) => (
-          <div className="acm-wallet-crypto-container" key={i}>
-            <label htmlFor={`balance-${crypt.name}`}>{crypt.name}</label>
-            <input
-              id={`balance-${crypt.name}`}
-              onChange={(e) => {
-                const inputValue = e.target.value.trim(); // Supprimez les espaces
-                const numericValue =
-                  inputValue === "" ? 0 : parseFloat(inputValue);
-                convertCryptoAndDisplay(crypt.symbol, numericValue, i);
-              }}
-              onInput={(e) => {
-                convertCryptoAndDisplay(
-                  crypt.symbol,
-                  e.target.value === 0 || !e.target.value
-                    ? 0
-                    : parseFloat(e.target.value),
-                  i
-                );
-              }}
-              type={"number"}
-              step={
-                crypt.symbol.includes("btc") || crypt.symbol.includes("eth")
-                  ? "0.001"
-                  : "0.1"
-              }
-              min={"-0"}
-            />{" "}
-            <span id={`span-${crypt.symbol}`}>0</span> $ --{" "}
-            <span id={`spanEuro-${crypt.symbol}`}>0</span> €
-          </div>
-        ))}
+      <div className="acm-wallet-crypto-container">
+        <span className="spanCryptoSelectText">
+          Selectionnez vos cryptos et leurs montants
+        </span>
+        {cryptosData &&
+          cryptosData.cryptos.map((crypt, i) => (
+            <div className="acm-wallet-crypto-input-containers" key={i}>
+              <label htmlFor={`balance-${crypt.name}`}>{crypt.name}</label>
+              <input
+                id={`balance-${crypt.name}`}
+                onChange={(e) => {
+                  const inputValue = e.target.value.trim(); // Supprimez les espaces
+                  const numericValue =
+                    inputValue === "" ? 0 : parseFloat(inputValue);
+                  convertCryptoAndDisplay(crypt.symbol, numericValue, i);
+                }}
+                onInput={(e) => {
+                  convertCryptoAndDisplay(
+                    crypt.symbol,
+                    e.target.value === 0 || !e.target.value
+                      ? 0
+                      : parseFloat(e.target.value),
+                    i
+                  );
+                }}
+                type={"number"}
+                autoComplete="off"
+                step={
+                  crypt.symbol.includes("btc") || crypt.symbol.includes("eth")
+                    ? "0.001"
+                    : "0.1"
+                }
+                min={"-0"}
+              />{" "}
+              <span id={`span-${crypt.symbol}`}>0</span> $ --{" "}
+              <span id={`spanEuro-${crypt.symbol}`}>0</span> €
+            </div>
+          ))}
+      </div>
     </WalletForm>
   );
 };

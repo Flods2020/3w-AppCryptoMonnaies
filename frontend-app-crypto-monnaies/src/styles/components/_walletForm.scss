@@ -56,6 +56,7 @@
             #spanCurrencyAmount {
               font-size: 1.1em;
               font-style: italic;
+              font-weight: bolder;
               color: $inputs-color-1;
               margin: 2px 5px;
               border-bottom: 1px solid $color-2;
@@ -74,6 +75,48 @@
             &:focus-within {
               box-shadow: 0 0 2px rgba($color-4, 0.75);
             }
+          }
+        }
+      }
+
+      .acm-wallet-crypto-container {
+        .spanCryptoSelectText {
+          margin: 10px;
+        }
+
+        .acm-wallet-crypto-input-containers {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 15px auto;
+          width: 90%;
+          border: 2px solid black;
+
+          label {
+            width: 25%;
+            color: $color-1;
+            background: rgba($color-3, 0.5);
+            text-align: center;
+            padding: 3px;
+            font-weight: bolder;
+          }
+          input {
+            border: none;
+            border-bottom: 1px solid $color-1;
+            border-radius: 1px;
+            margin: 10px 30px;
+            padding: 7px;
+            width: 30%;
+            text-align: center;
+            transition: box-shadow 0.4s;
+
+            &:focus-within {
+              box-shadow: 0 0 2px rgba($color-4, 0.75);
+            }
+          }
+
+          span {
+            width: 30%;
           }
         }
       }
