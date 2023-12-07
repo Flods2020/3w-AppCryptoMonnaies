@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import WalletForm from "./WalletForm";
 import axios from "axios";
@@ -9,67 +9,74 @@ import {
   userDataURL,
   walletCreateURL,
 } from "../helper/url_helper";
+import { useNavigate } from "react-router-dom";
 
 const WalletCreator = () => {
   const cryptosData = useSelector((state) => state.cryptos);
 
   const [cryptoWallet, setCryptoWallet] = useState([]);
   const [cryptoBalance, setCryptoBalance] = useState();
-  const [cryptoAmountInput, setCryptoAmountInput] = useState();
   const [dataCurrencies, setDataCurrencies] = useState();
   const [walletCurrency, setWalletCurrency] = useState();
   const [convertedSelectedCurrencyAmount, setConvertedSelectedCurrencyAmount] =
     useState();
   const [selectedCurrencyAmount, setSelectedCurrencyAmount] = useState(0);
 
-  const handleCryptoWalletChange = async (index, amount, name) => {
-    console.warn(amount);
-    if (parseFloat(amount) > 0) {
-      const selectedCrypto = (
-        await axios.get(`${baseURL}${cryptosURL}`)
-      ).data.cryptos.filter((cr) => cr.symbol === name.toUpperCase());
-      const newCryptoWallet = [...cryptoWallet];
-      if (selectedCrypto) {
-        newCryptoWallet[index] = {
-          selectedCrypto,
-          amount: parseFloat(amount),
-        };
+  const navigate = useNavigate();
+
+  const handleCryptoWalletChange = useCallback(
+    async (index, amount, name) => {
+      //   console.warn(amount);
+      if (amount > 0) {
+        try {
+          const selectedCrypto = (
+            await axios.get(`${baseURL}${cryptosURL}`)
+          ).data.cryptos.filter((cr) => cr.symbol === name.toUpperCase());
+          const newCryptoWallet = [...cryptoWallet];
+          if (selectedCrypto) {
+            newCryptoWallet[index] = {
+              selectedCrypto,
+              amount: parseFloat(amount),
+            };
+          }
+          setCryptoWallet(newCryptoWallet);
+        } catch (error) {
+          console.error(error);
+        }
+      } else if (amount === 0) {
+        const newCryptoWallet = [...cryptoWallet];
+        newCryptoWallet.splice(index, 1);
+        setCryptoWallet(newCryptoWallet);
       }
-      setCryptoWallet(newCryptoWallet);
-    } else if (Number(amount) === 0) {
-      const newCryptoWallet = [...cryptoWallet];
-      newCryptoWallet.splice(index, 1);
-      setCryptoWallet(newCryptoWallet);
-    }
-  };
+    },
+    [cryptoWallet]
+  );
 
-  const convertCryptoAndDisplay = async (crypto, amount, index) => {
-    const convertedSpan = document.querySelector("#span-" + crypto);
-    const convertedSpanEuro = document.querySelector("#spanEuro-" + crypto);
+  const convertCryptoAndDisplay = useCallback(
+    async (crypto, amount, index) => {
+      const convertedSpan = document.querySelector("#span-" + crypto);
+      const convertedSpanEuro = document.querySelector("#spanEuro-" + crypto);
 
-    const selectedCrypto = cryptosData.cryptos.find(
-      (cr) => cr.symbol === crypto
-    );
+      const selectedCrypto = cryptosData.cryptos.find(
+        (cr) => cr.symbol === crypto
+      );
 
-    //Appel à la BDD
-    // if (amount) {
-    //   const selectedCrypto = (
-    //     await axios.get(`${baseURL}${cryptosURL}`)
-    //   ).data.cryptos.filter((cr) => cr.symbol === crypto.toUpperCase());
-    //   console.log("selectedCrypto ::: ", selectedCrypto);
-    // }
+      convertedSpan.innerHTML =
+        parseFloat(
+          (selectedCrypto.current_price * amount)?.toFixed(2)
+        )?.toLocaleString() ?? "N/A";
 
-    handleCryptoWalletChange(index, amount, crypto);
+      convertedSpanEuro.innerHTML =
+        parseFloat(
+          (selectedCrypto.current_price * 0.92 * amount)?.toFixed(2)
+        )?.toLocaleString() ?? "N/A";
 
-    convertedSpan.innerHTML = parseFloat(
-      (selectedCrypto.current_price * amount).toFixed(2)
-    ).toLocaleString();
-    convertedSpanEuro.innerHTML = parseFloat(
-      (selectedCrypto.current_price * 0.92 * amount).toFixed(2)
-    ).toLocaleString();
+      handleCryptoWalletChange(index, amount, crypto);
 
-    return [convertedSpan, convertedSpanEuro];
-  };
+      return [convertedSpan, convertedSpanEuro];
+    },
+    [handleCryptoWalletChange, cryptosData]
+  );
 
   const displayExchangeRates = (monnaie) => {
     const spanDollar = document.querySelector("#spanCurrencyDollar");
@@ -83,11 +90,7 @@ const WalletCreator = () => {
     setWalletCurrency(filteredCurr);
 
     spanDollar.innerHTML =
-      "1 $ = " +
-      filteredCurr.usdExchangeRate +
-      " " +
-      filteredCurr.symbol +
-      " / ";
+      "1 $ = " + filteredCurr.usdExchangeRate + " " + filteredCurr.symbol;
     spanEuro.innerHTML =
       "1 € = " + filteredCurr.eurExchangeRate + " " + filteredCurr.symbol;
     spanCurrencyAmount.innerHTML = filteredCurr.name;
@@ -131,19 +134,19 @@ const WalletCreator = () => {
     console.log("Currency:", walletCurrency);
     console.log("Currency Total:", selectedCurrencyAmount);
 
-    console.log({
-      user: user._id,
-      balance:
-        parseFloat(convertedSelectedCurrencyAmount.toFixed(2)) +
-        parseFloat(cryptoBalance.toFixed(2)),
-      cryptoTotal: parseFloat(cryptoBalance.toFixed(2)),
-      currencyTotal: parseFloat(selectedCurrencyAmount),
-      cryptoWallet,
-      currencyWallet: {
-        currency: walletCurrency._id, // chercher l'id
-        amount: parseFloat(selectedCurrencyAmount),
-      },
-    });
+    // console.log({
+    //   user: user._id,
+    //   balance:
+    //     parseFloat(convertedSelectedCurrencyAmount.toFixed(2)) +
+    //     parseFloat(cryptoBalance.toFixed(2)),
+    //   cryptoTotal: parseFloat(cryptoBalance.toFixed(2)),
+    //   currencyTotal: parseFloat(selectedCurrencyAmount),
+    //   cryptoWallet,
+    //   currencyWallet: {
+    //     currency: walletCurrency._id, // chercher l'id
+    //     amount: parseFloat(selectedCurrencyAmount),
+    //   },
+    // });
 
     try {
       await axios.post(`${baseURL}${walletCreateURL}`, {
@@ -161,8 +164,13 @@ const WalletCreator = () => {
           },
         ],
       });
+      alert("Votre portefeuille a bien été créé !");
+      navigate("/home");
     } catch (error) {
       console.error(error);
+      alert(
+        "Une erreur est survenue lors de la création de votre portefeuille."
+      );
     }
   };
 
@@ -175,11 +183,11 @@ const WalletCreator = () => {
           );
 
           if (selectedCrypto) {
-            console.log("accumulator -1 ::::: ", accumulator);
+            // console.log("accumulator -1 ::::: ", accumulator);
             accumulator += parseFloat(
               crpto.amount * selectedCrypto.current_price
             );
-            console.log("accumulator ::::: ", accumulator);
+            // console.log("accumulator ::::: ", accumulator);
           }
         }
         return accumulator;
@@ -194,7 +202,7 @@ const WalletCreator = () => {
     } else {
       setCryptoBalance(0);
     }
-  }, [cryptoWallet, cryptosData, cryptoBalance, convertCryptoAndDisplay]);
+  }, [cryptoWallet, cryptosData, cryptoBalance, handleCryptoWalletChange]);
 
   useEffect(() => {
     convertCurrencyAmount();
@@ -220,40 +228,51 @@ const WalletCreator = () => {
       formType={"create-wallet"}
       handleSubmit={createWallet}
       btnSub={"Créer"}
-      //   disabled={cryptoBalance === 0}
+      disabled={!walletCurrency}
     >
       <h4>Monnaies</h4>
-      <p>Selectionnez votre monnaie</p>
       <div className="acm-wallet-currency-container">
-        <select
-          name=""
-          id="currency-selector"
-          defaultValue=""
-          onChange={(e) => displayExchangeRates(e.target.value)}
-        >
-          {" "}
-          <option value="" disabled hidden>
-            Pas de devise selectionnée
-          </option>
-          {dataCurrencies &&
-            dataCurrencies.map((curr, i) => (
-              <option key={i}>
-                {curr.name}/{curr.code}
-              </option>
-            ))}
-        </select>
-        <span id="spanCurrencyDollar"> $ / </span>
-        <span id="spanCurrencyEuro"> €</span>
-        <br />
-        <span>
-          Indiquez votre montant en <span id="spanCurrencyAmount">*</span>
+        <span className="spanCurrencySelectText">
+          Selectionnez votre monnaie
         </span>
-        <br />
-        <input
-          type="number"
-          min={"0"}
-          onChange={(e) => setSelectedCurrencyAmount(e.target.value)}
-        />
+        <div className="acm-wallet-currency-select-container">
+          <select
+            name=""
+            id="currency-selector"
+            defaultValue=""
+            onChange={(e) => displayExchangeRates(e.target.value)}
+          >
+            {" "}
+            <option value="" disabled hidden>
+              Pas de devise selectionnée
+            </option>
+            {dataCurrencies &&
+              dataCurrencies.map((curr, i) => (
+                <option key={i}>
+                  {curr.name}/{curr.code}
+                </option>
+              ))}
+          </select>
+          <div className="acm-wallet-currency-spans-container">
+            <span id="spanCurrencyDollar"> $ </span> /
+            <span id="spanCurrencyEuro"> €</span>
+          </div>
+        </div>
+
+        <div
+          className="currencyAmount-container"
+          style={{ display: walletCurrency ? "block" : "none" }}
+        >
+          <span className="spanCurrencyAmountText">
+            Indiquez votre montant en <span id="spanCurrencyAmount">*</span>
+          </span>
+
+          <input
+            type="number"
+            min={0}
+            onChange={(e) => setSelectedCurrencyAmount(e.target.value)}
+          />
+        </div>
       </div>
 
       <h4>Cryptos</h4>
@@ -265,9 +284,15 @@ const WalletCreator = () => {
             <input
               id={`balance-${crypt.name}`}
               onChange={(e) => {
+                const inputValue = e.target.value.trim(); // Supprimez les espaces
+                const numericValue =
+                  inputValue === "" ? 0 : parseFloat(inputValue);
+                convertCryptoAndDisplay(crypt.symbol, numericValue, i);
+              }}
+              onInput={(e) => {
                 convertCryptoAndDisplay(
                   crypt.symbol,
-                  e.target.value === "0" || !e.target.value
+                  e.target.value === 0 || !e.target.value
                     ? 0
                     : parseFloat(e.target.value),
                   i
@@ -279,7 +304,7 @@ const WalletCreator = () => {
                   ? "0.001"
                   : "0.1"
               }
-              min={"0"}
+              min={"-0"}
             />{" "}
             <span id={`span-${crypt.symbol}`}>0</span> $ --{" "}
             <span id={`spanEuro-${crypt.symbol}`}>0</span> €
