@@ -1,20 +1,42 @@
 @media screen and (min-width: 0) {
   .acm-wallet-form-container {
     margin: 10px auto;
-    // border: 2px solid $color-1;
 
     h3 {
       margin: 10px 5px;
       padding: 7px 0;
-      border-bottom: 1px solid $color-3;
+      border-bottom: 2px solid $color-3;
     }
 
     .acm-wallet-form {
+      .btn-form {
+        display: flex;
+        justify-content: center;
+        button {
+          margin: 20px;
+          padding: 7px 15px;
+          font-weight: bolder;
+          font-size: 1.2em;
+          color: $color-3;
+          cursor: pointer;
+          transition: 0.3s ease;
+
+          &:disabled {
+            display: none;
+          }
+          &:hover {
+            background: $color-3;
+            color: $color-2;
+          }
+        }
+      }
       h4 {
         margin: 10px;
       }
 
       .acm-wallet-currency-container {
+        border-bottom: 1px solid $color-3;
+        padding: 30px 0;
         .spanCurrencySelectText {
           margin: 10px;
         }
@@ -41,10 +63,10 @@
             font-size: 0.9em;
 
             #spanCurrencyDollar {
-              color: #058803;
+              color: $dollar-color;
             }
             #spanCurrencyEuro {
-              color: #0503c8;
+              color: $euro-color;
             }
           }
         }
@@ -60,6 +82,7 @@
               color: $inputs-color-1;
               margin: 2px 5px;
               border-bottom: 1px solid $color-2;
+              // background: rgba($color-2, 0.4);
             }
           }
 
@@ -89,13 +112,13 @@
           align-items: center;
           justify-content: center;
           margin: 15px auto;
-          width: 90%;
-          border: 2px solid black;
+          max-width: 90%;
+          // border: 2px solid black;
 
           label {
             width: 25%;
-            color: $color-1;
-            background: rgba($color-3, 0.5);
+            color: $color-2;
+            background: rgba($color-4, 0.4);
             text-align: center;
             padding: 3px;
             font-weight: bolder;
@@ -106,7 +129,7 @@
             border-radius: 1px;
             margin: 10px 30px;
             padding: 7px;
-            width: 30%;
+            min-width: 30%;
             text-align: center;
             transition: box-shadow 0.4s;
 
@@ -115,8 +138,26 @@
             }
           }
 
-          span {
-            width: 30%;
+          .spanConvert-container {
+            display: flex;
+            flex-direction: column;
+            // border: 1px solid black;
+            max-width: 50%;
+            span {
+              display: flex;
+              flex-wrap: wrap;
+              // border: 1px solid green;
+              overflow-x: auto;
+              padding: 5px;
+              font-weight: bolder;
+
+              &:first-child {
+                color: $dollar-color;
+              }
+              &:last-child {
+                color: $euro-color;
+              }
+            }
           }
         }
       }

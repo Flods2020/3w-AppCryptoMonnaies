@@ -64,12 +64,12 @@ const WalletCreator = () => {
       convertedSpan.innerHTML =
         parseFloat(
           (selectedCrypto.current_price * amount)?.toFixed(2)
-        )?.toLocaleString() ?? "N/A";
+        )?.toLocaleString() + " $" ?? "N/A";
 
       convertedSpanEuro.innerHTML =
         parseFloat(
           (selectedCrypto.current_price * 0.92 * amount)?.toFixed(2)
-        )?.toLocaleString() ?? "N/A";
+        )?.toLocaleString() + " €" ?? "N/A";
 
       handleCryptoWalletChange(index, amount, crypto);
 
@@ -284,7 +284,9 @@ const WalletCreator = () => {
         {cryptosData &&
           cryptosData.cryptos.map((crypt, i) => (
             <div className="acm-wallet-crypto-input-containers" key={i}>
-              <label htmlFor={`balance-${crypt.name}`}>{crypt.name}</label>
+              <label htmlFor={`balance-${crypt.name}`}>
+                {crypt.name} <br /> {crypt.symbol.toUpperCase()}
+              </label>
               <input
                 id={`balance-${crypt.name}`}
                 onChange={(e) => {
@@ -309,10 +311,13 @@ const WalletCreator = () => {
                     ? "0.001"
                     : "0.1"
                 }
-                min={"-0"}
-              />{" "}
-              <span id={`span-${crypt.symbol}`}>0</span> $ --{" "}
-              <span id={`spanEuro-${crypt.symbol}`}>0</span> €
+                min={"0"}
+                max={"10000"}
+              />
+              <div className="spanConvert-container">
+                <span id={`span-${crypt.symbol}`}>$</span>
+                <span id={`spanEuro-${crypt.symbol}`}>€</span>
+              </div>
             </div>
           ))}
       </div>
