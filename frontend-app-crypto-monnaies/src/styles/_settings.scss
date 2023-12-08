@@ -52,7 +52,7 @@ $euro-color: #f4e510;
 }
 
 body {
-  background: $color-2;
+  background: linear-gradient(rgba($color-5, 1), rgba($color-5, 0.9));
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", Arial, sans-serif;
   color: $color-1;

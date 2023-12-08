@@ -48,12 +48,13 @@
     li {
       display: grid;
       justify-content: center;
+      text-align: center;
       align-items: center;
-      // flex-wrap: nowrap;
+      padding: 5px;
       height: 100%;
-      border: 2px solid $color-2;
+      border: 1px solid rgba($color-2, 0.6);
       border-bottom: none;
-      background: $color-4;
+      background: rgba($color-3, 0.2);
       color: $color-1;
     }
 

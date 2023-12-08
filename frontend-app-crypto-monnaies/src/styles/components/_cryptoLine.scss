@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: 30% 70%;
   color: $color-2;
+  background: rgba($color-3, 0.2);
 
   .crypto-infos {
     display: flex;

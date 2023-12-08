@@ -43,21 +43,9 @@ const Devises = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const currentDate = new Date(Date.now());
-    const year = currentDate.getFullYear();
-    const month = String(currentDate.getMonth() + 1).padStart(2, "0");
-    const day = String(currentDate.getDate()).padStart(2, "0");
-
-    const formattedDate = `${year}-${month}-${day}`;
-
-    setToday(formattedDate);
-  }, []);
-
   return (
     <div className="acm-devises-container">
-      <h1>Devises</h1>
-      <h2>{today}</h2>
+      <h2>Devises</h2>
       <div>
         {!isEmpty(currencies) &&
           Object.entries(currencies)

@@ -3,8 +3,20 @@
   margin: 10px auto;
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
   border: 3px double rgba($color-1, 0.3);
   font-size: 0.9em;
+  font-size: 1.2em;
+
+  .currency-infos {
+    // background: red;
+    // background: rgba($color-1, 0.1);
+    background: rgba($color-3, 0.2);
+
+    h3 {
+      color: $color-1;
+    }
+  }
 
   .currency-infos,
   .currency-changes {
@@ -13,19 +25,41 @@
     align-items: center;
     border-left: 3px solid rgba($color-3, 0.8);
     border-right: 3px solid rgba($color-3, 0.8);
-    background: rgba($color-1, 0.1);
-    padding: 2px 10px;
+    // background: rgba($color-1, 0.1);
+    padding: 10px;
+  }
+  .currency-changes {
+    :first-child {
+      color: $dollar-color;
+    }
+    :last-child {
+      color: $euro-color;
+    }
   }
 
-  .crypto-changes {
-    font-size: 0.8em;
+  .crypto-changes-container {
     display: flex;
-    gap: 2px;
-    align-items: center;
-    border-left: 3px solid rgba($color-1, 0.8);
-    border-right: 3px solid rgba($color-1, 0.8);
-    padding: 2px 10px;
-    background: rgba($color-3, 0.2);
-    color: $color-2;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    .crypto-changes {
+      width: 19%;
+      font-size: 0.8em;
+      display: flex;
+      border: 1px solid rgba($color-1, 0.8);
+      padding: 2px 10px;
+      background: rgba($color-3, 0.2);
+      color: $color-2;
+
+      span {
+        text-align: center;
+        h4 {
+          margin: 4px;
+        }
+        span {
+          color: $color-1;
+          // font-style: italic;
+        }
+      }
+    }
   }
 }

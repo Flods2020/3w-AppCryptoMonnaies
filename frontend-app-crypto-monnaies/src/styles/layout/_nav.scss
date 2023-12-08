@@ -1,7 +1,8 @@
 @media screen and (min-width: 0) {
   .acm-nav-container {
     z-index: 100;
-    background: $color-3;
+    // background: $color-3;
+    background: linear-gradient(rgba($color-3, 1), rgba($color-5, 0.9));
     position: sticky;
     top: 0;
     padding-top: 10px;
