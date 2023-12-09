@@ -1,137 +1,43 @@
-.acm-wallet-container {
-  border-top: 2px solid $color-4;
-  border-bottom: 2px solid $color-4;
-  border-left: 1px solid $color-4;
-  border-right: 1px solid $color-4;
-  margin-top: 15px;
-  margin-bottom: 50px;
-  padding: 10px;
-  background: $color-5;
-
-  h2 {
-    text-align: center;
-    border-bottom: 1px dashed $color-4;
-    border-top: 1px dashed $color-4;
-    background: $color-3;
-  }
-
-  .wallet-display {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    padding: 10px;
-    color: $color-2;
-
-    #soldes {
-      // margin: auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1.4em;
-      font-weight: bolder;
-      font-style: italic;
-      padding: 2px;
-    }
-
-    .wallet-currencies-container {
-      display: flex;
-      flex-direction: column;
-
-      span {
-        margin: 7px;
-      }
-    }
-  }
-
-  .wallet-btn {
-    width: 25%;
-    text-align: center;
-    margin: 10px auto;
-    padding: 2px;
-    background: $color-3;
-    border: 1px solid $color-1;
-    cursor: pointer;
-    transition: 0.3s ease;
-
-    &:hover {
-      background-color: $color-2;
-    }
-  }
-
-  .wallet-total {
-    border: 1px solid $color-1;
-    background: $color-4;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    width: 70%;
-    text-align: center;
-    margin: 20px auto;
-    padding: 25px;
-    font-size: 2em;
-    font-weight: bolder;
-  }
-
-  .wallet-transac {
-    border: 1px solid $color-1;
-    display: flex;
-    justify-content: space-between;
-    // align-items: center;
-    flex-direction: column;
-    width: 50%;
-    text-align: center;
-    margin: 10px auto;
-    padding: 3px;
-
-    .transac-container {
-      display: flex;
-      justify-content: space-between;
-      border: 2px solid $color-2;
-
-      span {
-        margin: 10px auto;
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 400px) {
+@media screen and (min-width: 0) {
   .acm-wallet-container {
-    padding: 5px;
+    border-top: 2px solid $color-4;
+    border-bottom: 2px solid $color-4;
+    border-left: 1px solid $color-4;
+    border-right: 1px solid $color-4;
+    margin-top: 15px;
+    margin-bottom: 50px;
+    padding: 10px;
+    background: $color-5;
+
+    h2 {
+      text-align: center;
+      border-bottom: 1px dashed $color-4;
+      border-top: 1px dashed $color-4;
+      background: $color-3;
+    }
 
     .wallet-display {
-      span {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    }
-
-    .wallet-btn {
-      width: 75%;
-      text-align: center;
-      margin: 10px auto;
-      padding: 2px;
-      background: $color-3;
-      border: 1px solid $color-1;
-
-      &:hover {
-        background-color: $color-2;
-      }
-    }
-
-    .wallet-total {
-      font-size: 1.3em;
-    }
-
-    .wallet-transac,
-    .wallet-total {
-      width: 90%;
-      border: 1px solid $color-1;
       display: flex;
       justify-content: space-evenly;
-      margin: 10px;
-      padding: 3px;
+      align-items: center;
+      flex-direction: column;
+      padding: 10px;
+
+      .soldeSpan {
+        font-size: 1.1em;
+        #soldes {
+          margin: 10px;
+          color: $dollar-color;
+          // margin: auto;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 1.4em;
+          font-weight: bolder;
+          font-style: italic;
+          padding: 2px;
+        }
+      }
     }
   }
 }

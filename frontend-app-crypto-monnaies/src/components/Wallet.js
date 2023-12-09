@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "../styles/index.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { isEmpty } from "../helper/Utils";
-import { baseURL, transactionsURL } from "../helper/url_helper";
+import {
+  baseURL,
+  transactionsURL,
+  userDataURL,
+  userWalletURL,
+} from "../helper/url_helper";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
@@ -10,12 +14,14 @@ import {
   setTransactionsData,
 } from "../store/slices/transactionsSlice";
 import WalletCreator from "./WalletCreator";
+import { isEmpty } from "../helper/Utils";
 
 const Wallet = () => {
   // const transactionsData = useSelector((state) => state.transactions);
   // const userProfile = useSelector((state) => state.users);
 
   const [transacs, setTransacs] = useState();
+  const [userWallet, setUserWallet] = useState();
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -31,13 +37,50 @@ const Wallet = () => {
   //   }
   // }, [dispatch, transactionsData, transacs]);
 
-  return (
-    <>
-      <div className="acm-wallet-container">
-        <h2>Mon Portefeuille</h2>
-        <WalletCreator />
+  const fetchUserProfile = async () => {
+    try {
+      const response = await axios.get(`${baseURL}${userDataURL}`);
+      const user = response.data.user;
+      return user;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-        {/* <div className="wallet-transac">
+  useEffect(() => {
+    const fetchUserWallet = async () => {
+      try {
+        await axios
+          .get(`${baseURL}${userWalletURL}`, fetchUserProfile())
+          .then((res) => setUserWallet(res.data));
+      } catch (error) {
+        console.error(error);
+      }
+      console.log("userWallet ::: ", userWallet);
+    };
+    !userWallet && fetchUserWallet();
+  }, [userWallet, fetchUserProfile]);
+
+  return (
+    <div className="acm-wallet-container">
+      <h2>Mon Portefeuille</h2>
+      {!isEmpty(userWallet) ? (
+        <div className="wallet-display">
+          <span className="soldeSpan">
+            Votre solde actuel :<div id="soldes">{userWallet[0].balance} $</div>
+          </span>
+
+          <div className="wallet-crypto-container">
+            <div className="wallet-crypto-balance">
+              Total Crypto : {userWallet[0].cryptoTotal}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <WalletCreator />
+      )}
+
+      {/* <div className="wallet-transac">
           {!isEmpty(transacs) &&
             transacs.map((tr, i) => (
               <div className="transac-container" key={i}>
@@ -48,8 +91,7 @@ const Wallet = () => {
               </div>
             ))}
         </div> */}
-      </div>
-    </>
+    </div>
   );
 };
 

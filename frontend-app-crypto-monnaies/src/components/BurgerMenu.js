@@ -36,7 +36,7 @@ const BurgerMenu = () => {
               to={lien}
               key={i}
               style={{
-                color: nav === "Déconnexion" ? "#111" : "#fff",
+                color: nav === "Déconnexion" ? "#e97911" : "#fff",
                 textDecoration: "none",
               }}
               onClick={nav === "Déconnexion" ? logout : ToggleLinks}

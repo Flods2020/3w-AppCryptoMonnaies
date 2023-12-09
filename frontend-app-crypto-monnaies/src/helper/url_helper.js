@@ -8,3 +8,4 @@ export const transactionsURL = "transactions";
 export const currenciesURL = "currencies";
 export const cryptosURL = "crypto-monnaies";
 export const walletCreateURL = "wallets/create";
+export const userWalletURL = "wallets/me";

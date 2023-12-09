@@ -1,5 +1,6 @@
 const express = require("express");
 const { Wallet } = require("../models/wallets.models");
+const authentification = require("../middlewares/authentification");
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
@@ -7,13 +8,24 @@ router.get("/", async (req, res, next) => {
     const wallets = await Wallet.find({});
     res.send(wallets);
   } catch (error) {
-    res.status(401).send(e);
+    res.status(401).send(error);
+  }
+});
+
+router.get("/me", authentification, async (req, res, next) => {
+  const user = req.user;
+  try {
+    const wallets = await Wallet.find({});
+    const userWallet = wallets.filter(
+      (wallet) => wallet.user.toString() === user._id.toString()
+    );
+    res.send(userWallet);
+  } catch (err) {
+    res.status(400).send(err);
   }
 });
 
 router.post("/create", async (req, res) => {
-  // const { user, cryptoTotal, currencyTotal } = req.body;
-
   try {
     const wallet = new Wallet({
       user: req.body.user,
