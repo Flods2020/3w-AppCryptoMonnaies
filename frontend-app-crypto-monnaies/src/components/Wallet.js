@@ -15,6 +15,7 @@ import {
 } from "../store/slices/transactionsSlice";
 import WalletCreator from "./WalletCreator";
 import { isEmpty } from "../helper/Utils";
+import { currenciesData } from "../helper/data-currencies";
 
 const Wallet = () => {
   // const transactionsData = useSelector((state) => state.transactions);
@@ -56,6 +57,11 @@ const Wallet = () => {
     }
   };
 
+  const findCurrency = (currId) => {
+    const currency = currenciesData.find((curr) => curr[1].id === currId);
+    return currency;
+  };
+
   // useEffect(() => {
   //   if (!transactionsData) {
   //     axios
@@ -86,9 +92,9 @@ const Wallet = () => {
       } catch (error) {
         console.error(error);
       }
-      console.log("userWallet ::: ", userWallet);
     };
     !userWallet && fetchUserWallet();
+    console.log("userWallet ::: ", userWallet);
   }, [userWallet, fetchUserProfile]);
 
   useEffect(() => {
@@ -106,33 +112,54 @@ const Wallet = () => {
           </span>
 
           <div className="wallet-crypto-container">
+            {cryptoData ? (
+              userWallet[0].cryptoWallet.map((crpW, i) => (
+                <div className="wallet-crypto-infos" key={i}>
+                  {crpW && (
+                    <>
+                      <p>
+                        {crpW.amount}{" "}
+                        {cryptoData.cryptos
+                          .find((cr) => cr.symbol === findCrypto(i))
+                          .symbol.toUpperCase()}{" "}
+                        ==&gt;{" "}
+                        {(
+                          crpW.amount *
+                          cryptoData.cryptos.find(
+                            (cr) => cr.symbol === findCrypto(i)
+                          ).current_price
+                        )
+                          // .toFixed(2)
+                          .toLocaleString()}{" "}
+                        $
+                      </p>
+                    </>
+                  )}
+                </div>
+              ))
+            ) : (
+              <div>Trop de requêtes vers l'API</div>
+            )}
             <div className="wallet-crypto-balance">
               Total Crypto : {userWallet[0].cryptoTotal.toLocaleString()} $
             </div>
-            {userWallet[0].cryptoWallet.map((crpW, i) => (
-              <div className="wallet-crypto-infos" key={i}>
-                {crpW && (
-                  <>
-                    <p>
-                      {crpW.amount}{" "}
-                      {cryptoData.cryptos
-                        .find((cr) => cr.symbol === findCrypto(i))
-                        .symbol.toUpperCase()}{" "}
-                      ==&gt;{" "}
-                      {(
-                        crpW.amount *
-                        cryptoData.cryptos.find(
-                          (cr) => cr.symbol === findCrypto(i)
-                        ).current_price
-                      )
-                        .toFixed(2)
-                        .toLocaleString()}{" "}
-                      $
-                    </p>
-                  </>
-                )}
-              </div>
-            ))}
+          </div>
+
+          <div className="wallet-currency-container">
+            <div className="wallet-currency-balance">
+              {userWallet &&
+                userWallet[0].currencyWallet.map((curr, i) => (
+                  <div key={i}>
+                    <h4>
+                      Votre devise : {findCurrency(curr.currency)[1].name}
+                    </h4>
+                    <span>
+                      {curr.amount.toLocaleString()}{" "}
+                      {findCurrency(curr.currency)[1].symbol}
+                    </span>
+                  </div>
+                ))}
+            </div>
           </div>
         </div>
       ) : (

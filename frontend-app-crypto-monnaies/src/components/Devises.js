@@ -10,8 +10,6 @@ const Devises = () => {
 
   const [currencies, setCurrencies] = useState();
 
-  const [today, setToday] = useState("");
-
   // API apilayer
   //   const myHeaders = new Headers();
   //   myHeaders.append("apikey", "IQNmZMOUKXRy6ymeiIXAZareCeZUNSEV");

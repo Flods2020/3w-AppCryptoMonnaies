@@ -1,5 +1,6 @@
 export const dataCurrencies = [
   {
+    id: "6568b89832ada23609bd4f87",
     name: "Dollar américain",
     code: "USD",
     usdExchangeRate: 1,
@@ -8,6 +9,7 @@ export const dataCurrencies = [
     symbol: "$",
   },
   {
+    id: "6568b73f4f1e041c86e780ec",
     name: "Dollar canadien",
     code: "CAD",
     usdExchangeRate: 1.3579,
@@ -16,6 +18,7 @@ export const dataCurrencies = [
     symbol: "CA$",
   },
   {
+    id: "6568b82f32ada23609bd4f83",
     name: "Yen japonais",
     code: "JPY",
     usdExchangeRate: 112.02,
@@ -24,6 +27,7 @@ export const dataCurrencies = [
     symbol: "¥",
   },
   {
+    id: "6568b87632ada23609bd4f85",
     name: "Yuan chinois",
     code: "CNY",
     usdExchangeRate: 6.3931,
@@ -32,6 +36,7 @@ export const dataCurrencies = [
     symbol: "Ұ",
   },
   {
+    id: "6568b679954037e37ddb732a",
     name: "Franc suisse",
     code: "CHF",
     usdExchangeRate: 0.9155,
@@ -40,6 +45,7 @@ export const dataCurrencies = [
     symbol: "CHF",
   },
   {
+    id: "6568b672954037e37ddb7328",
     name: "Rouble russe",
     code: "RUB",
     usdExchangeRate: 73.58,
@@ -48,6 +54,7 @@ export const dataCurrencies = [
     symbol: "₽",
   },
   {
+    id: "6568b8ff32ada23609bd4f95",
     name: "Euro",
     code: "EUR",
     usdExchangeRate: 1.0908,
@@ -56,6 +63,7 @@ export const dataCurrencies = [
     symbol: "€",
   },
   {
+    id: "656bcefc142dbcf4a9a5b1f7",
     name: "Livre sterling",
     code: "GBP",
     usdExchangeRate: 1.27,

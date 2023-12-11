@@ -165,7 +165,8 @@ const WalletCreator = () => {
         ],
       });
       alert("Votre portefeuille a bien été créé !");
-      navigate("/home");
+      // navigate("/home");
+      window.location.reload();
     } catch (error) {
       console.error(error);
       alert(
