@@ -19,12 +19,42 @@ import { isEmpty } from "../helper/Utils";
 const Wallet = () => {
   // const transactionsData = useSelector((state) => state.transactions);
   // const userProfile = useSelector((state) => state.users);
+  const cryptoData = useSelector((state) => state.cryptos);
 
   const [transacs, setTransacs] = useState();
   const [userWallet, setUserWallet] = useState();
 
+  // const [cryptW, setCryptW] = useState();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // A Corriger
+  // const findCrypto = async (objId) => {
+  //   let crptInWallet = "";
+  //   console.log("objId ::: ", objId);
+  //   if (objId === "654c22c80e38f2fa74835500") {
+  //     crptInWallet = await cryptoData.cryptos.filter(
+  //       (crp) => crp.id === "bitcoin"
+  //     );
+  //     console.log("cryptW ::: ", crptInWallet);
+  //     return crptInWallet;
+  //   }
+  // };
+
+  const findCrypto = (indX) => {
+    if (indX === 0) {
+      return "btc";
+    } else if (indX === 1) {
+      return "eth";
+    } else if (indX === 2) {
+      return "usdt";
+    } else if (indX === 3) {
+      return "sol";
+    } else if (indX === 4) {
+      return "usdc";
+    }
+  };
 
   // useEffect(() => {
   //   if (!transactionsData) {
@@ -61,19 +91,48 @@ const Wallet = () => {
     !userWallet && fetchUserWallet();
   }, [userWallet, fetchUserProfile]);
 
+  useEffect(() => {
+    console.log(cryptoData);
+  }, []);
+
   return (
     <div className="acm-wallet-container">
       <h2>Mon Portefeuille</h2>
       {!isEmpty(userWallet) ? (
         <div className="wallet-display">
           <span className="soldeSpan">
-            Votre solde actuel :<div id="soldes">{userWallet[0].balance} $</div>
+            Votre solde actuel :
+            <div id="soldes">{userWallet[0].balance.toLocaleString()} $</div>
           </span>
 
           <div className="wallet-crypto-container">
             <div className="wallet-crypto-balance">
-              Total Crypto : {userWallet[0].cryptoTotal}
+              Total Crypto : {userWallet[0].cryptoTotal.toLocaleString()} $
             </div>
+            {userWallet[0].cryptoWallet.map((crpW, i) => (
+              <div className="wallet-crypto-infos" key={i}>
+                {crpW && (
+                  <>
+                    <p>
+                      {crpW.amount}{" "}
+                      {cryptoData.cryptos
+                        .find((cr) => cr.symbol === findCrypto(i))
+                        .symbol.toUpperCase()}{" "}
+                      ==&gt;{" "}
+                      {(
+                        crpW.amount *
+                        cryptoData.cryptos.find(
+                          (cr) => cr.symbol === findCrypto(i)
+                        ).current_price
+                      )
+                        .toFixed(2)
+                        .toLocaleString()}{" "}
+                      $
+                    </p>
+                  </>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       ) : (
