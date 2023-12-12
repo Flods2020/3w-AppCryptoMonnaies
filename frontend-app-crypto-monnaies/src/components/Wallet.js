@@ -94,12 +94,12 @@ const Wallet = () => {
       }
     };
     !userWallet && fetchUserWallet();
-    console.log("userWallet ::: ", userWallet);
+    // console.log("userWallet ::: ", userWallet);
   }, [userWallet, fetchUserProfile]);
 
-  useEffect(() => {
-    console.log(cryptoData);
-  }, []);
+  // useEffect(() => {
+  //   console.log(cryptoData);
+  // }, []);
 
   return (
     <div className="acm-wallet-container">
@@ -111,29 +111,43 @@ const Wallet = () => {
             <div id="soldes">{userWallet[0].balance.toLocaleString()} $</div>
           </span>
 
+          <div className="wallet-currency-container">
+            {userWallet &&
+              userWallet[0].currencyWallet.map((curr, i) => (
+                <div className="wallet-currency-balance" key={i}>
+                  <h4>
+                    Votre devise fiat : {findCurrency(curr.currency)[1].name}
+                  </h4>
+                  <span className="currency-infos">
+                    Solde : {curr.amount.toLocaleString()}{" "}
+                    {findCurrency(curr.currency)[1].symbol}
+                  </span>
+                </div>
+              ))}
+          </div>
+
           <div className="wallet-crypto-container">
+            <h4> Vos crypto-monnaies </h4>
             {cryptoData ? (
               userWallet[0].cryptoWallet.map((crpW, i) => (
                 <div className="wallet-crypto-infos" key={i}>
                   {crpW && (
-                    <>
-                      <p>
-                        {crpW.amount}{" "}
-                        {cryptoData.cryptos
-                          .find((cr) => cr.symbol === findCrypto(i))
-                          .symbol.toUpperCase()}{" "}
-                        ==&gt;{" "}
-                        {(
-                          crpW.amount *
-                          cryptoData.cryptos.find(
-                            (cr) => cr.symbol === findCrypto(i)
-                          ).current_price
-                        )
-                          // .toFixed(2)
-                          .toLocaleString()}{" "}
-                        $
-                      </p>
-                    </>
+                    <span className="crypto-infos">
+                      {crpW.amount}{" "}
+                      {cryptoData.cryptos
+                        .find((cr) => cr.symbol === findCrypto(i))
+                        .symbol.toUpperCase()}{" "}
+                      ==&gt;{" "}
+                      {(
+                        crpW.amount *
+                        cryptoData.cryptos.find(
+                          (cr) => cr.symbol === findCrypto(i)
+                        ).current_price
+                      )
+                        // .toFixed(2)
+                        .toLocaleString()}{" "}
+                      $
+                    </span>
                   )}
                 </div>
               ))
@@ -142,23 +156,6 @@ const Wallet = () => {
             )}
             <div className="wallet-crypto-balance">
               Total Crypto : {userWallet[0].cryptoTotal.toLocaleString()} $
-            </div>
-          </div>
-
-          <div className="wallet-currency-container">
-            <div className="wallet-currency-balance">
-              {userWallet &&
-                userWallet[0].currencyWallet.map((curr, i) => (
-                  <div key={i}>
-                    <h4>
-                      Votre devise : {findCurrency(curr.currency)[1].name}
-                    </h4>
-                    <span>
-                      {curr.amount.toLocaleString()}{" "}
-                      {findCurrency(curr.currency)[1].symbol}
-                    </span>
-                  </div>
-                ))}
             </div>
           </div>
         </div>

@@ -38,6 +38,59 @@
           padding: 2px;
         }
       }
+
+      .wallet-currency-container {
+        background: rgba($color-1, 0.4);
+        margin: 20px;
+        padding: 20px;
+
+        .wallet-currency-balance {
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          h4 {
+            // margin: 10px;
+            border-bottom: 2px solid $color-1;
+            padding-bottom: 5px;
+          }
+          .currency-infos {
+            font-size: 1.2em;
+            padding: 10px;
+            margin: 15px 15px 0;
+            font-weight: 900;
+            color: rgba($color-4, 0.8);
+            font-weight: bolder;
+            background: $color-1;
+          }
+        }
+      }
+
+      .wallet-crypto-container {
+        text-align: center;
+        h4 {
+          border-bottom: 2px solid $color-1;
+          padding-bottom: 5px;
+        }
+        background: rgba($color-3, 0.4);
+        margin: 20px;
+        padding: 20px;
+        .wallet-crypto-infos {
+          text-align: center;
+          margin: 20px;
+          .crypto-infos {
+            // background: palevioletred;
+          }
+        }
+
+        .wallet-crypto-balance {
+          text-align: center;
+          font-size: 1.3em;
+          font-weight: 900;
+          color: $color-3;
+          background: rgba($color-1, 0.8);
+          padding: 10px;
+        }
+      }
     }
   }
 }
