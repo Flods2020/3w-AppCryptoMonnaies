@@ -115,12 +115,12 @@ const WalletCreator = () => {
     // console.log("user ::: ", user);
 
     // BALANCE
-    console.warn(
-      "BALANCE ::: ",
-      (
-        parseFloat(convertedSelectedCurrencyAmount) + parseFloat(cryptoBalance)
-      ).toFixed(2)
-    );
+    // console.warn(
+    //   "BALANCE ::: ",
+    //   (
+    //     parseFloat(convertedSelectedCurrencyAmount) + parseFloat(cryptoBalance)
+    //   ).toFixed(2)
+    // );
     console.log(
       "converted Selected Currency Amount ::: ",
       convertedSelectedCurrencyAmount
@@ -136,10 +136,10 @@ const WalletCreator = () => {
 
     console.log({
       user: user._id,
-      balance:
-        parseFloat(convertedSelectedCurrencyAmount.toFixed(2)) +
-        parseFloat(cryptoBalance.toFixed(2)),
-      cryptoTotal: parseFloat(cryptoBalance.toFixed(2)),
+      // balance:
+      //   parseFloat(convertedSelectedCurrencyAmount.toFixed(2)) +
+      //   parseFloat(cryptoBalance.toFixed(2)),
+      // cryptoTotal: parseFloat(cryptoBalance.toFixed(2)),
       currencyTotal: parseFloat(selectedCurrencyAmount),
       cryptoWallet,
       currencyWallet: {
@@ -151,9 +151,9 @@ const WalletCreator = () => {
     try {
       await axios.post(`${baseURL}${walletCreateURL}`, {
         user: user._id,
-        balance:
-          parseFloat(convertedSelectedCurrencyAmount.toFixed(2)) +
-          parseFloat(cryptoBalance.toFixed(2)),
+        // balance:
+        //   parseFloat(convertedSelectedCurrencyAmount.toFixed(2)) +
+        //   parseFloat(cryptoBalance.toFixed(2)),
         cryptoTotal: parseFloat(cryptoBalance.toFixed(2)),
         currencyTotal: parseFloat(selectedCurrencyAmount),
         cryptoWallet,

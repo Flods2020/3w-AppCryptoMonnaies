@@ -91,6 +91,28 @@
           padding: 10px;
         }
       }
+
+      .buy-sell-btn-container {
+        display: flex;
+        // justify-content: space-between;
+        gap: 18px;
+        // width: inherit;
+        // background: green;
+
+        .buy-sell-btns {
+          text-align: center;
+          max-width: 150px;
+          border: 1px solid $color-1;
+          padding: 5px;
+          cursor: pointer;
+          transition: 0.3s ease;
+
+          &:hover {
+            background: rgba($color-1, 0.8);
+            color: $color-5;
+          }
+        }
+      }
     }
   }
 }

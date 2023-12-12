@@ -6,10 +6,10 @@ const walletSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  balance: {
-    type: Number,
-    required: true,
-  },
+  // balance: {
+  //   type: Number,
+  //   required: true,
+  // },
   cryptoTotal: {
     type: Number,
     required: true,
