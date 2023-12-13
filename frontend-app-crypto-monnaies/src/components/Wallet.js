@@ -7,6 +7,7 @@ import WalletCreator from "./WalletCreator";
 import { isEmpty } from "../helper/Utils";
 import { currenciesData } from "../helper/data-currencies";
 import { setWalletData } from "../store/slices/walletsSlice";
+import WalletBuyCryptos from "./WalletBuyCryptos";
 
 const Wallet = () => {
   const cryptoData = useSelector((state) => state.cryptos);
@@ -14,8 +15,11 @@ const Wallet = () => {
 
   const [userWallet, setUserWallet] = useState();
   const [walletBalance, setWalletBalance] = useState();
+  const [cryptoBalance, setCryptoBalance] = useState();
 
   const [currency, setCurrency] = useState();
+
+  const [displayWalletBuyCryptos, setDisplayWalletBuyCryptos] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -34,9 +38,7 @@ const Wallet = () => {
   };
 
   const findCurrency = (currId) => {
-    // console.warn(currId);
     setCurrency(currenciesData.find((curr) => curr[1].id === currId));
-    // console.log("currency ::: ", currency);
     return currency;
   };
 
@@ -64,99 +66,145 @@ const Wallet = () => {
     !userWallet && fetchUserWallet();
     userWallet && findCurrency(userWallet.currencyWallet[0].currency);
     // console.log("userWallet ::: ", userWallet);
-  }, [userWallet, fetchUserProfile, dispatch, walletData]);
+  }, [userWallet, fetchUserProfile, dispatch, walletData, setCurrency]);
 
   useEffect(() => {
-    if (!isEmpty(userWallet)) {
+    if (!isEmpty(userWallet) && !isEmpty(currency)) {
       setWalletBalance(
-        userWallet.currencyTotal +
-          (userWallet.cryptoTotal ? userWallet.cryptoTotal : 0)
+        cryptoBalance / currency[1].usdExchangeRate +
+          (userWallet.currencyTotal
+            ? userWallet.currencyTotal / currency[1].usdExchangeRate
+            : 0)
       );
     }
-  }, [walletBalance, userWallet]);
+  }, [walletBalance, userWallet, currency]);
+
+  useEffect(() => {
+    if (userWallet) {
+      const totalCryptoAmount = Object.values(userWallet.cryptoWallet).reduce(
+        (accumulator, crpto) => {
+          if (crpto) {
+            const selectedCrypto = cryptoData.cryptos.find(
+              (cr) => cr.symbol === crpto.selectedCrypto.symbol?.toLowerCase()
+            );
+
+            if (selectedCrypto) {
+              accumulator += parseFloat(
+                crpto.amount * selectedCrypto.current_price
+              );
+            }
+          }
+          return accumulator;
+        },
+        0
+      );
+
+      if (!totalCryptoAmount) {
+        setCryptoBalance(0);
+      } else {
+        setCryptoBalance(totalCryptoAmount);
+      }
+    } else {
+      setCryptoBalance(0);
+    }
+  }, [userWallet, cryptoData, setCryptoBalance]);
 
   // useEffect(() => {
   //   cryptoData && console.log(cryptoData);
   // }, []);
 
   return (
-    <>
-      <div className="acm-wallet-container">
-        <h2>Mon Portefeuille</h2>
-        {!isEmpty(userWallet) ? (
-          <div className="wallet-display">
-            <span className="soldeSpan">
-              Votre solde actuel :
-              <div id="soldes">
-                {walletBalance && walletBalance.toLocaleString()} $
-              </div>
-            </span>
-
-            <div className="wallet-currency-container">
-              <div className="wallet-currency-balance">
-                {currency && (
-                  <>
-                    <h4>
-                      Votre devise fiat : {currency[1].code} -{" "}
-                      {currency[1].name}
-                    </h4>
-                    <span className="currency-infos">
-                      Solde : {userWallet.currencyTotal.toLocaleString()}{" "}
-                      {currency[1].symbol}
-                    </span>
-                  </>
-                )}
-              </div>
+    <div className="acm-wallet-container">
+      <h2>Mon Portefeuille</h2>
+      {!isEmpty(userWallet) && currency ? (
+        <div className="wallet-display">
+          <span className="soldeSpan">
+            Votre solde actuel :
+            <div id="soldes">
+              {walletBalance && walletBalance.toLocaleString()} $
             </div>
+          </span>
 
-            <div className="wallet-crypto-container">
-              <h4> Vos crypto-monnaies </h4>
-              {cryptoData && userWallet.cryptoWallet ? (
-                userWallet.cryptoWallet.map((crpW, i) => (
-                  <div className="wallet-crypto-infos" key={i}>
-                    {crpW && (
-                      <span className="crypto-infos">
-                        {crpW.amount}{" "}
-                        {cryptoData.cryptos
-                          .find((cr) => cr.symbol === findCrypto(i))
-                          .symbol.toUpperCase()}{" "}
-                        ==&gt;{" "}
-                        {(
-                          crpW.amount *
-                          cryptoData.cryptos.find(
-                            (cr) => cr.symbol === findCrypto(i)
-                          ).current_price
-                        ).toLocaleString()}{" "}
-                        $
-                      </span>
-                    )}
-                  </div>
-                ))
-              ) : (
-                <div
-                  style={{ color: "red", fontSize: "1.3em", margin: "20px" }}
-                >
-                  Trop de requêtes vers l'API
-                </div>
-              )}
-              <div className="wallet-crypto-balance">
-                Total Crypto : {userWallet.cryptoTotal.toLocaleString()} $
-              </div>
-            </div>
-            <div className="buy-sell-btn-container">
-              <div className="buy-sell-btns" id="buyBtn">
-                Acheter des Crytpo monnaies
-              </div>
-              <div className="buy-sell-btns" id="sellBtn">
-                Vendre des Crytpo monnaies
-              </div>
+          <div className="wallet-currency-container">
+            <div className="wallet-currency-balance">
+              <>
+                <h4>
+                  Votre devise fiat : {currency[1].code} - {currency[1].name}
+                </h4>
+                <span className="currency-infos">
+                  Solde : {userWallet.currencyTotal.toLocaleString()}{" "}
+                  {currency[1].symbol}
+                </span>
+              </>
             </div>
           </div>
-        ) : (
-          <WalletCreator />
-        )}
-      </div>
-    </>
+
+          <div className="wallet-crypto-container">
+            <h4> Vos crypto-monnaies </h4>
+            {cryptoData !== null && userWallet.cryptoWallet ? (
+              userWallet.cryptoWallet.map((crpW, i) => (
+                <div className="wallet-crypto-infos" key={i}>
+                  {crpW && currency && (
+                    <span className="crypto-infos">
+                      {crpW.amount}{" "}
+                      {cryptoData.cryptos
+                        .find((cr) => cr.symbol === findCrypto(i))
+                        .symbol.toUpperCase()}{" "}
+                      ==&gt;{" "}
+                      {Number(
+                        crpW.amount *
+                          (cryptoData.cryptos.find(
+                            (cr) => cr.symbol === findCrypto(i)
+                          ).current_price /
+                            currency[1].usdExchangeRate)
+                      )
+                        .toLocaleString("fr-FR", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })
+                        .replace(".", ",")}{" "}
+                      {currency[1].symbol}
+                    </span>
+                  )}
+                </div>
+              ))
+            ) : (
+              <div style={{ color: "red", fontSize: "1.3em", margin: "20px" }}>
+                Trop de requêtes vers l'API
+              </div>
+            )}
+            <div className="wallet-crypto-balance">
+              Total Crypto :{" "}
+              {cryptoBalance &&
+                (cryptoBalance / currency[1].usdExchangeRate)
+                  .toLocaleString("fr-FR", {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })
+                  .replace(".", ",")}{" "}
+              {currency[1].symbol}
+            </div>
+          </div>
+          <div className="buy-sell-btn-container">
+            <div
+              className="buy-sell-btns"
+              id="buyBtn"
+              onClick={() =>
+                setDisplayWalletBuyCryptos(!displayWalletBuyCryptos)
+              }
+            >
+              Acheter des Crytpo monnaies
+            </div>
+            <div className="buy-sell-btns" id="sellBtn">
+              Vendre des Crytpo monnaies
+            </div>
+          </div>
+        </div>
+      ) : (
+        <WalletCreator />
+      )}
+      {displayWalletBuyCryptos && <WalletBuyCryptos />}
+    </div>
   );
 };
 

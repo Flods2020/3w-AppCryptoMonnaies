@@ -21,7 +21,6 @@ export const walletsSlice = createSlice({
       return {
         ...state,
         user: payload.user,
-        cryptoTotal: payload.cryptoTotal,
         currencyTotal: payload.currencyTotal,
         cryptoWallet: payload.cryptoWallet,
         currencyWallet: payload.currencyWallet,

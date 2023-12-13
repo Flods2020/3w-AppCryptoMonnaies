@@ -3,7 +3,7 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { routes } from "./router/routes.js";
 import { Layout } from "./common/layout/layout";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import HeaderLogin from "./components/HeaderLogin.js";
 import axios from "axios";
 import { setUserData } from "./store/slices/usersSlice.js";
@@ -14,6 +14,7 @@ function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const userProfile = useSelector(({ users }) => users);
+  const cryptosData = useSelector((state) => state.cryptos);
 
   const acmCryptos = ["btc", "eth", "sol", "usdt", "usdc"];
   // const acmCryptos = ["btc"];
@@ -47,28 +48,63 @@ function App() {
     }
   }, [token, userProfile, dispatch]);
 
+  // useEffect(() => {
+  //   if (token && userProfile.pseudo !== "") {
+  //     try {
+  //       axios
+  //         .get(
+  //           "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d%2C14d%2C30d%2C200d%2C1y"
+  //         )
+  //         .then(
+  //           (res) =>
+  //             res.data &&
+  //             dispatch(
+  //               setCryptosData(
+  //                 res.data.filter((coin) => acmCryptos.includes(coin.symbol))
+  //               )
+  //             )
+  //         );
+  //     } catch (error) {
+  //       console.warn(error);
+  //     }
+  //   }
+  // }, [acmCryptos]);
+
   // POUR EVITER LE BLOCAGE DE L'APP
-  useEffect(() => {
+  const fetchData = useCallback(() => {
     if (token && userProfile.pseudo !== "") {
-      try {
-        axios
-          .get(
-            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d%2C14d%2C30d%2C200d%2C1y"
-          )
-          .then(
-            (res) =>
-              res.data &&
-              dispatch(
-                setCryptosData(
-                  res.data.filter((coin) => acmCryptos.includes(coin.symbol))
+      if (!cryptosData) {
+        try {
+          axios
+            .get(
+              "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d%2C14d%2C30d%2C200d%2C1y"
+            )
+            .then(
+              (res) =>
+                res.data &&
+                dispatch(
+                  setCryptosData(
+                    res.data.filter((coin) => acmCryptos.includes(coin.symbol))
+                  )
                 )
-              )
-          );
-      } catch (error) {
-        console.warn("Ca plante encore");
+            );
+        } catch (error) {
+          console.warn(error);
+        }
       }
     }
-  }, [acmCryptos]);
+  }, [
+    token,
+    userProfile.pseudo,
+    acmCryptos,
+    dispatch,
+    setCryptosData,
+    cryptosData,
+  ]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData, acmCryptos]);
 
   return (
     <>

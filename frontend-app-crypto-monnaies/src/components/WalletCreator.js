@@ -14,7 +14,6 @@ const WalletCreator = () => {
   const cryptosData = useSelector((state) => state.cryptos);
 
   const [cryptoWallet, setCryptoWallet] = useState([]);
-  const [cryptoBalance, setCryptoBalance] = useState();
   const [dataCurrencies, setDataCurrencies] = useState();
   const [walletCurrency, setWalletCurrency] = useState();
   const [convertedSelectedCurrencyAmount, setConvertedSelectedCurrencyAmount] =
@@ -23,7 +22,6 @@ const WalletCreator = () => {
 
   const handleCryptoWalletChange = useCallback(
     async (index, amount, name) => {
-      //   console.warn(amount);
       if (amount > 0) {
         try {
           const selectedCrypto = (
@@ -32,7 +30,7 @@ const WalletCreator = () => {
           const newCryptoWallet = [...cryptoWallet];
           if (selectedCrypto) {
             newCryptoWallet[index] = {
-              selectedCrypto,
+              selectedCrypto: selectedCrypto[0],
               amount: parseFloat(amount),
             };
           }
@@ -114,7 +112,6 @@ const WalletCreator = () => {
       "converted Selected Currency Amount ::: ",
       convertedSelectedCurrencyAmount
     );
-    console.log("crypto Total ::::", cryptoBalance);
 
     // CRYPTOS;
     console.log("cryptoWallet ::::", cryptoWallet);
@@ -128,7 +125,7 @@ const WalletCreator = () => {
       currencyTotal: parseFloat(selectedCurrencyAmount),
       cryptoWallet,
       currencyWallet: {
-        currency: walletCurrency._id, // chercher l'id
+        currency: walletCurrency._id,
         amount: parseFloat(selectedCurrencyAmount),
       },
     });
@@ -136,7 +133,6 @@ const WalletCreator = () => {
     try {
       await axios.post(`${baseURL}${walletCreateURL}`, {
         user: user._id,
-        cryptoTotal: parseFloat(cryptoBalance.toFixed(2)),
         currencyTotal: parseFloat(selectedCurrencyAmount),
         cryptoWallet,
         currencyWallet: [
@@ -156,33 +152,6 @@ const WalletCreator = () => {
       );
     }
   };
-
-  useEffect(() => {
-    if (cryptoWallet) {
-      const totalCryptoAmount = cryptoWallet.reduce((accumulator, crpto) => {
-        if (crpto) {
-          const selectedCrypto = cryptosData.cryptos.find(
-            (cr) => cr.symbol === crpto.selectedCrypto[0].symbol.toLowerCase()
-          );
-
-          if (selectedCrypto) {
-            accumulator += parseFloat(
-              crpto.amount * selectedCrypto.current_price
-            );
-          }
-        }
-        return accumulator;
-      }, 0);
-
-      if (!totalCryptoAmount) {
-        setCryptoBalance(0);
-      } else {
-        setCryptoBalance(totalCryptoAmount);
-      }
-    } else {
-      setCryptoBalance(0);
-    }
-  }, [cryptoWallet, cryptosData, cryptoBalance, handleCryptoWalletChange]);
 
   useEffect(() => {
     convertCurrencyAmount();
@@ -269,7 +238,7 @@ const WalletCreator = () => {
               <input
                 id={`balance-${crypt.name}`}
                 onChange={(e) => {
-                  const inputValue = e.target.value.trim(); // Supprimez les espaces
+                  const inputValue = e.target.value.trim();
                   const numericValue =
                     inputValue === "" ? 0 : parseFloat(inputValue);
                   convertCryptoAndDisplay(crypt.symbol, numericValue, i);

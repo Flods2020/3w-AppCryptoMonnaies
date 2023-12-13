@@ -6,27 +6,18 @@ const walletSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  // balance: {
-  //   type: Number,
-  //   required: true,
-  // },
-  cryptoTotal: {
-    type: Number,
-    required: true,
-  },
   currencyTotal: {
     type: Number,
     required: true,
   },
   cryptoWallet: [
     {
-      selectedCrypto: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Crypto",
-          required: true,
-        },
-      ],
+      selectedCrypto: {
+        type: Object,
+        ref: "Crypto",
+        required: true,
+      },
+
       amount: {
         type: Number,
         required: true,
