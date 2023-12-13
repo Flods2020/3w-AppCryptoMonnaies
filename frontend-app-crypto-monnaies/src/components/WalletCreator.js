@@ -9,7 +9,6 @@ import {
   userDataURL,
   walletCreateURL,
 } from "../helper/url_helper";
-import { useNavigate } from "react-router-dom";
 
 const WalletCreator = () => {
   const cryptosData = useSelector((state) => state.cryptos);
@@ -21,8 +20,6 @@ const WalletCreator = () => {
   const [convertedSelectedCurrencyAmount, setConvertedSelectedCurrencyAmount] =
     useState();
   const [selectedCurrencyAmount, setSelectedCurrencyAmount] = useState(0);
-
-  const navigate = useNavigate();
 
   const handleCryptoWalletChange = useCallback(
     async (index, amount, name) => {
@@ -112,15 +109,7 @@ const WalletCreator = () => {
     // USER
     const userData = await axios.get(`${baseURL}${userDataURL}`);
     const user = userData.data.user;
-    // console.log("user ::: ", user);
 
-    // BALANCE
-    // console.warn(
-    //   "BALANCE ::: ",
-    //   (
-    //     parseFloat(convertedSelectedCurrencyAmount) + parseFloat(cryptoBalance)
-    //   ).toFixed(2)
-    // );
     console.log(
       "converted Selected Currency Amount ::: ",
       convertedSelectedCurrencyAmount
@@ -136,10 +125,6 @@ const WalletCreator = () => {
 
     console.log({
       user: user._id,
-      // balance:
-      //   parseFloat(convertedSelectedCurrencyAmount.toFixed(2)) +
-      //   parseFloat(cryptoBalance.toFixed(2)),
-      // cryptoTotal: parseFloat(cryptoBalance.toFixed(2)),
       currencyTotal: parseFloat(selectedCurrencyAmount),
       cryptoWallet,
       currencyWallet: {
@@ -151,9 +136,6 @@ const WalletCreator = () => {
     try {
       await axios.post(`${baseURL}${walletCreateURL}`, {
         user: user._id,
-        // balance:
-        //   parseFloat(convertedSelectedCurrencyAmount.toFixed(2)) +
-        //   parseFloat(cryptoBalance.toFixed(2)),
         cryptoTotal: parseFloat(cryptoBalance.toFixed(2)),
         currencyTotal: parseFloat(selectedCurrencyAmount),
         cryptoWallet,
@@ -184,18 +166,15 @@ const WalletCreator = () => {
           );
 
           if (selectedCrypto) {
-            // console.log("accumulator -1 ::::: ", accumulator);
             accumulator += parseFloat(
               crpto.amount * selectedCrypto.current_price
             );
-            // console.log("accumulator ::::: ", accumulator);
           }
         }
         return accumulator;
       }, 0);
 
       if (!totalCryptoAmount) {
-        // console.log("All conditions not met, resetting accumulator to 0");
         setCryptoBalance(0);
       } else {
         setCryptoBalance(totalCryptoAmount);
@@ -219,7 +198,6 @@ const WalletCreator = () => {
       } catch (error) {
         console.error(error);
       }
-      //   console.log(dataCurrencies);
     };
     fetchDataCurrencies();
   }, [dataCurrencies]);

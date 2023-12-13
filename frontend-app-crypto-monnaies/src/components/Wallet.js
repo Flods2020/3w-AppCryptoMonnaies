@@ -10,24 +10,14 @@ import { setWalletData } from "../store/slices/walletsSlice";
 
 const Wallet = () => {
   const cryptoData = useSelector((state) => state.cryptos);
+  const walletData = useSelector((state) => state.wallets);
 
   const [userWallet, setUserWallet] = useState();
   const [walletBalance, setWalletBalance] = useState();
 
-  const dispatch = useDispatch();
+  const [currency, setCurrency] = useState();
 
-  // A Corriger
-  // const findCrypto = async (objId) => {
-  //   let crptInWallet = "";
-  //   console.log("objId ::: ", objId);
-  //   if (objId === "654c22c80e38f2fa74835500") {
-  //     crptInWallet = await cryptoData.cryptos.filter(
-  //       (crp) => crp.id === "bitcoin"
-  //     );
-  //     console.log("cryptW ::: ", crptInWallet);
-  //     return crptInWallet;
-  //   }
-  // };
+  const dispatch = useDispatch();
 
   const findCrypto = (indX) => {
     if (indX === 0) {
@@ -44,7 +34,9 @@ const Wallet = () => {
   };
 
   const findCurrency = (currId) => {
-    const currency = currenciesData.find((curr) => curr[1].id === currId);
+    // console.warn(currId);
+    setCurrency(currenciesData.find((curr) => curr[1].id === currId));
+    // console.log("currency ::: ", currency);
     return currency;
   };
 
@@ -63,28 +55,29 @@ const Wallet = () => {
       try {
         await axios
           .get(`${baseURL}${userWalletURL}`, fetchUserProfile())
-          .then((res) => setUserWallet(res.data));
-        dispatch(setWalletData(userWallet));
+          .then((res) => dispatch(setWalletData(res.data[0])))
+          .then(() => setUserWallet(walletData));
       } catch (error) {
         console.error(error);
       }
     };
     !userWallet && fetchUserWallet();
+    userWallet && findCurrency(userWallet.currencyWallet[0].currency);
     // console.log("userWallet ::: ", userWallet);
-  }, [userWallet, fetchUserProfile, dispatch]);
+  }, [userWallet, fetchUserProfile, dispatch, walletData]);
 
   useEffect(() => {
     if (!isEmpty(userWallet)) {
       setWalletBalance(
-        userWallet[0].currencyTotal +
-          (userWallet[0].cryptoTotal ? userWallet[0].cryptoTotal : 0)
+        userWallet.currencyTotal +
+          (userWallet.cryptoTotal ? userWallet.cryptoTotal : 0)
       );
     }
   }, [walletBalance, userWallet]);
 
-  useEffect(() => {
-    cryptoData && console.log(cryptoData);
-  }, []);
+  // useEffect(() => {
+  //   cryptoData && console.log(cryptoData);
+  // }, []);
 
   return (
     <>
@@ -100,25 +93,26 @@ const Wallet = () => {
             </span>
 
             <div className="wallet-currency-container">
-              {userWallet &&
-                userWallet[0].currencyWallet.map((curr, i) => (
-                  <div className="wallet-currency-balance" key={i}>
+              <div className="wallet-currency-balance">
+                {currency && (
+                  <>
                     <h4>
-                      Votre devise fiat : {findCurrency(curr.currency)[1].code}{" "}
-                      - {findCurrency(curr.currency)[1].name}
+                      Votre devise fiat : {currency[1].code} -{" "}
+                      {currency[1].name}
                     </h4>
                     <span className="currency-infos">
-                      Solde : {curr.amount.toLocaleString()}{" "}
-                      {findCurrency(curr.currency)[1].symbol}
+                      Solde : {userWallet.currencyTotal.toLocaleString()}{" "}
+                      {currency[1].symbol}
                     </span>
-                  </div>
-                ))}
+                  </>
+                )}
+              </div>
             </div>
 
             <div className="wallet-crypto-container">
               <h4> Vos crypto-monnaies </h4>
-              {cryptoData ? (
-                userWallet[0].cryptoWallet.map((crpW, i) => (
+              {cryptoData && userWallet.cryptoWallet ? (
+                userWallet.cryptoWallet.map((crpW, i) => (
                   <div className="wallet-crypto-infos" key={i}>
                     {crpW && (
                       <span className="crypto-infos">
@@ -132,9 +126,7 @@ const Wallet = () => {
                           cryptoData.cryptos.find(
                             (cr) => cr.symbol === findCrypto(i)
                           ).current_price
-                        )
-                          // .toFixed(2)
-                          .toLocaleString()}{" "}
+                        ).toLocaleString()}{" "}
                         $
                       </span>
                     )}
@@ -148,7 +140,7 @@ const Wallet = () => {
                 </div>
               )}
               <div className="wallet-crypto-balance">
-                Total Crypto : {userWallet[0].cryptoTotal.toLocaleString()} $
+                Total Crypto : {userWallet.cryptoTotal.toLocaleString()} $
               </div>
             </div>
             <div className="buy-sell-btn-container">

@@ -70,9 +70,11 @@
         h4 {
           border-bottom: 2px solid $color-1;
           padding-bottom: 5px;
+          margin-bottom: 20px;
         }
         background: rgba($color-3, 0.4);
         margin: 20px;
+        margin-top: 0;
         padding: 20px;
         .wallet-crypto-infos {
           text-align: center;

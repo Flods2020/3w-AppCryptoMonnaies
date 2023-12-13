@@ -20,11 +20,11 @@ export const walletsSlice = createSlice({
     setWalletData: (state, { payload }) => {
       return {
         ...state,
-        user: payload[0].user,
-        cryptoTotal: payload[0].cryptoTotal,
-        currencyTotal: payload[0].currencyTotal,
-        cryptoWallet: payload[0].cryptoWallet,
-        currencyWallet: payload[0].currencyWallet,
+        user: payload.user,
+        cryptoTotal: payload.cryptoTotal,
+        currencyTotal: payload.currencyTotal,
+        cryptoWallet: payload.cryptoWallet,
+        currencyWallet: payload.currencyWallet,
       };
     },
     editWalletData: (state, { payload }) => {
