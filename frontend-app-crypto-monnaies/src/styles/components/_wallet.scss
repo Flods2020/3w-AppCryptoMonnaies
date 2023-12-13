@@ -25,6 +25,9 @@
 
       .soldeSpan {
         font-size: 1.1em;
+        text-align: center;
+        background: rgba($color-3, 0.8);
+        padding: 10px;
         #soldes {
           margin: 10px;
           color: $dollar-color;

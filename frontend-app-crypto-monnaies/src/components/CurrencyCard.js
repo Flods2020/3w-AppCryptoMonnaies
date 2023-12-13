@@ -8,8 +8,12 @@ const CurrencyCard = ({ curr, cryptos }) => {
         <p>{curr.name}</p>
       </div>
       <div className="currency-changes">
-        <p>{curr.usdExchangeRate.toFixed(2)} $</p>
-        <p>-- {curr.eurExchangeRate.toFixed(2)} €</p>
+        <p>
+          $ --&gt; {curr.usdExchangeRate.toFixed(2)} {curr.symbol}
+        </p>
+        <p>
+          / € --&gt; {curr.eurExchangeRate.toFixed(2)} {curr.symbol}
+        </p>
       </div>
       <div className="crypto-changes-container">
         {cryptos &&

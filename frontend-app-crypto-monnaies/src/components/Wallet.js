@@ -72,9 +72,7 @@ const Wallet = () => {
     if (!isEmpty(userWallet) && !isEmpty(currency)) {
       setWalletBalance(
         cryptoBalance / currency[1].usdExchangeRate +
-          (userWallet.currencyTotal
-            ? userWallet.currencyTotal / currency[1].usdExchangeRate
-            : 0)
+          (userWallet.currencyTotal ? userWallet.currencyTotal : 0)
       );
     }
   }, [walletBalance, userWallet, currency]);
@@ -121,7 +119,8 @@ const Wallet = () => {
           <span className="soldeSpan">
             Votre solde actuel :
             <div id="soldes">
-              {walletBalance && walletBalance.toLocaleString()} $
+              {walletBalance && walletBalance.toLocaleString()}{" "}
+              {currency[1].symbol}
             </div>
           </span>
 
