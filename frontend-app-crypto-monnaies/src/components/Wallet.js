@@ -202,7 +202,12 @@ const Wallet = () => {
       ) : (
         <WalletCreator />
       )}
-      {displayWalletBuyCryptos && <WalletBuyCryptos />}
+      {displayWalletBuyCryptos && (
+        <WalletBuyCryptos
+          walletBalance={walletBalance}
+          currency={currency[1]}
+        />
+      )}
     </div>
   );
 };

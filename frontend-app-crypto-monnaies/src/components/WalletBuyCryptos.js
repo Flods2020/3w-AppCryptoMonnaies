@@ -1,13 +1,13 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-const WalletBuyCryptos = () => {
+const WalletBuyCryptos = ({ walletBalance, currency }) => {
   const cryptosData = useSelector((state) => state.cryptos);
+  const walletData = useSelector((state) => state.wallets);
 
   const convertCryptoToWalletCurrAndDisplay = useCallback(
     async (crypto, amount, index) => {
       const convertedSpan = document.querySelector("#span-" + crypto);
-      const convertedSpanEuro = document.querySelector("#spanEuro-" + crypto);
 
       const selectedCrypto = cryptosData.cryptos.find(
         (cr) => cr.symbol === crypto
@@ -15,21 +15,30 @@ const WalletBuyCryptos = () => {
 
       convertedSpan.innerHTML =
         parseFloat(
-          (selectedCrypto.current_price * amount)?.toFixed(2)
-        )?.toLocaleString() + " $" ?? "N/A";
+          (
+            selectedCrypto.current_price *
+            amount *
+            currency.usdExchangeRate
+          )?.toFixed(2)
+        )?.toLocaleString("fr-FR", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }) +
+          " " +
+          currency.symbol ?? "N/A";
 
-      convertedSpanEuro.innerHTML =
-        parseFloat(
-          (selectedCrypto.current_price * 0.92 * amount)?.toFixed(2)
-        )?.toLocaleString() + " €" ?? "N/A";
-
-      return [convertedSpan, convertedSpanEuro];
+      return [convertedSpan];
     },
     [cryptosData]
   );
 
+  // useEffect(() => {
+  //   walletBalance && console.log("walletBalance :::: ", walletBalance);
+  //   currency && console.log("currency :::: ", currency);
+  // }, []);
+
   return (
-    <div>
+    <div className="acm-wallet-buy-container">
       {cryptosData &&
         cryptosData.cryptos.map((crypt, i) => (
           <div className="acm-wallet-crypto-input-containers" key={i}>
@@ -69,8 +78,16 @@ const WalletBuyCryptos = () => {
               max={"10000"}
             />
             <div className="spanConvert-container">
-              <span id={`span-${crypt.symbol}`}>$</span>
-              <span id={`spanEuro-${crypt.symbol}`}>€</span>
+              <span id={`span-${crypt.symbol}`}>{currency.symbol}</span>
+              {/* <span id={`spanEuro-${crypt.symbol}`}>€</span> */}
+              <span className="spanBalance">
+                /{" "}
+                {walletBalance.toLocaleString("fr-FR", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}{" "}
+                {currency.symbol}
+              </span>
             </div>
           </div>
         ))}
