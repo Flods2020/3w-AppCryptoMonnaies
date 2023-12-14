@@ -18,7 +18,7 @@ const WalletBuyCryptos = ({ currency }) => {
 
       convertedSpan.innerHTML =
         parseFloat(
-          selectedCrypto.current_price * amount * currency.usdExchangeRate
+          (selectedCrypto.current_price * amount) / currency.usdExchangeRate
         )?.toLocaleString("fr-FR", {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
@@ -107,9 +107,9 @@ const WalletBuyCryptos = ({ currency }) => {
   }, [cryptoAmounts, currency]);
 
   // useEffect(() => {
-  //   walletBalance && console.log("walletBalance :::: ", walletBalance);
+  //   // walletBalance && console.log("walletBalance :::: ", walletBalance);
   //   currency && console.log("currency :::: ", currency);
-  // }, []);
+  // }, [currency]);
 
   return (
     <div className="acm-wallet-buy-container">
