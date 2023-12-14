@@ -6,6 +6,10 @@
     flex-direction: column;
     align-items: center;
 
+    h3 {
+      text-align: center;
+    }
+
     .acm-wallet-crypto-input-containers {
       background: $color-3;
       padding: 10px;
@@ -16,14 +20,19 @@
       margin: 15px auto;
       text-align: center;
 
+      label {
+        margin: auto;
+      }
+
       input {
         border: none;
         border-bottom: 1px solid $color-1;
         border-radius: 2px;
-        margin: 10px;
+        margin: auto;
         // padding: 1px;
         // padding: 7px;
         width: 40%;
+        height: 40px;
         text-align: center;
         transition: box-shadow 0.4s;
 
@@ -49,6 +58,48 @@
 
         .spanBalance {
           color: $euro-color;
+        }
+      }
+    }
+
+    .acm-wallet-crypto-total {
+      background: rgba($color-3, 0.2);
+      padding: 15px;
+      //   border: 2px double $color-1;
+      border: 6px double $percent3;
+      font-size: 1.4em;
+      font-weight: bolder;
+    }
+    .acm-wallet-crypto-buy-btn-container {
+      .acm-wallet-crypto-buy-btn {
+        // margin: 30px;
+        // border: 1px solid $color-1;
+        // padding: 8px 25px;
+        // cursor: pointer;
+        // transition: 0.3s ease;
+
+        // &:hover {
+        //   background: $color-2;
+        //   color: $color-5;
+        // }
+
+        margin-top: 30px;
+        padding: 7px;
+        font-size: 1.1em;
+        color: $color-1;
+        cursor: pointer;
+        background: rgba($color-3, 0.9);
+        transition: 0.3s ease;
+
+        &:hover {
+          background: rgba($color-1, 0.8);
+          color: $color-5;
+        }
+        &:disabled {
+          background: rgba($inputs-color-3, 0.8);
+          //   color: $inputs-color-3;
+          color: rgba($inputs-color-3, 0.1);
+          cursor: not-allowed;
         }
       }
     }

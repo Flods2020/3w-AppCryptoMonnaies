@@ -78,7 +78,7 @@ const Wallet = () => {
   }, [walletBalance, userWallet, currency]);
 
   useEffect(() => {
-    if (userWallet) {
+    if (userWallet && cryptoData) {
       const totalCryptoAmount = Object.values(userWallet.cryptoWallet).reduce(
         (accumulator, crpto) => {
           if (crpto) {
@@ -202,12 +202,7 @@ const Wallet = () => {
       ) : (
         <WalletCreator />
       )}
-      {displayWalletBuyCryptos && (
-        <WalletBuyCryptos
-          walletBalance={walletBalance}
-          currency={currency[1]}
-        />
-      )}
+      {displayWalletBuyCryptos && <WalletBuyCryptos currency={currency[1]} />}
     </div>
   );
 };

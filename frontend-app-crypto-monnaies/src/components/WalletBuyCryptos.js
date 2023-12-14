@@ -1,25 +1,24 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-const WalletBuyCryptos = ({ walletBalance, currency }) => {
+const WalletBuyCryptos = ({ currency }) => {
   const cryptosData = useSelector((state) => state.cryptos);
   const walletData = useSelector((state) => state.wallets);
 
+  const [cryptoAmounts, setCryptoAmounts] = useState({});
+  const [totalSpanAmount, setTotalSpanAmount] = useState();
+
   const convertCryptoToWalletCurrAndDisplay = useCallback(
     async (crypto, amount, index) => {
-      const convertedSpan = document.querySelector("#span-" + crypto);
-
       const selectedCrypto = cryptosData.cryptos.find(
         (cr) => cr.symbol === crypto
       );
 
+      const convertedSpan = document.querySelector("#span-" + crypto);
+
       convertedSpan.innerHTML =
         parseFloat(
-          (
-            selectedCrypto.current_price *
-            amount *
-            currency.usdExchangeRate
-          )?.toFixed(2)
+          selectedCrypto.current_price * amount * currency.usdExchangeRate
         )?.toLocaleString("fr-FR", {
           minimumFractionDigits: 2,
           maximumFractionDigits: 2,
@@ -27,10 +26,85 @@ const WalletBuyCryptos = ({ walletBalance, currency }) => {
           " " +
           currency.symbol ?? "N/A";
 
-      return [convertedSpan];
+      // const convertedAmount =
+      //   parseFloat(
+      //     (
+      //       selectedCrypto.current_price *
+      //       amount *
+      //       currency.usdExchangeRate
+      //     )?.toFixed(2)
+      //   )?.toLocaleString("fr-FR", {
+      //     minimumFractionDigits: 2,
+      //     maximumFractionDigits: 2,
+      //   }) +
+      //   " " +
+      //   currency.symbol;
+
+      return convertedSpan;
     },
-    [cryptosData]
+    [cryptosData, currency]
   );
+
+  // const convertCryptoToWalletCurrAndDisplayTotal = useCallback(
+  //   async (crypto, amount, index) => {
+  //     const selectedCrypto = cryptosData.cryptos.find(
+  //       (cr) => cr.symbol === crypto
+  //     );
+
+  //     const convertedAmount =
+  //       parseFloat(
+  //         (
+  //           selectedCrypto.current_price *
+  //           amount *
+  //           currency.usdExchangeRate
+  //         )?.toFixed(2)
+  //       )?.toLocaleString("fr-FR", {
+  //         minimumFractionDigits: 2,
+  //         maximumFractionDigits: 2,
+  //       }) +
+  //       " " +
+  //       currency.symbol;
+
+  //     return convertedAmount;
+  //   },
+  //   [cryptosData, currency]
+  // );
+
+  useEffect(() => {
+    // Calculez la somme totale à chaque changement dans les montants
+    const totalAmount = Object.keys(cryptoAmounts).reduce(
+      (accumulator, cryptoSymbol) => {
+        const spanValue = document.querySelector(`#span-${cryptoSymbol}`);
+        if (spanValue) {
+          const amount = parseFloat(
+            spanValue.innerText.replace(/\s/g, "").replace(",", ".")
+          );
+          if (!isNaN(amount)) {
+            // console.log("amount :::: ", amount);
+            accumulator += amount;
+          }
+        }
+        return accumulator;
+      },
+      0
+    );
+
+    // Mettez à jour le total affiché
+    const totalSpan = document.querySelector(".total");
+    if (totalSpan) {
+      setTotalSpanAmount(totalAmount);
+      // console.log("totalAmount ::: ", totalAmount);
+      totalSpan.innerHTML =
+        totalAmount
+          .toLocaleString("fr-FR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })
+          .replace(".", ",") +
+        " " +
+        currency.symbol;
+    }
+  }, [cryptoAmounts, currency]);
 
   // useEffect(() => {
   //   walletBalance && console.log("walletBalance :::: ", walletBalance);
@@ -39,6 +113,7 @@ const WalletBuyCryptos = ({ walletBalance, currency }) => {
 
   return (
     <div className="acm-wallet-buy-container">
+      <h3>Choisissez vos cryptos et leurs montants</h3>
       {cryptosData &&
         cryptosData.cryptos.map((crypt, i) => (
           <div className="acm-wallet-crypto-input-containers" key={i}>
@@ -56,17 +131,14 @@ const WalletBuyCryptos = ({ walletBalance, currency }) => {
                   numericValue,
                   i
                 );
+                setCryptoAmounts((prevAmounts) => ({
+                  ...prevAmounts,
+                  [crypt.symbol]: numericValue,
+                }));
               }}
-              onInput={(e) => {
-                // convertCryptoAndDisplay(
-                //   crypt.symbol,
-                //   e.target.value === 0 || !e.target.value
-                //     ? 0
-                //     : parseFloat(e.target.value),
-                //   i
-                // );
-                console.log(e.target.value);
-              }}
+              // onInput={(e) => {
+              // console.log(e.target.value);
+              // }}
               type={"number"}
               autoComplete="off"
               step={
@@ -79,10 +151,9 @@ const WalletBuyCryptos = ({ walletBalance, currency }) => {
             />
             <div className="spanConvert-container">
               <span id={`span-${crypt.symbol}`}>{currency.symbol}</span>
-              {/* <span id={`spanEuro-${crypt.symbol}`}>€</span> */}
               <span className="spanBalance">
                 /{" "}
-                {walletBalance.toLocaleString("fr-FR", {
+                {walletData.currencyTotal.toLocaleString("fr-FR", {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}{" "}
@@ -91,6 +162,40 @@ const WalletBuyCryptos = ({ walletBalance, currency }) => {
             </div>
           </div>
         ))}
+
+      <div className="acm-wallet-crypto-total">
+        TOTAL :{" "}
+        <span
+          className="total"
+          style={{
+            color:
+              totalSpanAmount > walletData.currencyTotal
+                ? "#b82020"
+                : "#20b820",
+          }}
+        >
+          00000
+        </span>
+        <span className="totalCurrencyBalance">
+          {" "}
+          /{" "}
+          {walletData.currencyTotal.toLocaleString("fr-FR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          })}{" "}
+          {currency.symbol}
+        </span>
+      </div>
+      <div className="acm-wallet-crypto-buy-btn-container">
+        <button
+          className="acm-wallet-crypto-buy-btn"
+          disabled={
+            totalSpanAmount > walletData.currencyTotal || !totalSpanAmount
+          }
+        >
+          Acheter
+        </button>
+      </div>
     </div>
   );
 };
