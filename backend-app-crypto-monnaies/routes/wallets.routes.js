@@ -41,4 +41,16 @@ router.post("/create", async (req, res) => {
   }
 });
 
+router.put("/buy-crypto", authentification, async (req, res) => {
+  // chercher le wallet du user
+  const updatedWallet = Object.keys(req.body);
+  try {
+    updatedWallet.forEach((update) => (req.wallet[update] = req.body[update]));
+    await req.wallet.save();
+    res.json({ wallet: req.wallet });
+  } catch (e) {
+    res.status(500).send(e.message);
+  }
+});
+
 module.exports = router;

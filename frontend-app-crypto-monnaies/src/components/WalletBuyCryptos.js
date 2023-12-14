@@ -9,7 +9,7 @@ const WalletBuyCryptos = ({ currency }) => {
   const [totalSpanAmount, setTotalSpanAmount] = useState();
 
   const convertCryptoToWalletCurrAndDisplay = useCallback(
-    async (crypto, amount, index) => {
+    async (crypto, amount) => {
       const selectedCrypto = cryptosData.cryptos.find(
         (cr) => cr.symbol === crypto
       );
@@ -126,11 +126,7 @@ const WalletBuyCryptos = ({ currency }) => {
                 const inputValue = e.target.value.trim(); // Supprimez les espaces
                 const numericValue =
                   inputValue === "" ? 0 : parseFloat(inputValue);
-                convertCryptoToWalletCurrAndDisplay(
-                  crypt.symbol,
-                  numericValue,
-                  i
-                );
+                convertCryptoToWalletCurrAndDisplay(crypt.symbol, numericValue);
                 setCryptoAmounts((prevAmounts) => ({
                   ...prevAmounts,
                   [crypt.symbol]: numericValue,
