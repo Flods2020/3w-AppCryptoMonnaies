@@ -13,6 +13,7 @@ const routes = [
   { path: "/monCompte", component: <MonCompte /> },
   { path: "/ressources", component: <Ressources /> },
   { path: "/wallet-page", component: <WalletPage /> },
+  { path: "/support-client", component: <WalletPage /> },
 ];
 
 export { routes };

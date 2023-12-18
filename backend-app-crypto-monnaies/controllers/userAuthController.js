@@ -72,7 +72,6 @@ const checkPwd = async (req, res, next) => {
     );
     console.log(updatedPwd);
     if (updatedPwd) {
-      // res.json({ user: req.user });
       res.send(updatedPwd);
     }
   } catch (e) {

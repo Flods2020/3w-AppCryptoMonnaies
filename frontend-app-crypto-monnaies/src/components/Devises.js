@@ -33,7 +33,6 @@ const Devises = () => {
       try {
         const response = await axios.get(`${baseURL}${currenciesURL}`);
         setCurrencies(response.data);
-        // console.log(Object.entries(response.data));
       } catch (err) {
         console.error(err);
       }

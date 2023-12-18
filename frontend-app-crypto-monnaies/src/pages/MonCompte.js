@@ -139,12 +139,6 @@ const MonCompte = () => {
                   <TbPassword />
                 </span>
               ) : (
-                // <input
-                //   className="id-modif-inputs"
-                //   id="password-input"
-                //   type="password"
-                //   onChange={(e) => console.log(e.target.value)}
-                // />
                 <SimplePortal />
               )}
               <div

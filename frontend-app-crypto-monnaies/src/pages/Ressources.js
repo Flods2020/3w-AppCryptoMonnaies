@@ -1,8 +1,22 @@
 import React from "react";
-import Devises from "../components/Devises";
 
 const Ressources = () => {
-  return <div className="acm-home-container">DOCS</div>;
+  return (
+    <div className="acm-home-container">
+      <h2>Ressources</h2>
+      <div className="video-container">
+        <iframe
+          // width="560"
+          // height="315"
+          src="https://www.youtube.com/embed/Wsnbvpf5u9M?si=HZ9fPYSUysUeKlma"
+          title="YouTube video player"
+          frameborder="1"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+  );
 };
 
 export default Ressources;

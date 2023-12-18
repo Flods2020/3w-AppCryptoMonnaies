@@ -80,7 +80,6 @@ const WalletBuyCryptos = ({ currency }) => {
             spanValue.innerText.replace(/\s/g, "").replace(",", ".")
           );
           if (!isNaN(amount)) {
-            // console.log("amount :::: ", amount);
             accumulator += amount;
           }
         }
@@ -93,7 +92,6 @@ const WalletBuyCryptos = ({ currency }) => {
     const totalSpan = document.querySelector(".total");
     if (totalSpan) {
       setTotalSpanAmount(totalAmount);
-      // console.log("totalAmount ::: ", totalAmount);
       totalSpan.innerHTML =
         totalAmount
           .toLocaleString("fr-FR", {
@@ -105,11 +103,6 @@ const WalletBuyCryptos = ({ currency }) => {
         currency.symbol;
     }
   }, [cryptoAmounts, currency]);
-
-  // useEffect(() => {
-  //   // walletBalance && console.log("walletBalance :::: ", walletBalance);
-  //   currency && console.log("currency :::: ", currency);
-  // }, [currency]);
 
   return (
     <div className="acm-wallet-buy-container">

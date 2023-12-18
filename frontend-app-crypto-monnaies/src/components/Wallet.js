@@ -65,14 +65,15 @@ const Wallet = () => {
     };
     !userWallet && fetchUserWallet();
     userWallet && findCurrency(userWallet.currencyWallet[0].currency);
-    // console.log("userWallet ::: ", userWallet);
   }, [userWallet, fetchUserProfile, dispatch, walletData, setCurrency]);
 
   useEffect(() => {
     if (!isEmpty(userWallet) && !isEmpty(currency)) {
       setWalletBalance(
-        cryptoBalance / currency[1].usdExchangeRate +
+        (
+          cryptoBalance / currency[1].usdExchangeRate +
           (userWallet.currencyTotal ? userWallet.currencyTotal : 0)
+        ).toFixed(2)
       );
     }
   }, [walletBalance, userWallet, currency]);
@@ -106,10 +107,6 @@ const Wallet = () => {
       setCryptoBalance(0);
     }
   }, [userWallet, cryptoData, setCryptoBalance]);
-
-  // useEffect(() => {
-  //   cryptoData && console.log(cryptoData);
-  // }, []);
 
   return (
     <div className="acm-wallet-container">

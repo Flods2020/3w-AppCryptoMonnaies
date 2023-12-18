@@ -108,28 +108,6 @@ const WalletCreator = () => {
     const userData = await axios.get(`${baseURL}${userDataURL}`);
     const user = userData.data.user;
 
-    console.log(
-      "converted Selected Currency Amount ::: ",
-      convertedSelectedCurrencyAmount
-    );
-
-    // CRYPTOS;
-    console.log("cryptoWallet ::::", cryptoWallet);
-
-    // DEVISES
-    console.log("Currency:", walletCurrency);
-    console.log("Currency Total:", selectedCurrencyAmount);
-
-    console.log({
-      user: user._id,
-      currencyTotal: parseFloat(selectedCurrencyAmount),
-      cryptoWallet,
-      currencyWallet: {
-        currency: walletCurrency._id,
-        amount: parseFloat(selectedCurrencyAmount),
-      },
-    });
-
     try {
       await axios.post(`${baseURL}${walletCreateURL}`, {
         user: user._id,

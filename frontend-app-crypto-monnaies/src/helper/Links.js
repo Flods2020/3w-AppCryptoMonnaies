@@ -2,7 +2,7 @@ export const navLinks = {
   Portefeuille: "/wallet-page",
   Docs: "/ressources",
   Mon_Compte: "/monCompte",
-  Support_Client: "/login",
+  Support_Client: "/support-client",
   Déconnexion: "/login",
 };
 

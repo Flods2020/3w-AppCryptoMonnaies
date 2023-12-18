@@ -19,7 +19,6 @@ const BurgerMenu = () => {
     try {
       dispatch(deleteUserData());
       localStorage.removeItem("jwt");
-      console.log("User Déconnecté");
       setIsOpen(!isOpen);
       navigate("/login");
     } catch (error) {

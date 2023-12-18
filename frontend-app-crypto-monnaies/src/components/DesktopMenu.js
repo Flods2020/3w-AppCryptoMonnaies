@@ -15,7 +15,6 @@ const DesktopMenu = () => {
     try {
       dispatch(deleteUserData());
       localStorage.removeItem("jwt");
-      console.log("User Déconnecté");
       navigate("/login");
     } catch (error) {
       console.error(error);
