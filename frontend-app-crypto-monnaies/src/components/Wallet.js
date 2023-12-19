@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { baseURL, userDataURL, userWalletURL } from "../helper/url_helper";
 import axios from "axios";
 import WalletCreator from "./WalletCreator";
-import { isEmpty } from "../helper/Utils";
+import { formattedCurrency, isEmpty } from "../helper/Utils";
 import { currenciesData } from "../helper/data-currencies";
 import { setWalletData } from "../store/slices/walletsSlice";
 import WalletBuyCryptos from "./WalletBuyCryptos";
@@ -70,10 +70,8 @@ const Wallet = () => {
   useEffect(() => {
     if (!isEmpty(userWallet) && !isEmpty(currency)) {
       setWalletBalance(
-        (
-          cryptoBalance / currency[1].usdExchangeRate +
+        cryptoBalance / currency[1].usdExchangeRate +
           (userWallet.currencyTotal ? userWallet.currencyTotal : 0)
-        ).toFixed(2)
       );
     }
   }, [walletBalance, userWallet, currency]);
@@ -116,8 +114,12 @@ const Wallet = () => {
           <span className="soldeSpan">
             Votre solde actuel :
             <div id="soldes">
-              {walletBalance && walletBalance.toLocaleString()}{" "}
-              {currency[1].symbol}
+              {walletBalance &&
+                formattedCurrency(
+                  walletBalance,
+                  currency[1].code,
+                  currency[1].locale
+                )}
             </div>
           </span>
 
@@ -128,8 +130,12 @@ const Wallet = () => {
                   Votre devise fiat : {currency[1].code} - {currency[1].name}
                 </h4>
                 <span className="currency-infos">
-                  Solde : {userWallet.currencyTotal.toLocaleString()}{" "}
-                  {currency[1].symbol}
+                  Solde :{" "}
+                  {formattedCurrency(
+                    userWallet.currencyTotal,
+                    currency[1].code,
+                    currency[1].locale
+                  )}
                 </span>
               </>
             </div>
@@ -147,19 +153,15 @@ const Wallet = () => {
                         .find((cr) => cr.symbol === findCrypto(i))
                         .symbol.toUpperCase()}{" "}
                       ==&gt;{" "}
-                      {Number(
+                      {formattedCurrency(
                         crpW.amount *
                           (cryptoData.cryptos.find(
                             (cr) => cr.symbol === findCrypto(i)
                           ).current_price /
-                            currency[1].usdExchangeRate)
-                      )
-                        .toLocaleString("fr-FR", {
-                          minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        })
-                        .replace(".", ",")}{" "}
-                      {currency[1].symbol}
+                            currency[1].usdExchangeRate),
+                        currency[1].code,
+                        currency[1].locale
+                      )}
                     </span>
                   )}
                 </div>
@@ -172,13 +174,11 @@ const Wallet = () => {
             <div className="wallet-crypto-balance">
               Total Crypto :{" "}
               {cryptoBalance &&
-                (cryptoBalance / currency[1].usdExchangeRate)
-                  .toLocaleString("fr-FR", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })
-                  .replace(".", ",")}{" "}
-              {currency[1].symbol}
+                formattedCurrency(
+                  cryptoBalance / currency[1].usdExchangeRate,
+                  currency[1].code,
+                  currency[1].locale
+                )}
             </div>
           </div>
           <div className="buy-sell-btn-container">

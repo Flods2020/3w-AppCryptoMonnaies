@@ -57,12 +57,10 @@ userSchema.methods.generateAuthTokenAndSaveUser = async function () {
 
 userSchema.statics.findUser = async (email, password) => {
   const user = await User.findOne({ email });
-  // console.log(password);
   if (!user) {
     throw new Error("Erreur, email introuvable.");
   }
   const isPasswordValid = await bcrypt.compare(password, user.password);
-  // console.log(isPasswordValid);
   if (!isPasswordValid) {
     throw new Error("Erreur, mauvais Mot de Passe.");
   }

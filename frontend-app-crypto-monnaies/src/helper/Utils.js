@@ -6,3 +6,10 @@ export const isEmpty = (value) => {
     (typeof value === "string" && value.trim().length === 0)
   );
 };
+
+export const formattedCurrency = (value, currencyCode, locale) => {
+  return Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currencyCode,
+  }).format(value);
+};

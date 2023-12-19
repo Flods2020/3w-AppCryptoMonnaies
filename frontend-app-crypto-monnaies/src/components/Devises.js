@@ -43,7 +43,7 @@ const Devises = () => {
   return (
     <div className="acm-devises-container">
       <h2>Devises</h2>
-      <div>
+      <div className="cards-container">
         {!isEmpty(currencies) &&
           Object.entries(currencies)
             .sort((a, b) => a[1].usdExchangeRate - b[1].usdExchangeRate)
