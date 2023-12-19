@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { formattedCurrency } from "../helper/Utils";
 
 const WalletBuyCryptos = ({ currency }) => {
   const cryptosData = useSelector((state) => state.cryptos);
@@ -17,58 +18,24 @@ const WalletBuyCryptos = ({ currency }) => {
       const convertedSpan = document.querySelector("#span-" + crypto);
 
       convertedSpan.innerHTML =
-        parseFloat(
-          (selectedCrypto.current_price * amount) / currency.usdExchangeRate
-        )?.toLocaleString("fr-FR", {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }) +
-          " " +
-          currency.symbol ?? "N/A";
-
-      // const convertedAmount =
-      //   parseFloat(
-      //     (
-      //       selectedCrypto.current_price *
-      //       amount *
-      //       currency.usdExchangeRate
-      //     )?.toFixed(2)
-      //   )?.toLocaleString("fr-FR", {
-      //     minimumFractionDigits: 2,
-      //     maximumFractionDigits: 2,
-      //   }) +
-      //   " " +
-      //   currency.symbol;
+        // parseFloat(
+        //   (selectedCrypto.current_price * amount) / currency.usdExchangeRate
+        // )?.toLocaleString(currency.locale, {
+        //   minimumFractionDigits: 2,
+        //   maximumFractionDigits: 2,
+        // }) +
+        //   " " +
+        //   currency.symbol ?? "N/A";
+        formattedCurrency(
+          (selectedCrypto.current_price * amount) / currency.usdExchangeRate,
+          currency.code,
+          currency.locale
+        );
 
       return convertedSpan;
     },
     [cryptosData, currency]
   );
-
-  // const convertCryptoToWalletCurrAndDisplayTotal = useCallback(
-  //   async (crypto, amount, index) => {
-  //     const selectedCrypto = cryptosData.cryptos.find(
-  //       (cr) => cr.symbol === crypto
-  //     );
-
-  //     const convertedAmount =
-  //       parseFloat(
-  //         (
-  //           selectedCrypto.current_price *
-  //           amount *
-  //           currency.usdExchangeRate
-  //         )?.toFixed(2)
-  //       )?.toLocaleString("fr-FR", {
-  //         minimumFractionDigits: 2,
-  //         maximumFractionDigits: 2,
-  //       }) +
-  //       " " +
-  //       currency.symbol;
-
-  //     return convertedAmount;
-  //   },
-  //   [cryptosData, currency]
-  // );
 
   useEffect(() => {
     // Calculez la somme totale à chaque changement dans les montants
@@ -77,8 +44,10 @@ const WalletBuyCryptos = ({ currency }) => {
         const spanValue = document.querySelector(`#span-${cryptoSymbol}`);
         if (spanValue) {
           const amount = parseFloat(
-            spanValue.innerText.replace(/\s/g, "").replace(",", ".")
+            // spanValue.innerText.replace(/\s/g, "").replace(",", ".")
+            spanValue.innerText.replace(/[^\d]/g, "")
           );
+          console.log("********** amount : ", amount);
           if (!isNaN(amount)) {
             accumulator += amount;
           }
@@ -92,15 +61,11 @@ const WalletBuyCryptos = ({ currency }) => {
     const totalSpan = document.querySelector(".total");
     if (totalSpan) {
       setTotalSpanAmount(totalAmount);
-      totalSpan.innerHTML =
-        totalAmount
-          .toLocaleString("fr-FR", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })
-          .replace(".", ",") +
-        " " +
-        currency.symbol;
+      totalSpan.innerHTML = formattedCurrency(
+        totalAmount,
+        currency.code,
+        currency.locale
+      );
     }
   }, [cryptoAmounts, currency]);
 
@@ -116,7 +81,7 @@ const WalletBuyCryptos = ({ currency }) => {
             <input
               id={`balance-${crypt.name}`}
               onChange={(e) => {
-                const inputValue = e.target.value.trim(); // Supprimez les espaces
+                const inputValue = e.target.value.trim();
                 const numericValue =
                   inputValue === "" ? 0 : parseFloat(inputValue);
                 convertCryptoToWalletCurrAndDisplay(crypt.symbol, numericValue);
@@ -133,20 +98,20 @@ const WalletBuyCryptos = ({ currency }) => {
               step={
                 crypt.symbol.includes("btc") || crypt.symbol.includes("eth")
                   ? "0.001"
-                  : "0.1"
+                  : "0.01"
               }
               min={"0"}
-              max={"10000"}
+              max={"100000"}
             />
             <div className="spanConvert-container">
               <span id={`span-${crypt.symbol}`}>{currency.symbol}</span>
               <span className="spanBalance">
                 /{" "}
-                {walletData.currencyTotal.toLocaleString("fr-FR", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}{" "}
-                {currency.symbol}
+                {formattedCurrency(
+                  walletData.currencyTotal,
+                  currency.code,
+                  currency.locale
+                )}
               </span>
             </div>
           </div>
@@ -168,11 +133,11 @@ const WalletBuyCryptos = ({ currency }) => {
         <span className="totalCurrencyBalance">
           {" "}
           /{" "}
-          {walletData.currencyTotal.toLocaleString("fr-FR", {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          })}{" "}
-          {currency.symbol}
+          {formattedCurrency(
+            walletData.currencyTotal,
+            currency.code,
+            currency.locale
+          )}
         </span>
       </div>
       <div className="acm-wallet-crypto-buy-btn-container">

@@ -74,7 +74,7 @@ const Wallet = () => {
           (userWallet.currencyTotal ? userWallet.currencyTotal : 0)
       );
     }
-  }, [walletBalance, userWallet, currency]);
+  }, [walletBalance, userWallet, currency, cryptoBalance]);
 
   useEffect(() => {
     if (userWallet && cryptoData) {

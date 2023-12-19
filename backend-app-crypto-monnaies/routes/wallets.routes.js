@@ -42,14 +42,33 @@ router.post("/create", async (req, res) => {
 });
 
 router.put("/buy-crypto", authentification, async (req, res) => {
-  // chercher le wallet du user
-  const updatedWallet = Object.keys(req.body);
+  const user = req.user;
   try {
-    updatedWallet.forEach((update) => (req.wallet[update] = req.body[update]));
-    await req.wallet.save();
-    res.json({ wallet: req.wallet });
+    const { currencyTotal, cryptoWallet, currencyWallet } = req.body;
+
+    // Rechercher le portefeuille de l'utilisateur
+    const userWallet = await Wallet.findOne({ user: user._id });
+
+    if (!userWallet) {
+      return res
+        .status(404)
+        .json({ error: "Portefeuille introuvable pour cet utilisateur" });
+    }
+
+    // Mettre à jour les champs si présents dans la requête
+    if (currencyTotal !== undefined) userWallet.currencyTotal = currencyTotal;
+    if (cryptoWallet !== undefined) userWallet.cryptoWallet = cryptoWallet;
+    if (currencyWallet !== undefined)
+      userWallet.currencyWallet = currencyWallet;
+
+    // Enregistrer les modifications dans la base de données
+    await userWallet.save();
+
+    // Renvoyer le portefeuille mis à jour en réponse
+    res.status(200).json({ wallet: userWallet });
   } catch (e) {
-    res.status(500).send(e.message);
+    console.error(e);
+    res.status(500).send("Erreur lors de la mise à jour du portefeuille");
   }
 });
 

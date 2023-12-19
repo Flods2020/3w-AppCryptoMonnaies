@@ -16,8 +16,6 @@ const WalletCreator = () => {
   const [cryptoWallet, setCryptoWallet] = useState([]);
   const [dataCurrencies, setDataCurrencies] = useState();
   const [walletCurrency, setWalletCurrency] = useState();
-  const [convertedSelectedCurrencyAmount, setConvertedSelectedCurrencyAmount] =
-    useState();
   const [selectedCurrencyAmount, setSelectedCurrencyAmount] = useState(0);
 
   const handleCryptoWalletChange = useCallback(
@@ -92,16 +90,6 @@ const WalletCreator = () => {
     return [spanDollar, spanEuro, spanCurrencyAmount];
   };
 
-  const convertCurrencyAmount = () => {
-    if (selectedCurrencyAmount && walletCurrency) {
-      setConvertedSelectedCurrencyAmount(
-        selectedCurrencyAmount / walletCurrency.usdExchangeRate
-      );
-    } else {
-      setConvertedSelectedCurrencyAmount(0);
-    }
-  };
-
   const createWallet = async (e) => {
     e.preventDefault();
     // USER
@@ -130,10 +118,6 @@ const WalletCreator = () => {
       );
     }
   };
-
-  useEffect(() => {
-    convertCurrencyAmount();
-  }, [selectedCurrencyAmount, walletCurrency]);
 
   useEffect(() => {
     const fetchDataCurrencies = async () => {
