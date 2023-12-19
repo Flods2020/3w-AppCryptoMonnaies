@@ -18,19 +18,11 @@ const WalletBuyCryptos = ({ currency }) => {
       const convertedSpan = document.querySelector("#span-" + crypto);
 
       convertedSpan.innerHTML =
-        // parseFloat(
-        //   (selectedCrypto.current_price * amount) / currency.usdExchangeRate
-        // )?.toLocaleString(currency.locale, {
-        //   minimumFractionDigits: 2,
-        //   maximumFractionDigits: 2,
-        // }) +
-        //   " " +
-        //   currency.symbol ?? "N/A";
         formattedCurrency(
           (selectedCrypto.current_price * amount) / currency.usdExchangeRate,
           currency.code,
           currency.locale
-        );
+        ) ?? "N/A";
 
       return convertedSpan;
     },
@@ -38,16 +30,19 @@ const WalletBuyCryptos = ({ currency }) => {
   );
 
   useEffect(() => {
-    // Calculez la somme totale à chaque changement dans les montants
+    // Calculer la somme totale à chaque changement dans les montants
     const totalAmount = Object.keys(cryptoAmounts).reduce(
       (accumulator, cryptoSymbol) => {
         const spanValue = document.querySelector(`#span-${cryptoSymbol}`);
         if (spanValue) {
-          const amount = parseFloat(
-            // spanValue.innerText.replace(/\s/g, "").replace(",", ".")
-            spanValue.innerText.replace(/[^\d]/g, "")
-          );
-          console.log("********** amount : ", amount);
+          const amount =
+            currency.code === "RUB" || currency.code === "EUR"
+              ? parseFloat(
+                  spanValue.innerText.replace(/\s/g, "").replace(",", ".")
+                )
+              : Number(
+                  spanValue.innerText.replace(/[^\d.]/g, "").replace(",", ".")
+                );
           if (!isNaN(amount)) {
             accumulator += amount;
           }
@@ -57,7 +52,7 @@ const WalletBuyCryptos = ({ currency }) => {
       0
     );
 
-    // Mettez à jour le total affiché
+    // MAJ du total à afficher
     const totalSpan = document.querySelector(".total");
     if (totalSpan) {
       setTotalSpanAmount(totalAmount);
