@@ -1,12 +1,15 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { formattedCurrency } from "../helper/Utils";
+import { baseURL, cryptosURL, userWalletURL } from "../helper/url_helper";
+import axios from "axios";
 
 const WalletBuyCryptos = ({ currency }) => {
   const cryptosData = useSelector((state) => state.cryptos);
   const walletData = useSelector((state) => state.wallets);
 
   const [cryptoAmounts, setCryptoAmounts] = useState({});
+  const [cryptoWallet, setCryptoWallet] = useState();
   const [totalSpanAmount, setTotalSpanAmount] = useState();
 
   const convertCryptoToWalletCurrAndDisplay = useCallback(
@@ -28,6 +31,73 @@ const WalletBuyCryptos = ({ currency }) => {
     },
     [cryptosData, currency]
   );
+
+  const buyCrypto = async () => {
+    console.log(cryptoAmounts);
+    const updatedCryptoWallet = [...cryptoWallet];
+
+    try {
+      // await axios
+      //   .get(`${baseURL}${userWalletURL}`)
+      //   .then((res) => console.log(res.data[0].cryptoWallet));
+
+      for (let [key, value] of Object.entries(cryptoAmounts)) {
+        console.log(key, value);
+
+        if (parseFloat(value) > 0) {
+          try {
+            const selectedCrypto = (
+              await axios.get(`${baseURL}${cryptosURL}`)
+            ).data.cryptos.find((cr) => cr.symbol === key.toUpperCase());
+
+            if (selectedCrypto) {
+              const existingCryptoIndex = cryptoWallet.findIndex(
+                (crypto) => crypto?.selectedCrypto.symbol === key.toUpperCase()
+              );
+
+              if (existingCryptoIndex !== -1) {
+                // Crypto existe dans le wallet, maj le amount
+                const existingCrypto = {
+                  ...updatedCryptoWallet[existingCryptoIndex],
+                };
+                existingCrypto.amount = parseFloat(
+                  existingCrypto.amount + value
+                );
+                updatedCryptoWallet[existingCryptoIndex] = existingCrypto;
+                // await setCryptoWallet(updatedCryptoWallet);
+                console.log("****************updatedCryptoWallet");
+              } else {
+                // Crypto n'est pas dans le wallet, on l'ajoute
+                const newCryptoWallet = [
+                  ...cryptoWallet,
+                  {
+                    selectedCrypto,
+                    amount: parseFloat(value),
+                  },
+                ];
+                await setCryptoWallet(newCryptoWallet);
+                console.log(
+                  "******************Ajout cryptoWallet",
+                  selectedCrypto
+                );
+              }
+              console.log("cryptoWallet ::: ", cryptoWallet);
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    // console.log(walletData.cryptoWallet);
+    walletData && setCryptoWallet(walletData.cryptoWallet);
+    console.log("--------- cryptoWallet ::: ", cryptoWallet);
+  }, [cryptoWallet]);
 
   useEffect(() => {
     // Calculer la somme totale à chaque changement dans les montants
@@ -63,6 +133,10 @@ const WalletBuyCryptos = ({ currency }) => {
       );
     }
   }, [cryptoAmounts, currency]);
+
+  // useEffect(() => {
+  //   cryptoAmounts && console.log("cryptoAmounts :::: ", cryptoAmounts);
+  // }, [cryptoAmounts]);
 
   return (
     <div className="acm-wallet-buy-container">
@@ -138,6 +212,7 @@ const WalletBuyCryptos = ({ currency }) => {
       <div className="acm-wallet-crypto-buy-btn-container">
         <button
           className="acm-wallet-crypto-buy-btn"
+          onClick={buyCrypto}
           disabled={
             totalSpanAmount > walletData.currencyTotal || !totalSpanAmount
           }
