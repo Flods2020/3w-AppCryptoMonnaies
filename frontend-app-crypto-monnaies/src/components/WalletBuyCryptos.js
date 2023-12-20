@@ -64,10 +64,18 @@ const WalletBuyCryptos = ({ currency }) => {
                   existingCrypto.amount + value
                 );
                 updatedCryptoWallet[existingCryptoIndex] = existingCrypto;
-                // await setCryptoWallet(updatedCryptoWallet);
-                console.log("****************updatedCryptoWallet");
+                setCryptoWallet(() => updatedCryptoWallet);
+                console.log(
+                  "updatedCryptoWallet[existingCryptoIndex].amount ::: ",
+                  updatedCryptoWallet[existingCryptoIndex].amount
+                );
+                console.log(
+                  "****************updatedCryptoWallet",
+                  cryptoWallet
+                );
               } else {
                 // Crypto n'est pas dans le wallet, on l'ajoute
+                //chercher à mettre au bon index selon la crypto
                 const newCryptoWallet = [
                   ...cryptoWallet,
                   {
@@ -75,7 +83,7 @@ const WalletBuyCryptos = ({ currency }) => {
                     amount: parseFloat(value),
                   },
                 ];
-                await setCryptoWallet(newCryptoWallet);
+                setCryptoWallet(() => newCryptoWallet);
                 console.log(
                   "******************Ajout cryptoWallet",
                   selectedCrypto
@@ -94,8 +102,7 @@ const WalletBuyCryptos = ({ currency }) => {
   };
 
   useEffect(() => {
-    // console.log(walletData.cryptoWallet);
-    walletData && setCryptoWallet(walletData.cryptoWallet);
+    cryptoWallet === undefined && setCryptoWallet(walletData.cryptoWallet);
     console.log("--------- cryptoWallet ::: ", cryptoWallet);
   }, [cryptoWallet]);
 
