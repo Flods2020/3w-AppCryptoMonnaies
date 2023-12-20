@@ -23,7 +23,20 @@ const Nav = () => {
             to={"/home"}
             style={{ color: "inherit", textDecoration: "none" }}
           >
-            <h2>APP CRYPTO MONNAIES</h2>
+            <div
+              className="logoAndTitle-container"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <div className="logoContainer" style={{ marginRight: "15px" }}>
+                <img
+                  style={{ height: "50px", width: "50px" }}
+                  src="../assets/logo/logoACM.jpg"
+                  alt="APP-CRYPTO-MONNAIES-logo"
+                  id="logo"
+                />
+              </div>
+              <h2>APP CRYPTO MONNAIES</h2>
+            </div>
             <h3>{!isEmpty(userProfile) && userProfile.pseudo}</h3>
           </NavLink>
           <div className="burger-container" onClick={ToggleClass}>
