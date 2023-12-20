@@ -1,0 +1,27 @@
+@media screen and (min-width: 0) {
+  .acm-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-top: 50px;
+    bottom: 0;
+    padding: 40px;
+    background: linear-gradient(rgba($color-5, 1), rgba($color-3, 0.4));
+    border-top: 2px solid $color-4;
+
+    .acm-footer-content {
+      text-align: center;
+      //   display: flex;
+      //   flex-direction: column;
+      //   align-items: center;
+      .app-title {
+        margin: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+    }
+  }
+}

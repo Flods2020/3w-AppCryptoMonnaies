@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "../styles/index.scss";
-import BurgerMenu from "./BurgerMenu";
+import BurgerMenu from "../components/BurgerMenu";
 import { NavLink } from "react-router-dom";
 import { isEmpty } from "../helper/Utils";
 import { useSelector } from "react-redux";
-import DesktopMenu from "./DesktopMenu";
+import DesktopMenu from "../components/DesktopMenu";
 
 const Nav = () => {
   const [isActive, setIsActive] = useState(false);

@@ -4,6 +4,7 @@ import MonCompte from "../pages/MonCompte";
 import Register from "../pages/Register";
 import Ressources from "../pages/Ressources";
 import WalletPage from "../pages/WalletPage";
+import Support from "../components/Support";
 
 const routes = [
   { path: "/", component: <Login /> },
@@ -13,7 +14,7 @@ const routes = [
   { path: "/monCompte", component: <MonCompte /> },
   { path: "/ressources", component: <Ressources /> },
   { path: "/wallet-page", component: <WalletPage /> },
-  { path: "/support-client", component: <WalletPage /> },
+  { path: "/support-client", component: <Support /> },
 ];
 
 export { routes };

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { formattedCurrency } from "../helper/Utils";
-import { baseURL, cryptosURL, userWalletURL } from "../helper/url_helper";
+import { baseURL, cryptosURL } from "../helper/url_helper";
 import axios from "axios";
 
 const WalletBuyCryptos = ({ currency }) => {

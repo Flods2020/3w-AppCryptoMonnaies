@@ -82,7 +82,6 @@
               color: $inputs-color-1;
               margin: 2px 5px;
               border-bottom: 1px solid $color-2;
-              // background: rgba($color-2, 0.4);
             }
           }
 
@@ -141,12 +140,10 @@
           .spanConvert-container {
             display: flex;
             flex-direction: column;
-            // border: 1px solid black;
             max-width: 50%;
             span {
               display: flex;
               flex-wrap: wrap;
-              // border: 1px solid green;
               overflow-x: auto;
               padding: 5px;
               font-weight: bolder;
